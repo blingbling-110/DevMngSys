@@ -12,6 +12,7 @@ public class Item {// Item公共类：对id和name属性进行封装
 		this.name = name;
 	}
 	
+	// 使用Getters和Setters方法将Item公共类的私有属性封装起来
 	public String getId() {
 		return id;
 	}
