@@ -92,25 +92,21 @@ public class TbDevInfo {// 设备信息公共类
 				return false;
 		}else if(!id.equals(other.id))
 			return false;
-		return true;
 		if(name == null) {
 			if(other.name != null)
 				return false;
 		}else if(!name.equals(other.name))
 			return false;
-		return true;
 		if(status == null) {
 			if(other.status != null)
 				return false;
 		}else if(!status.equals(other.status))
 			return false;
-		return true;
 		if(des == null) {
 			if(other.des != null)
 				return false;
 		}else if(!des.equals(other.des))
 			return false;
-		return true;
 		if(remark == null) {
 			if(other.remark != null)
 				return false;
