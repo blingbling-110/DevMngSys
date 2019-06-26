@@ -13,8 +13,17 @@ public class TbDevInfo {// 设备信息公共类
 	public TbDevInfo(String id) {
 		this.id = id;
 	}
+	
+	public TbDevInfo(String id, String name, String status, 
+			String des, String remark) {
+		this.id = id;
+		this.name = name;
+		this.status = status;
+		this.des = des;
+		this.remark = remark;
+	}
 
-	// 使用Getters和Setters方法将设备信息公共类的私有属性封装起来
+	// 使用Getters和Setters方法将公共类的私有属性封装起来
 	public String getId() {
 		return id;
 	}
@@ -78,7 +87,35 @@ public class TbDevInfo {// 设备信息公共类
 		if(getClass() != obj.getClass())// 检查两者的运行时类是否相同
 			return false;
 		final TbDevInfo other = (TbDevInfo) obj;// 强制转换为本公共类对象
-		
+		if(id == null) {
+			if(other.id != null)
+				return false;
+		}else if(!id.equals(other.id))
+			return false;
+		return true;
+		if(name == null) {
+			if(other.name != null)
+				return false;
+		}else if(!name.equals(other.name))
+			return false;
+		return true;
+		if(status == null) {
+			if(other.status != null)
+				return false;
+		}else if(!status.equals(other.status))
+			return false;
+		return true;
+		if(des == null) {
+			if(other.des != null)
+				return false;
+		}else if(!des.equals(other.des))
+			return false;
+		return true;
+		if(remark == null) {
+			if(other.remark != null)
+				return false;
+		}else if(!remark.equals(other.remark))
+			return false;
 		return true;
 	}
 }
