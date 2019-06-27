@@ -1,18 +1,21 @@
 package com.qzj;
 
-public class Item {// Item公共类：对id和name属性进行封装
+public class Item {//	Item公共类：对id和name属性进行封装
 	private String id;
 	private String name;
+	private Integer jobNum;
 	
-	public Item() {// 默认构造方法
+	public Item() {//	默认构造方法
 	}
 	
-	public Item(String id, String name) {// 包含所有属性初始化的构造方法
+	//	包含所有属性初始化的构造方法
+	public Item(String id, String name, Integer jobNum) {
 		this.id = id;
 		this.name = name;
+		this.jobNum = jobNum;
 	}
 	
-	// 使用Getters和Setters方法将Item公共类的私有属性封装起来
+	//	使用Getters和Setters方法将Item公共类的私有属性封装起来
 	public String getId() {
 		return id;
 	}
@@ -29,7 +32,15 @@ public class Item {// Item公共类：对id和name属性进行封装
 		this.name = name;
 	}
 	
-	public String toString() {// 重写toString()方法，只能输出name属性
+	public Integer getJobNum() {
+		return jobNum;
+	}
+	
+	public void setJobNum(Integer jobNum) {
+		this.jobNum = jobNum;
+	}
+	
+	public String toString() {//	重写toString()方法，只能输出name属性
 		return getName();
 	}
 }

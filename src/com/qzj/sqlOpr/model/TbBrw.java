@@ -1,11 +1,11 @@
 package com.qzj.sqlOpr.model;
 
-public class TbBrw {// 借用公共类
-	private String id;// 借用单编号
-	private String dvId;// 借用设备编号
-	private Integer brwerId;// 借用人编号
-	private String date;// 借用日期
-	private String remark;// 备注
+public class TbBrw {//	借用公共类
+	private String id;//	借用单编号
+	private String dvId;//	借用设备编号
+	private Integer brwerId;//	借用人编号
+	private String date;//	借用日期
+	private String remark;//	备注
 	
 	public TbBrw() {
 	}
@@ -23,7 +23,7 @@ public class TbBrw {// 借用公共类
 		this.remark = remark;
 	}
 	
-	// 使用Getters和Setters方法将公共类的私有属性封装起来
+	//	使用Getters和Setters方法将公共类的私有属性封装起来
 	public String getId() {
 		return id;
 	}

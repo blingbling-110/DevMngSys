@@ -1,15 +1,15 @@
 package com.qzj.sqlOpr.model;
 
-public class TbUserInfo {// 人员信息公共类
-	private Integer id;// 人员编号
-	private String name;// 姓名
-	private String userId;// 用户名
-	private String pwd;// 密码
-	private String pos;// 职务
-	private String dep;// 部门
-	private String email;// 电子邮箱
-	private String tel;// 电话
-	private String remark;// 备注
+public class TbUserInfo {//	人员信息公共类
+	private Integer id;//	人员编号
+	private String name;//	姓名
+	private String userId;//	用户名
+	private String pwd;//	密码
+	private String pos;//	职务
+	private String dep;//	部门
+	private String email;//	电子邮箱
+	private String tel;//	电话
+	private String remark;//	备注
 	
 	public TbUserInfo() {
 	}
@@ -32,7 +32,7 @@ public class TbUserInfo {// 人员信息公共类
 		this.remark = remark;
 	}
 	
-	// 使用Getters和Setters方法将公共类的私有属性封装起来
+	//	使用Getters和Setters方法将公共类的私有属性封装起来
 	public Integer getId() {
 		return id;
 	}
