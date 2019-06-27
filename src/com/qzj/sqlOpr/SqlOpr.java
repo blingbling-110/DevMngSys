@@ -173,8 +173,8 @@ public class SqlOpr {//	数据库操作公共类
 		return list;
 	}
 	
-	//	判断用户登录
-	public static boolean getLogin(String userid, String pwd) 
+	//	验证用户登录
+	public static boolean checkLogin(String userid, String pwd) 
 			throws SQLException {
 		if(conn == null)
 			JOptionPane.showMessageDialog(null, "尚未创建数据库连接对象");;
