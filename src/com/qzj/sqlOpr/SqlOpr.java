@@ -1,13 +1,25 @@
 package com.qzj.sqlOpr;
 
-import java.sql.Connection;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.io.OutputStreamWriter;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -106,7 +118,7 @@ public class SqlOpr {//	数据库操作公共类
 		ResultSet res = null;
 		try {
 			/*
-			 * 	创建指定结果集类型和并发性的声明对象
+			 * 	创建指定结果集类型和并发性的连接声明对象
 			 * 
 			 * 	ResultSet.TYPE_SCROLL_INSENSITIVE：
 			 * 	支持结果集backforward ，random ，last ，first 等操作，
@@ -158,7 +170,7 @@ public class SqlOpr {//	数据库操作公共类
 			ResultSetMetaData metaData = res.getMetaData();
 			int colCount = metaData.getColumnCount();//	获取结果集中的列数
 			while(res.next()) {
-				List<String> row = new ArrayList<String>();
+				ArrayList<String> row = new ArrayList<String>();
 				for(int i = 1; i <= colCount; i++) {//	按列获取结果集信息
 					String str = res.getString(i);
 					if(str != null && !str.isEmpty())
@@ -275,5 +287,230 @@ public class SqlOpr {//	数据库操作公共类
 			e.printStackTrace();
 		}
 		return res;
+	}
+	
+	//	数据库备份
+	public static String backup() throws SQLException {
+		LinkedList<String> sqls = new LinkedList<>();//	备份文件中的所有SQL语句
+		//	需备份的数据表名称
+		String tables[] = {"tb_brw", "tb_devinfo", "tb_rtn", "tb_userinfo"};
+		ArrayList<Tables> tableList = new ArrayList<>();//	数据表对象的集合
+		
+		//	获取各数据表对象
+		for(int i = 0; i < tables.length; i++) {//	遍历数据表名称数组
+			Statement sta = conn.createStatement();
+			//	desc <table name>等价于show columns from <table name>
+			ResultSet res = sta.executeQuery("desc" + tables[i]);//	查询数据表结构
+			ArrayList<Columns> columns = new ArrayList<>();//	列模型对象的集合
+			while(res.next()) {
+				Columns column = new Columns();
+				column.setName(res.getString("Field"));//	获取列名称
+				column.setType(res.getString("Type"));//	获取列类型
+				if(res.getString("Null").equals("YES"))//	获取列是否可为空
+					column.setIsNull(true);
+				if(res.getString("Key").equals("PRI")) {//	获取列是否为主键
+					column.setIsKey(true);
+					//	获取列是否自增
+					if(res.getString("Extra").equals("auto_increment"))
+						column.setIsIncrement(true);
+				}
+				columns.add(column);
+			}
+			//	按数据表名称和相应列模型对象实例化数据表模型
+			Tables table = new Tables(tables[i], columns);
+			tableList.add(table);
+			res.close();//	关闭结果集
+			sta.close();//	关闭连接声明
+		}
+		
+		//	增加删除、创建数据表和插入数据的SQL语句
+		for(int i = 0; i < tableList.size(); i++) {//	遍历数据表对象的集合
+			Tables table = tableList.get(i);//	获取数据表对象
+			ArrayList<Columns> columns = table.getColumns();//	获取该数据表的列模型
+			/*
+			 * 	drop table <table name>：
+			 * 	删除数据表全部数据和表结构，立刻释放磁盘空间，不管是 Innodb 和 MyISAM
+			 */
+			sqls.add("drop table if exists " + table.getName() + ";");
+			
+			//	创建数据表的SQL语句
+			StringBuilder createSql = new StringBuilder();
+			createSql.append("create table `" + table.getName() + "`(");
+			for(int j = 0; j < columns.size(); j++) {//	遍历该数据表的列模型
+				Columns column = columns.get(j);
+				createSql.append("`" + column.getName() //	获取列名称
+				+ "` " + column.getType());//	获取列类型
+				if(!column.getIsNull())//	获取列是否可为空
+					createSql.append(" not null");
+				if(column.getIsKey()) {//	获取列是否为主键
+					createSql.append(" primary key");
+					if(column.getIsIncrement())//	获取列是否自增
+						createSql.append(" auto_increment");
+				}
+				
+				if(j < columns.size() - 1)//	判断是否为最后一列
+					createSql.append(",");
+				else
+					createSql.append(") engine=innodb default charset=utf8;");
+			}
+			sqls.add(createSql.toString());
+			
+			//	插入数据的SQL语句
+			Statement sta = conn.createStatement();
+			ResultSet res = sta.executeQuery("select * from" + table.getName());
+			while(res.next()) {
+				StringBuilder insertSql = new StringBuilder();
+				insertSql.append("insert into " + table.getName() + " values(");
+				for(int j = 0; j < columns.size(); j++) {//	遍历该数据表的列模型
+					Columns column = columns.get(j);
+					String type = column.getType();//	获取列类型
+					//	若列类型为字符型，则需用引号包围
+					if(type.startsWith("varchar") ||
+							type.startsWith("char") ||
+							type.startsWith("datetime"))
+						insertSql.append("'"
+							+ res.getString(column.getName()) + "'");
+					else
+						insertSql.append(res.getString(column.getName()));
+					
+					if(j < columns.size() - 1)//	判断是否为最后一列
+						insertSql.append(",");
+					else
+						insertSql.append(");");
+				}
+				sqls.add(insertSql.toString());
+			}
+			res.close();
+			sta.close();
+		}
+		
+		/*
+		 * 	增加删除、创建视图的SQL语句
+		 * 
+		 * 	视图（view）：
+		 * 	是一种虚拟存在的逻辑表，本身并不包含数据，
+		 * 	而是作为一个select语句保存在数据字典中。
+		 * 	使用视图的大部分情况是为了保障数据安全性，提高查询效率。
+		 */
+		sqls.add("drop view if exists v_brwInfo;");
+		sqls.add("create view v_brwInfo as "
+				+ "select tb_brw.id, tb_devinfo.name, tb_brw.dvid, "
+				+ "tb_userinfo.name, tb_userinfo.email, tb_userinfo.tel "
+				+ "from tb_brw "
+				+ "inner join tb_devinfo on tb_brw.dvid = tb_devinfo.id "
+				+ "inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;");
+		sqls.add("drop view if exists v_rtninfo;");
+		sqls.add("create view v_rtninfo as "
+				+ "select tb_rtn.id, tb_devinfo.name, tb_rtn.dvid, "
+				+ "tb_userinfo.name, tb_userinfo.email, tb_userinfo.tel "
+				+ "from tb_rtn "
+				+ "inner join tb_devinfo on tb_rtn.dvid = tb_devinfo.id "
+				+ "inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;");
+		
+		//	输出备份文件
+		Date date = new Date();//	获取当前毫秒值
+		/*
+		 * 	设置当前时间的输出格式
+		 * 
+		 * 	SimpleDateFormat：
+		 * 	是一个以国别敏感的方式格式化和分析数据的具体类。
+		 * 	它允许格式化 (date -> text)、语法分析 (text -> date)和标准化。
+		 */
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		//	备份文件路径
+		String backupFilePath = "backup\\" + sdf.format(date) + ".sql";
+		File sqlFile = new File(backupFilePath);//	创建SQL文件对象
+		FileOutputStream fos = null;//	创建文件字节输出流
+		OutputStreamWriter osw = null;//	创建字符输出流
+		BufferedWriter bw = null;//	创建缓冲字符输出流
+		try {
+			fos = new FileOutputStream(sqlFile);
+			osw = new OutputStreamWriter(fos);
+			bw = new BufferedWriter(osw);
+			for(String sql: sqls) {//	遍历备份文件中的所有SQL语句
+				bw.write(sql);
+				bw.newLine();
+				bw.flush();//	刷新缓冲字符流
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			//	倒序依次关闭输出流
+			if(bw != null) {
+				try {
+					bw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(osw != null) {
+				try {
+					osw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return backupFilePath;
+	}
+	
+	//	数据库恢复
+	public static void restore(String backupFilePath) {
+		File sqlFile = new File(backupFilePath);//	创建SQL文件对象
+		FileInputStream fis = null;//	创建文件字节输入流
+		InputStreamReader isr = null;//	创建字符输入流
+		BufferedReader br = null;//	创建缓冲字符输入流
+		Statement sta = null;//	创建连接声明
+		try {
+			fis = new FileInputStream(sqlFile);
+			isr = new InputStreamReader(fis);
+			br = new BufferedReader(isr);
+			String oneLine = null;
+			while((oneLine = br.readLine()) != null) {
+				if(!oneLine.trim().equals("")) {
+					sta = conn.createStatement();
+					sta.executeUpdate(oneLine);//	执行SQL语句
+					sta.close();
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			//	倒序依次关闭输出流
+			if(br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(isr != null) {
+				try {
+					isr.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
