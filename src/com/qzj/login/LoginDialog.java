@@ -1,17 +1,23 @@
 package com.qzj.login;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+
+import com.qzj.MainFrame;
+import com.qzj.sqlOpr.SqlOpr;
 
 public class LoginDialog extends JFrame {
 
@@ -27,12 +33,14 @@ public class LoginDialog extends JFrame {
 	private JLabel pwdLabel = null;//	密码标签
 	private JPasswordField pwdField = null;//	密码框
 	private JButton loginButton = null;//	登录按钮
+	private MainFrame mainFrame;//	主窗体
 	
 	public LoginDialog() {
 		try {
 			//	窗体风格本地化
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			initialize();
+			mainFrame = new MainFrame();//	实例化主窗体
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,8 +62,10 @@ public class LoginDialog extends JFrame {
 			loginPanel = new LoginPanel();
 			loginPanel.setLayout(null);//	设置绝对布局
 			userIdLabel = new JLabel("用户名：");
+			userIdLabel.setForeground(Color.WHITE);
 			userIdLabel.setBounds(320, 150, 60, 20);
 			pwdLabel = new JLabel("密  码：");
+			pwdLabel.setForeground(Color.WHITE);
 			pwdLabel.setBounds(320, 190, 60, 20);
 			loginPanel.add(userIdLabel);
 			loginPanel.add(getUserIdField());
@@ -92,13 +102,28 @@ public class LoginDialog extends JFrame {
 		if(loginButton == null) {
 			loginButton = new JButton(new ImageIcon(
 					getClass().getResource("/res/loginButton.jpg")));
-			loginButton.setBounds(360, 240, 102, 32);
+			loginButton.setBounds(370, 240, 102, 32);
 			loginButton.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO 自动生成的方法存根
-					
+					String userId = userIdField.getText();
+					String pwd = pwdField.getPassword().toString();
+					String userName = null;
+					try {
+						if(!SqlOpr.checkLogin(userId, pwd)) {//	验证用户名、密码
+							JOptionPane.showMessageDialog(LoginDialog.this, 
+									"用户名或密码错误", "登录失败", 
+									JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						userName = SqlOpr.getUserNameFromUserId(userId);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					setVisible(false);//	设置登录窗体不可见
+					mainFrame.setVisible(true);//	设置主窗体可见
+					mainFrame.setTitle(userName);
 				}
 			});
 		}

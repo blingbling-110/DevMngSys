@@ -48,7 +48,7 @@ public class SqlOpr {//	数据库操作公共类
 		if(conn == null) {
 			try {
 				Class.forName(dbClassName);
-				conn = DriverManager.getConnection(dbUrl);
+				conn = DriverManager.getConnection(dbUrl, dbUserId, dbPwd);
 			} catch (ClassNotFoundException e) {
 				//	弹出提示框
 				JOptionPane.showMessageDialog(null, "请将JDBC驱动包放置在lib文件夹中");
@@ -394,16 +394,16 @@ public class SqlOpr {//	数据库操作公共类
 		 */
 		sqls.add("drop view if exists v_brwInfo;");
 		sqls.add("create view v_brwInfo as "
-				+ "select tb_brw.id, tb_devinfo.name, tb_brw.dvid, "
-				+ "tb_userinfo.name, tb_userinfo.email, tb_userinfo.tel "
-				+ "from tb_brw "
+				+ "select tb_brw.id, tb_devinfo.name as devname, tb_brw.dvid, "
+				+ "tb_userinfo.name as username, tb_userinfo.email, "
+				+ "tb_userinfo.tel from tb_brw "
 				+ "inner join tb_devinfo on tb_brw.dvid = tb_devinfo.id "
 				+ "inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;");
 		sqls.add("drop view if exists v_rtninfo;");
 		sqls.add("create view v_rtninfo as "
-				+ "select tb_rtn.id, tb_devinfo.name, tb_rtn.dvid, "
-				+ "tb_userinfo.name, tb_userinfo.email, tb_userinfo.tel "
-				+ "from tb_rtn "
+				+ "select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.dvid, "
+				+ "tb_userinfo.name as username, tb_userinfo.email, "
+				+ "tb_userinfo.tel from tb_rtn "
 				+ "inner join tb_devinfo on tb_rtn.dvid = tb_devinfo.id "
 				+ "inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;");
 		
@@ -512,5 +512,17 @@ public class SqlOpr {//	数据库操作公共类
 				}
 			}
 		}
+	}
+	
+	public static String getUserNameFromUserId(String userId) 
+			throws SQLException {//	由用户名获取用户姓名
+		PreparedStatement preSta = conn.prepareStatement(
+				"select name from tb_userinfo where userid=?");
+		preSta.setString(1, userId);
+		ResultSet res = preSta.executeQuery();
+		String userName = null;
+		if(res.next())
+			userName = res.getString("name");
+		return userName;
 	}
 }
