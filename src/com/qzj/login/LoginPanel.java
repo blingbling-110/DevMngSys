@@ -7,6 +7,11 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+/**
+ * 	登录面板
+ * @author qinzijun
+ *
+ */
 public class LoginPanel extends JPanel {
 
 	/**
@@ -14,7 +19,9 @@ public class LoginPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public int width, height;
+	/**
+	 * 	登录面板中的背景图片
+	 */
 	private Image image;
 	
 	public LoginPanel() {
@@ -22,7 +29,10 @@ public class LoginPanel extends JPanel {
 		image = new ImageIcon(url).getImage();
 	}
 	
-	protected void paintComponent(Graphics g) {//	重写父类的组件绘制方法
+	/**
+	 * 	重写父类的组件绘制方法
+	 */
+	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(image, 0, 0, this);//	在面板左上角开始绘制背景图片
 	}

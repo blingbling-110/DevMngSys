@@ -30,21 +30,54 @@ import com.qzj.sqlOpr.model.TbDevInfo;
 import com.qzj.sqlOpr.model.TbRtn;
 import com.qzj.sqlOpr.model.TbUserInfo;
 
-public class SqlOpr {//	数据库操作公共类
-	//	MySQL 8.0 以上版本数据库驱动
+/**
+ * 	数据库操作公共类：封装了系统所需的所有数据库操作
+ * @author qinzijun
+ *
+ */
+public class SqlOpr {
+	/**
+	 * 	MySQL 8.0 以上版本数据库驱动
+	 */
 	protected static String dbClassName = "com.mysql.cj.jdbc.Driver";
-	protected static String dbName = "db_devmngsys";//	数据库名称
-	//	数据库路径
+	
+	/**
+	 * 	数据库名称
+	 */
+	protected static String dbName = "db_devmngsys";
+	
+	/**
+	 * 	数据库路径
+	 */
 	protected static String dbUrl = "jdbc:mysql://localhost:3306/"
 			+ dbName + "?useSSL=false"//	显式关闭SSL连接
 			+ "&serverTimezone=Asia/Shanghai"//	设置时区Asia/Shanghai
 			+ "&allowPublicKeyRetrieval=true";//	允许客户端从服务器取回公钥
-	protected static String dbUserId = "root";//	数据库用户名
-	protected static String dbPwd = "123456";//	数据库密码
-	protected static String exeTime;//	执行SQL语句的时间
-	public static Connection conn;//	数据库连接对象
 	
-	static {//	静态初始化数据库操作公共类
+	/**
+	 * 	数据库用户名
+	 */
+	protected static String dbUserId = "root";
+	
+	/**
+	 * 	数据库密码
+	 */
+	protected static String dbPwd = "123456";
+	
+	/**
+	 * 	执行SQL语句的时间
+	 */
+	protected static String exeTime;
+	
+	/**
+	 * 	数据库连接对象
+	 */
+	public static Connection conn;
+	
+	/**
+	 * 	静态初始化数据库操作公共类
+	 */
+	static {
 		if(conn == null) {
 			try {
 				Class.forName(dbClassName);
@@ -60,11 +93,17 @@ public class SqlOpr {//	数据库操作公共类
 		}
 	}
 	
-	//	封闭构造方法，禁止创建数据库操作公共类的实例对象
+	/**
+	 * 	封闭构造方法，禁止创建数据库操作公共类的实例对象
+	 */
 	private SqlOpr() {
 	}
 	
-	//	读取设备信息
+	/**
+	 * 	读取设备信息
+	 * @param item 欲读取的设备
+	 * @return 该设备的设备信息公共类对象
+	 */
 	public static TbDevInfo getDevInfo(Item item) {
 		String where = "name='" + item.getName() + "'";//	获取item对象的name属性
 		if(item.getId() != null)
@@ -86,7 +125,11 @@ public class SqlOpr {//	数据库操作公共类
 		return info;
 	}
 	
-	//	读取用户信息
+	/**
+	 * 	读取用户信息
+	 * @param item 欲读取的用户
+	 * @return 该用户的人员信息公共类对象
+	 */
 	public static TbUserInfo getUserInfo(Item item) {
 		String where = "name='" + item.getName() + "'";
 		if(item.getJobNum() != 0)
@@ -110,7 +153,11 @@ public class SqlOpr {//	数据库操作公共类
 		return info;
 	}
 
-	//	获取SQL语句的结果集
+	/**
+	 * 	获取SQL语句的结果集
+	 * @param sql 欲执行的SQL语句
+	 * @return 数据库返回的结果集
+	 */
 	private static ResultSet findForRes(String sql) {
 		if(conn == null)
 			return null;
@@ -143,21 +190,31 @@ public class SqlOpr {//	数据库操作公共类
 		return res;
 	}
 	
-	//	读取所有设备信息
+	/**
+	 * 	读取所有设备信息
+	 * @return 包含所有设备信息的List集合
+	 */
 	public static List<List<String>> getAllDevInfo() {
 		List<List<String>> list = findForList(
 				"select id, name from tb_devinfo");
 		return list;
 	}
 	
-	//	读取所有用户信息
+	/**
+	 * 	读取所有用户信息
+	 * @return 包含所有用户信息的List集合
+	 */
 	public static List<List<String>> getAllUserInfo() {
 		List<List<String>> list = findForList(
 				"select name, userid from tb_userinfo");
 		return list;
 	}
 
-	//	获取SQL语句结果集构成的数组列表
+	/**
+	 * 	获取SQL语句结果集构成的数组列表
+	 * @param sql 欲执行的SQL语句
+	 * @return 包含所有结果信息的List集合
+	 */
 	private static List<List<String>> findForList(String sql) {
 		List<List<String>> list = new ArrayList<>();
 		ResultSet res = findForRes(sql);
@@ -185,7 +242,13 @@ public class SqlOpr {//	数据库操作公共类
 		return list;
 	}
 	
-	//	验证用户登录
+	/**
+	 * 	验证用户登录
+	 * @param userid 用户名
+	 * @param pwd 密码
+	 * @return 登录成功与否
+	 * @throws SQLException
+	 */
 	public static boolean checkLogin(String userid, String pwd) 
 			throws SQLException {
 		if(conn == null)
@@ -205,6 +268,11 @@ public class SqlOpr {//	数据库操作公共类
 	 * 	1、取消JDBC的自动提交；
 	 * 	2、执行各个SQL语句；
 	 * 	3、如果所有语句执行成功，则提交事务；如果出现了错误，则回滚。
+	 */
+	/**
+	 * TODO
+	 * @param brw
+	 * @return
 	 */
 	public static boolean insertTbBrw(TbBrw brw) {
 		try {
@@ -307,12 +375,12 @@ public class SqlOpr {//	数据库操作公共类
 				column.setName(res.getString("Field"));//	获取列名称
 				column.setType(res.getString("Type"));//	获取列类型
 				if(res.getString("Null").equals("YES"))//	获取列是否可为空
-					column.setIsNull(true);
+					column.setNull(true);
 				if(res.getString("Key").equals("PRI")) {//	获取列是否为主键
-					column.setIsKey(true);
+					column.setKey(true);
 					//	获取列是否自增
 					if(res.getString("Extra").equals("auto_increment"))
-						column.setIsIncrement(true);
+						column.setIncrement(true);
 				}
 				columns.add(column);
 			}
@@ -340,11 +408,11 @@ public class SqlOpr {//	数据库操作公共类
 				Columns column = columns.get(j);
 				createSql.append("`" + column.getName() //	获取列名称
 				+ "` " + column.getType());//	获取列类型
-				if(!column.getIsNull())//	获取列是否可为空
+				if(!column.isNull())//	获取列是否可为空
 					createSql.append(" not null");
-				if(column.getIsKey()) {//	获取列是否为主键
+				if(column.isKey()) {//	获取列是否为主键
 					createSql.append(" primary key");
-					if(column.getIsIncrement())//	获取列是否自增
+					if(column.isIncrement())//	获取列是否自增
 						createSql.append(" auto_increment");
 				}
 				

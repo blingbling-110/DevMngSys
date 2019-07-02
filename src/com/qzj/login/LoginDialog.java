@@ -19,6 +19,11 @@ import javax.swing.UIManager;
 import com.qzj.MainFrame;
 import com.qzj.sqlOpr.SqlOpr;
 
+/**
+ * 	登录对话框
+ * @author qinzijun
+ *
+ */
 public class LoginDialog extends JFrame {
 
 	/**
@@ -27,13 +32,40 @@ public class LoginDialog extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	//	将组件作为私有成员变量并在相应私有方法中实例化
-	private LoginPanel loginPanel = null;//	登录面板
-	private JLabel userIdLabel = null;//	用户名标签
-	private JTextField userIdField = null;//	用户名文本框
-	private JLabel pwdLabel = null;//	密码标签
-	private JPasswordField pwdField = null;//	密码框
-	private JButton loginButton = null;//	登录按钮
-	private MainFrame mainFrame;//	主窗体
+	/**
+	 * 	登录面板
+	 */
+	private LoginPanel loginPanel = null;
+	
+	/**
+	 * 	用户名标签
+	 */
+	private JLabel userIdLabel = null;
+	
+	/**
+	 * 	用户名文本框
+	 */
+	private JTextField userIdField = null;
+	
+	/**
+	 * 	密码标签
+	 */
+	private JLabel pwdLabel = null;
+	
+	/**
+	 * 	密码框
+	 */
+	private JPasswordField pwdField = null;
+	
+	/**
+	 * 	登录按钮
+	 */
+	private JButton loginButton = null;
+	
+	/**
+	 * 	主窗体
+	 */
+	private MainFrame mainFrame;
 	
 	public LoginDialog() {
 		try {
@@ -46,7 +78,10 @@ public class LoginDialog extends JFrame {
 		}
 	}
 
-	private void initialize() {//	窗体初始化
+	/**
+	 * 	窗体初始化
+	 */
+	private void initialize() {
 		setTitle("登录企业设备管理系统");
 		setIconImage(new ImageIcon(getClass().getResource(
 				"/res/root.jpg")).getImage());//	设置窗体图标
@@ -57,7 +92,11 @@ public class LoginDialog extends JFrame {
 		setContentPane(getLoginPanel());//	设置登录面板
 	}
 
-	private LoginPanel getLoginPanel() {//	获取登录面板
+	/**
+	 * 	获取登录面板
+	 * @return 登录面板
+	 */
+	private LoginPanel getLoginPanel() {
 		if(loginPanel == null) {
 			loginPanel = new LoginPanel();
 			loginPanel.setLayout(null);//	设置绝对布局
@@ -76,7 +115,11 @@ public class LoginDialog extends JFrame {
 		return loginPanel;
 	}
 
-	private JTextField getUserIdField() {//	获取用户名文本框
+	/**
+	 * 	获取用户名文本框
+	 * @return 用户名文本框
+	 */
+	private JTextField getUserIdField() {
 		if(userIdField == null) {
 			userIdField = new JTextField();
 			userIdField.setBounds(400, 150, 127, 22);
@@ -84,7 +127,11 @@ public class LoginDialog extends JFrame {
 		return userIdField;
 	}
 
-	private JPasswordField getPwdField() {//	获取密码框
+	/**
+	 * 	获取密码框
+	 * @return 密码框
+	 */
+	private JPasswordField getPwdField() {
 		if(pwdField == null) {
 			pwdField = new JPasswordField();
 			pwdField.setBounds(400, 190, 127, 22);
@@ -98,11 +145,16 @@ public class LoginDialog extends JFrame {
 		return pwdField;
 	}
 
-	private JButton getLoginButton() {//	获取登录按钮
+	/**
+	 * 	获取登录按钮
+	 * @return 登录按钮
+	 */
+	private JButton getLoginButton() {
 		if(loginButton == null) {
 			loginButton = new JButton(new ImageIcon(
-					getClass().getResource("/res/loginButton.jpg")));
-			loginButton.setBounds(370, 240, 102, 32);
+					getClass().getResource("/res/loginButton.png")));
+			loginButton.setContentAreaFilled(false);//	不绘制内容区域
+			loginButton.setBounds(370, 240, 102, 39);
 			loginButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -130,6 +182,11 @@ public class LoginDialog extends JFrame {
 		return loginButton;
 	}
 	
+	/**
+	 * 	用于编写测试用例的静态内部类
+	 * @author qinzijun
+	 *
+	 */
 	static class Test {
 		public static void main(String[] args) {
 			new LoginDialog().setVisible(true);

@@ -1,11 +1,35 @@
 package com.qzj.sqlOpr;
 
-public class Columns {//	数据表的列模型
-	private String name;//	字段名称
-	private String type;//	字段类型
-	private boolean isNull;//	是否可为空
-	private boolean isKey;//	是否为主键
-	private boolean isIncrement;//	是否自增
+/**
+ * 	数据表的列模型
+ * @author qinzijun
+ *
+ */
+public class Columns {
+	/**
+	 * 	字段名称
+	 */
+	private String name;
+	
+	/**
+	 * 	字段类型
+	 */
+	private String type;
+	
+	/**
+	 * 	是否可为空
+	 */
+	private boolean isNull;
+	
+	/**
+	 * 	是否为主键
+	 */
+	private boolean isKey;
+	
+	/**
+	 * 	是否自增
+	 */
+	private boolean isIncrement;
 	
 	public Columns() {
 	}
@@ -20,47 +44,81 @@ public class Columns {//	数据表的列模型
 	}
 	
 	//	使用Getters和Setters方法将公共类的私有属性封装起来
+	
+	/**
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
-	
+
+	/**
+	 * @param name 要设置的 name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	/**
+	 * @return type
+	 */
 	public String getType() {
 		return type;
 	}
-	
+
+	/**
+	 * @param type 要设置的 type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	public boolean getIsNull() {
+
+	/**
+	 * @return isNull
+	 */
+	public boolean isNull() {
 		return isNull;
 	}
-	
-	public void setIsNull(boolean isNull) {
+
+	/**
+	 * @param isNull 要设置的 isNull
+	 */
+	public void setNull(boolean isNull) {
 		this.isNull = isNull;
 	}
-	
-	public boolean getIsKey() {
+
+	/**
+	 * @return isKey
+	 */
+	public boolean isKey() {
 		return isKey;
 	}
-	
-	public void setIsKey(boolean isKey) {
+
+	/**
+	 * @param isKey 要设置的 isKey
+	 */
+	public void setKey(boolean isKey) {
 		this.isKey = isKey;
 	}
-	
-	public boolean getIsIncrement() {
+
+	/**
+	 * @return isIncrement
+	 */
+	public boolean isIncrement() {
 		return isIncrement;
 	}
-	
-	public void setIsIncrement(boolean isIncrement) {
+
+	/**
+	 * @param isIncrement 要设置的 isIncrement
+	 */
+	public void setIncrement(boolean isIncrement) {
 		this.isIncrement = isIncrement;
 	}
-	
-	public String toString() {//	重写toString()方法
+
+	/**
+	 * 	重写toString()方法
+	 */
+	public String toString() {
 		return "Columns [name=" + name + ", type=" + type
 				+ ", isNull=" + isNull + ", isKey=" + isKey
 				+ ", isIncrement=" + isIncrement + "]";

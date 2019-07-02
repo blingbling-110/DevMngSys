@@ -1,11 +1,35 @@
 package com.qzj.sqlOpr.model;
 
-public class TbBrw {//	借用公共类
-	private String id;//	借用单编号
-	private String dvId;//	借用设备编号
-	private Integer brwerId;//	借用人编号
-	private String date;//	借用日期
-	private String remark;//	备注
+/**
+ * 	借用公共类：用于封装tb_brw数据表
+ * @author qinzijun
+ *
+ */
+public class TbBrw {
+	/**
+	 * 	借用单编号
+	 */
+	private String id;
+	
+	/**
+	 * 	借用设备编号
+	 */
+	private String dvId;
+	
+	/**
+	 * 	借用人编号
+	 */
+	private Integer brwerId;
+	
+	/**
+	 * 	借用日期
+	 */
+	private String date;
+	
+	/**
+	 * 	备注
+	 */
+	private String remark;
 	
 	public TbBrw() {
 	}
@@ -24,42 +48,73 @@ public class TbBrw {//	借用公共类
 	}
 	
 	//	使用Getters和Setters方法将公共类的私有属性封装起来
+
+	/**
+	 * @return id
+	 */
 	public String getId() {
 		return id;
 	}
-	
+
+	/**
+	 * @param id 要设置的 id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
+	/**
+	 * @return dvId
+	 */
 	public String getDvId() {
 		return dvId;
 	}
-	
+
+	/**
+	 * @param dvId 要设置的 dvId
+	 */
 	public void setDvId(String dvId) {
 		this.dvId = dvId;
 	}
-	
+
+	/**
+	 * @return brwerId
+	 */
 	public Integer getBrwerId() {
 		return brwerId;
 	}
-	
+
+	/**
+	 * @param brwerId 要设置的 brwerId
+	 */
 	public void setBrwerId(Integer brwerId) {
 		this.brwerId = brwerId;
 	}
-	
+
+	/**
+	 * @return date
+	 */
 	public String getDate() {
 		return date;
 	}
-	
+
+	/**
+	 * @param date 要设置的 date
+	 */
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
+
+	/**
+	 * @return remark
+	 */
 	public String getRemark() {
 		return remark;
 	}
-	
+
+	/**
+	 * @param remark 要设置的 remark
+	 */
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
