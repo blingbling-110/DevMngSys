@@ -261,18 +261,15 @@ public class SqlOpr {
 		return res.next();
 	}
 	
-	/*
+	/**
 	 * 	在事务中增加借用信息（保持数据的完整性）
-	 * 
+	 * <p>
 	 * 	JDBC中事务处理的步骤：
 	 * 	1、取消JDBC的自动提交；
 	 * 	2、执行各个SQL语句；
 	 * 	3、如果所有语句执行成功，则提交事务；如果出现了错误，则回滚。
-	 */
-	/**
-	 * TODO
-	 * @param brw
-	 * @return
+	 * @param brw 欲插入数据库的借用公共类对象
+	 * @return 数据插入成功与否
 	 */
 	public static boolean insertTbBrw(TbBrw brw) {
 		try {
@@ -303,7 +300,11 @@ public class SqlOpr {
 		return true;
 	}
 	
-	//	在事务中增加归还信息
+	/**
+	 * 	在事务中增加归还信息
+	 * @param rtn 欲插入数据库的归还公共类对象
+	 * @return 数据插入成功与否
+	 */
 	public static boolean insertTbRtn(TbRtn rtn) {
 		try {
 			boolean autoCommit = conn.getAutoCommit();//	获取提交方式
@@ -333,7 +334,11 @@ public class SqlOpr {
 		return true;
 	}
 
-	//	执行SQL语句更改数据
+	/**
+	 * 	执行SQL语句更改数据
+	 * @param sql 欲执行的SQL语句
+	 * @return 数据更改成功与否
+	 */
 	private static boolean update(String sql) {
 		boolean res = false;
 		try {
@@ -345,7 +350,11 @@ public class SqlOpr {
 		return res;
 	}
 
-	//	执行SQL语句增加数据
+	/**
+	 * 	执行SQL语句增加数据
+	 * @param sql 欲执行的SQL语句
+	 * @return 数据增加成功与否
+	 */
 	private static boolean insert(String sql) {
 		boolean res = false;
 		try {
@@ -357,7 +366,11 @@ public class SqlOpr {
 		return res;
 	}
 	
-	//	数据库备份
+	/**
+	 * 	数据库备份
+	 * @return 备份文件路径
+	 * @throws SQLException
+	 */
 	public static String backup() throws SQLException {
 		LinkedList<String> sqls = new LinkedList<>();//	备份文件中的所有SQL语句
 		//	需备份的数据表名称
@@ -531,7 +544,10 @@ public class SqlOpr {
 		return backupFilePath;
 	}
 	
-	//	数据库恢复
+	/**
+	 * 	数据库恢复
+	 * @param backupFilePath 欲恢复的备份文件路径
+	 */
 	public static void restore(String backupFilePath) {
 		File sqlFile = new File(backupFilePath);//	创建SQL文件对象
 		FileInputStream fis = null;//	创建文件字节输入流
@@ -582,8 +598,14 @@ public class SqlOpr {
 		}
 	}
 	
+	/**
+	 * 	由用户名获取用户姓名
+	 * @param userId 用户名
+	 * @return 用户姓名
+	 * @throws SQLException
+	 */
 	public static String getUserNameFromUserId(String userId) 
-			throws SQLException {//	由用户名获取用户姓名
+			throws SQLException {
 		PreparedStatement preSta = conn.prepareStatement(
 				"select name from tb_userinfo where userid=?");
 		preSta.setString(1, userId);
