@@ -138,7 +138,7 @@ public class LoginDialog extends JFrame {
 			pwdField.addKeyListener(new KeyAdapter() {//	增加键盘事件监听
 				public void keyTyped(KeyEvent e) {
 					if(e.getKeyChar() == '\n')//	判断按键是否是回车
-						loginButton.doClick();//	程序化执行按下登录按钮
+						loginButton.doClick();//	登录按钮的点击事件
 				}
 			});
 		}
@@ -160,7 +160,8 @@ public class LoginDialog extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String userId = userIdField.getText();
-					String pwd = pwdField.getPassword().toString();
+					//密码框的getPassword()方法返回字符数组
+					String pwd = new String(pwdField.getPassword());
 					String userName = null;
 					try {
 						if(!SqlOpr.checkLogin(userId, pwd)) {//	验证用户名、密码
@@ -175,7 +176,7 @@ public class LoginDialog extends JFrame {
 					}
 					setVisible(false);//	设置登录窗体不可见
 					mainFrame.setVisible(true);//	设置主窗体可见
-					mainFrame.setTitle(userName);
+					mainFrame.setTitle("企业设备管理系统——" + userName);
 				}
 			});
 		}
