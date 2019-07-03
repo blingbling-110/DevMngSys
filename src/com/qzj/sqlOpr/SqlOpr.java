@@ -169,11 +169,11 @@ public class SqlOpr {
 			 * 
 			 * 	ResultSet.TYPE_SCROLL_INSENSITIVE：
 			 * 	支持结果集backforward ，random ，last ，first 等操作，
-			 * 	对其它session 对数据库中数据做出的更改是不敏感的。
+			 * 		对其它session 对数据库中数据做出的更改是不敏感的。
 			 * 	实现方法：从数据库取出数据后，会把全部数据缓存到cache 中，
-			 * 	对结果集的后续操作，是操作的cache 中的数据，
-			 * 	数据库中记录发生变化后，不影响cache 中的数据，
-			 * 	所以ResultSet 对结果集中的数据是不敏感的。
+			 * 		对结果集的后续操作，是操作的cache 中的数据，
+			 * 		数据库中记录发生变化后，不影响cache 中的数据，
+			 * 		所以ResultSet 对结果集中的数据是不敏感的。
 			 * 
 			 * 	ResultSet.CONCUR_READ_ONLY：
 			 * 	在ResultSet中的数据记录是只读的，不可以更改
@@ -456,9 +456,9 @@ public class SqlOpr {
 		 * 	增加删除、创建视图的SQL语句
 		 * 
 		 * 	视图（view）：
-		 * 	是一种虚拟存在的逻辑表，本身并不包含数据，
-		 * 	而是作为一个select语句保存在数据字典中。
-		 * 	使用视图的大部分情况是为了保障数据安全性，提高查询效率。
+		 * 		是一种虚拟存在的逻辑表，本身并不包含数据，
+		 * 		而是作为一个select语句保存在数据字典中。
+		 * 		使用视图的大部分情况是为了保障数据安全性，提高查询效率。
 		 */
 		sqls.add("drop view if exists v_brwInfo;");
 		sqls.add("create view v_brwInfo as "
@@ -481,8 +481,8 @@ public class SqlOpr {
 		 * 	设置当前时间的输出格式
 		 * 
 		 * 	SimpleDateFormat：
-		 * 	是一个以国别敏感的方式格式化和分析数据的具体类。
-		 * 	它允许格式化 (date -> text)、语法分析 (text -> date)和标准化。
+		 * 		是一个以国别敏感的方式格式化和分析数据的具体类。
+		 * 		它允许格式化 (date -> text)、语法分析 (text -> date)和标准化。
 		 */
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 		//	备份文件路径
