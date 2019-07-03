@@ -69,7 +69,17 @@ public class LoginDialog extends JFrame {
 	
 	public LoginDialog() {
 		try {
-			//	窗体风格本地化
+			/*
+			 * 	窗体风格本地化
+			 * 
+			 * 	UIManager管理当前外观和感观
+			 * 	外观和感观可以通过两种不同的方式指定：
+			 * 	1.通过为外观指定类的完全限定名称；
+			 * 	2.或通过创建一个LookAndFeel的实例LookAndFeel
+			 * 		并将其传递给setLookAndFeel。
+			 * 
+			 * 	此处为方式2，即设置为系统外观。
+			 */
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			initialize();
 			mainFrame = new MainFrame();//	实例化主窗体
