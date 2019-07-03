@@ -61,7 +61,7 @@ public class MainFrame extends JFrame {
 				"/res/root.jpg")).getImage());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
-		setLocationRelativeTo(null);//	使窗体居中
+		setLocationRelativeTo(null);//	设置窗体居中
 		setJMenuBar(getMainMenuBar());
 		setContentPane(getMainContentPane());
 	}

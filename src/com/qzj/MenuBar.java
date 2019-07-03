@@ -19,7 +19,6 @@ public class MenuBar extends JMenuBar {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	/**
 	 * 	ÎÄ¼þ²Ëµ¥
 	 */
