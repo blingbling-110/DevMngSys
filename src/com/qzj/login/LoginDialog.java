@@ -187,6 +187,7 @@ public class LoginDialog extends JFrame {
 					setVisible(false);//	设置登录窗体不可见
 					mainFrame.setVisible(true);//	设置主窗体可见
 					mainFrame.setTitle("企业设备管理系统——" + userName);
+					mainFrame.getUserLabel().setText("当前登录用户：" + userName);
 				}
 			});
 		}

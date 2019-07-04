@@ -169,7 +169,7 @@ public class SqlOpr {
 			 * 
 			 * 	ResultSet.TYPE_SCROLL_INSENSITIVE：
 			 * 	支持结果集backforward ，random ，last ，first 等操作，
-			 * 		对其它session 对数据库中数据做出的更改是不敏感的。
+			 * 		对其它会话 对数据库中数据做出的更改是不敏感的。
 			 * 	实现方法：从数据库取出数据后，会把全部数据缓存到cache 中，
 			 * 		对结果集的后续操作，是操作的cache 中的数据，
 			 * 		数据库中记录发生变化后，不影响cache 中的数据，

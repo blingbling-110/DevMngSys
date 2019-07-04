@@ -4,12 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 
@@ -54,6 +56,16 @@ public class MainFrame extends JFrame {
 	 * 	状态标签
 	 */
 	private JLabel stateLabel = null;
+	
+	/**
+	 * 	分隔符
+	 */
+	private JSeparator separator = null;
+	
+	/**
+	 * 	用户标签
+	 */
+	private JLabel userLabel = null;
 	
 	public MainFrame() {
 		setTitle("企业设备管理系统");
@@ -144,12 +156,23 @@ public class MainFrame extends JFrame {
 			//设置状态面板的边框
 			statePane.setBorder(BorderFactory.createBevelBorder(
 					BevelBorder.RAISED));
-			GridBagConstraints gbc0 = new GridBagConstraints();
-			gbc0.gridx = 0;
-			gbc0.gridy = 0;
-			gbc0.fill = GridBagConstraints.HORIZONTAL;
-			gbc0.weightx = 1.0;
-			statePane.add(getStateLabel(), gbc0);
+			GridBagConstraints stateLabelGbc = new GridBagConstraints();
+			stateLabelGbc.gridx = 0;
+			stateLabelGbc.gridy = 0;
+			stateLabelGbc.fill = GridBagConstraints.HORIZONTAL;
+			stateLabelGbc.weightx = 1.0;
+			stateLabelGbc.insets = new Insets(0, 8, 0, 8);
+			GridBagConstraints separatorGbc = new GridBagConstraints();
+			separatorGbc.gridx = 1;
+			separatorGbc.gridy = 0;
+			separatorGbc.fill = GridBagConstraints.VERTICAL;
+			GridBagConstraints userLabelGbc = new GridBagConstraints();
+			userLabelGbc.gridx = 2;
+			userLabelGbc.gridy = 0;
+			userLabelGbc.insets = new Insets(0, 8, 0, 8);
+			statePane.add(getStateLabel(), stateLabelGbc);
+			statePane.add(getSeparator(), separatorGbc);
+			statePane.add(getUserLabel(), userLabelGbc);
 		}
 		return statePane;
 	}
@@ -163,6 +186,28 @@ public class MainFrame extends JFrame {
 			stateLabel = new JLabel("当前没有选定窗体");
 		}
 		return stateLabel;
+	}
+
+	/**
+	 * 	获取分隔符
+	 * @return separator
+	 */
+	public JSeparator getSeparator() {
+		if(separator == null) {
+			separator = new JSeparator(JSeparator.VERTICAL);
+		}
+		return separator;
+	}
+
+	/**
+	 * 	获取用户标签
+	 * @return userLabel
+	 */
+	public JLabel getUserLabel() {
+		if(userLabel == null) {
+			userLabel = new JLabel("当前登录用户：");
+		}
+		return userLabel;
 	}
 
 	/**
