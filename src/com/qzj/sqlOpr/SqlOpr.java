@@ -39,30 +39,30 @@ public class SqlOpr {
 	/**
 	 * 	MySQL 8.0 以上版本数据库驱动
 	 */
-	protected static String dbClassName = "com.mysql.cj.jdbc.Driver";
+	protected static String DB_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
 	
 	/**
 	 * 	数据库名称
 	 */
-	protected static String dbName = "db_devmngsys";
+	protected static String DB_NAME = "db_devmngsys";
 	
 	/**
 	 * 	数据库路径
 	 */
-	protected static String dbUrl = "jdbc:mysql://localhost:3306/"
-			+ dbName + "?useSSL=false"//	显式关闭SSL连接
+	protected static String DB_URL = "jdbc:mysql://localhost:3306/"
+			+ DB_NAME + "?useSSL=false"//	显式关闭SSL连接
 			+ "&serverTimezone=Asia/Shanghai"//	设置时区Asia/Shanghai
 			+ "&allowPublicKeyRetrieval=true";//	允许客户端从服务器取回公钥
 	
 	/**
 	 * 	数据库用户名
 	 */
-	protected static String dbUserId = "root";
+	protected static String DB_USER_ID = "root";
 	
 	/**
 	 * 	数据库密码
 	 */
-	protected static String dbPwd = "123456";
+	protected static String DB_PWD = "123456";
 	
 	/**
 	 * 	执行SQL语句的时间
@@ -80,8 +80,8 @@ public class SqlOpr {
 	static {
 		if(conn == null) {
 			try {
-				Class.forName(dbClassName);
-				conn = DriverManager.getConnection(dbUrl, dbUserId, dbPwd);
+				Class.forName(DB_CLASS_NAME);
+				conn = DriverManager.getConnection(DB_URL, DB_USER_ID, DB_PWD);
 			} catch (ClassNotFoundException e) {
 				//	弹出提示框
 				JOptionPane.showMessageDialog(null, "请将JDBC驱动包放置在lib文件夹中");

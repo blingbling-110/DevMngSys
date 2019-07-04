@@ -24,6 +24,7 @@ public class ToolBar extends JToolBar {
 	public ToolBar(MenuBar mainMenuBar) {
 		//	设置工具栏的边框
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		add(addToolButton(mainMenuBar.getDevSumItem()));
 		add(addToolButton(mainMenuBar.getExitItem()));
 	}
 	

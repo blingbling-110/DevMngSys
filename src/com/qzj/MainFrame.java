@@ -84,7 +84,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MenuBar getMainMenuBar() {
 		if(mainMenuBar == null) {
-			mainMenuBar = new MenuBar();
+			mainMenuBar = new MenuBar(getDesktopPane(), getStateLabel());
 		}
 		return mainMenuBar;
 	}
