@@ -28,8 +28,10 @@ public class DevSumIFrame extends JInternalFrame {
 	
 	public DevSumIFrame() {
 		setTitle("设备总览");
+		setSize(1032, 432);
 		setMaximizable(true);//	窗体可最大化
+		setResizable(true);//	窗体可拉伸
+		setIconifiable(true);//	窗体可图标化
 		setClosable(true);//	窗体可关闭
-		setSize(800, 600);
 	}
 }

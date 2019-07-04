@@ -3,7 +3,8 @@ package com.qzj;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyVetoException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
@@ -48,9 +49,9 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem devSumItem = null;
 	
 	/**
-	 * 	设备总览内部窗体
+	 * 	内部窗体的Map集合
 	 */
-	private DevSumIFrame devSumIFrame = null;
+	private Map<JMenuItem, JInternalFrame> innerFrames = null;
 	
 	/**
 	 * 	桌面面板
@@ -65,6 +66,7 @@ public class MenuBar extends JMenuBar {
 	public MenuBar(DesktopPane desktopPane, JLabel stateLabel) {
 		this.desktopPane = desktopPane;
 		this.stateLabel = stateLabel;
+		innerFrames = new HashMap<JMenuItem, JInternalFrame>();
 		add(getFileMenu());
 		add(getDeviceMenu());
 	}
@@ -128,7 +130,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(devSumItem, getDevSumIFrame());
+					showInnerFrame(devSumItem, DevSumIFrame.class);
 				}
 			});
 		}
@@ -136,35 +138,33 @@ public class MenuBar extends JMenuBar {
 	}
 
 	/**
-	 * 	获取设备总览内部窗体
-	 * @return devSumIFrame
-	 */
-	public DevSumIFrame getDevSumIFrame() {
-		if(devSumIFrame == null) {
-			devSumIFrame = new DevSumIFrame();
-		}
-		return devSumIFrame;
-	}
-
-	/**
-	 * 	显示内部窗体
+	 * 	显示内部窗体，利用反射实例化内部窗体对象
 	 * @param jMenuItem 内部窗体的来源菜单项
 	 * @param jInternalFrame 内部窗体
 	 */
 	protected void showInnerFrame(JMenuItem jMenuItem, 
-			JInternalFrame jInternalFrame) {
-		if(jInternalFrame.isClosed()) {
-			desktopPane.add(jInternalFrame);
-			jInternalFrame.setVisible(true);
-		}
+			Class<? extends JInternalFrame> innerFrameC) {
+		JInternalFrame innerFrame = innerFrames.get(jMenuItem);
 		try {
-			jInternalFrame.setSelected(true);//	选中内部窗体
-		} catch (PropertyVetoException e) {
+			if(innerFrame == null || innerFrame.isClosed()) {
+				//	利用反射调用内部窗体构造方法的newInstance()方法
+				innerFrame = innerFrameC.getConstructor().newInstance();
+				innerFrames.put(jMenuItem, innerFrame);
+				desktopPane.add(innerFrame);
+				innerFrame.setFrameIcon(jMenuItem.getIcon());
+				//	随机初始位置
+				innerFrame.setLocation(
+						(int)(Math.random() * (desktopPane.getWidth() - 1032)), 
+						(int)(Math.random() * (desktopPane.getHeight() - 432)));
+				innerFrame.setVisible(true);
+			}
+			innerFrame.setSelected(true);//	选中内部窗体
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		stateLabel.setText(jInternalFrame.getTitle());//	状态栏显示
+		stateLabel.setText(innerFrame.getTitle());//	状态栏显示
 		//	添加内部窗体事件监听器
-		jInternalFrame.addInternalFrameListener(new InternalFrameAdapter() {
+		innerFrame.addInternalFrameListener(new InternalFrameAdapter() {
 			//	当内部窗体处于激活状态时调用
 			public void internalFrameActivated(InternalFrameEvent e) {
 				JInternalFrame jInternalFrame = e.getInternalFrame();
