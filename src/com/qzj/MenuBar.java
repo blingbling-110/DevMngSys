@@ -66,7 +66,7 @@ public class MenuBar extends JMenuBar {
 	public MenuBar(DesktopPane desktopPane, JLabel stateLabel) {
 		this.desktopPane = desktopPane;
 		this.stateLabel = stateLabel;
-		innerFrames = new HashMap<JMenuItem, JInternalFrame>();
+		innerFrames = new HashMap<>();
 		add(getFileMenu());
 		add(getDeviceMenu());
 	}
