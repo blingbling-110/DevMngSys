@@ -53,7 +53,7 @@ CREATE TABLE `tb_devinfo` (
   `name` varchar(20) DEFAULT NULL COMMENT '设备名称',
   `status` varchar(10) DEFAULT NULL COMMENT '设备状态',
   `des` varchar(50) DEFAULT NULL COMMENT '设备描述',
-  `remartk` varchar(50) DEFAULT NULL COMMENT '备注',
+  `remark` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -64,6 +64,7 @@ CREATE TABLE `tb_devinfo` (
 
 LOCK TABLES `tb_devinfo` WRITE;
 /*!40000 ALTER TABLE `tb_devinfo` DISABLE KEYS */;
+INSERT INTO `tb_devinfo` VALUES ('DZ-BD-012','CANAPE','喻延福','功能开发及调试设备','用于测试设备总览内部窗体');
 /*!40000 ALTER TABLE `tb_devinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,8 +121,79 @@ CREATE TABLE `tb_userinfo` (
 
 LOCK TABLES `tb_userinfo` WRITE;
 /*!40000 ALTER TABLE `tb_userinfo` DISABLE KEYS */;
+INSERT INTO `tb_userinfo` VALUES (10915,'覃子俊','admin','dias,11','软件工程师','CP（控制器平台）','qinzijun@dias.com.cn','+86(21)60305233','系统管理员');
 /*!40000 ALTER TABLE `tb_userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `v_brwinfo`
+--
+
+DROP TABLE IF EXISTS `v_brwinfo`;
+/*!50001 DROP VIEW IF EXISTS `v_brwinfo`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8mb4;
+/*!50001 CREATE VIEW `v_brwinfo` AS SELECT 
+ 1 AS `id`,
+ 1 AS `devname`,
+ 1 AS `dvid`,
+ 1 AS `username`,
+ 1 AS `email`,
+ 1 AS `tel`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `v_rtninfo`
+--
+
+DROP TABLE IF EXISTS `v_rtninfo`;
+/*!50001 DROP VIEW IF EXISTS `v_rtninfo`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8mb4;
+/*!50001 CREATE VIEW `v_rtninfo` AS SELECT 
+ 1 AS `id`,
+ 1 AS `devname`,
+ 1 AS `dvid`,
+ 1 AS `username`,
+ 1 AS `email`,
+ 1 AS `tel`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Final view structure for view `v_brwinfo`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_brwinfo`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = gbk */;
+/*!50001 SET character_set_results     = gbk */;
+/*!50001 SET collation_connection      = gbk_chinese_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_brwinfo` AS select `tb_brw`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_brw`.`dvid` AS `dvid`,`tb_userinfo`.`name` AS `username`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_brw` join `tb_devinfo` on((`tb_brw`.`dvid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_brw`.`brwerid` = `tb_userinfo`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `v_rtninfo`
+--
+
+/*!50001 DROP VIEW IF EXISTS `v_rtninfo`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = gbk */;
+/*!50001 SET character_set_results     = gbk */;
+/*!50001 SET collation_connection      = gbk_chinese_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `v_rtninfo` AS select `tb_rtn`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_rtn`.`dvid` AS `dvid`,`tb_userinfo`.`name` AS `username`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_rtn` join `tb_devinfo` on((`tb_rtn`.`dvid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_rtn`.`rtnerid` = `tb_userinfo`.`id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -132,4 +204,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-24 15:45:23
+-- Dump completed on 2019-07-10 16:49:46

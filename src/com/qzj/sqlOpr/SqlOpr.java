@@ -109,7 +109,7 @@ public class SqlOpr {
 		if(item.getId() != null)
 			where = "id='" + item.getId() + "'";//	获取item对象的id属性
 		TbDevInfo info = new TbDevInfo();//	创建设备信息数据模型
-		ResultSet res = findForRes("select * from tb_devinfo where" + where);
+		ResultSet res = findForRes("select * from tb_devinfo where " + where);
 		//	封装数据到数据模型中
 		try {
 			if(res.next()) {
@@ -135,7 +135,7 @@ public class SqlOpr {
 		if(item.getJobNum() != 0)
 			where = "id='" + item.getJobNum() + "'";
 		TbUserInfo info = new TbUserInfo();
-		ResultSet res = findForRes("select * from tb_userinfo where" + where);
+		ResultSet res = findForRes("select * from tb_userinfo where " + where);
 		try {
 			if(res.next()) {
 				info.setId(res.getInt("id"));
