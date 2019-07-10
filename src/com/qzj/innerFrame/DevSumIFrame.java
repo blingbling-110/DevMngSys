@@ -1,12 +1,24 @@
 package com.qzj.innerFrame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -36,6 +48,66 @@ public class DevSumIFrame extends JInternalFrame {
 	 */
 	private JScrollPane tablePane = null;
 	
+	/**
+	 * 	增加设备面板
+	 */
+	private JPanel addPane = null;
+	
+	/**
+	 * 	设备编号标签
+	 */
+	private JLabel idLabel = new JLabel("设备编号：");
+	
+	/**
+	 * 	设备编号文本框
+	 */
+	private JTextField idField = new JTextField(25);
+	
+	/**
+	 * 	设备名称标签
+	 */
+	private JLabel nameLabel = new JLabel("设备名称：");
+	
+	/**
+	 * 	设备名称文本框
+	 */
+	private JTextField nameField = new JTextField(25);
+	
+	/**
+	 * 	设备状态标签
+	 */
+	private JLabel statusLabel = new JLabel("设备状态：");
+	
+	/**
+	 * 	设备状态文本框
+	 */
+	private JTextField statusField = new JTextField(25);
+	
+	/**
+	 * 	设备描述标签
+	 */
+	private JLabel desLabel = new JLabel("设备描述：");
+	
+	/**
+	 * 	设备描述文本域
+	 */
+	private JTextField desField = new JTextField(110);
+	
+	/**
+	 * 	备注标签
+	 */
+	private JLabel remarkLabel = new JLabel("备注：");
+	
+	/**
+	 * 	备注文本域
+	 */
+	private JTextField remarkField = new JTextField(110);
+	
+	/**
+	 * 	增加设备按钮
+	 */
+	private JButton addButton = null;
+	
 	public DevSumIFrame() {
 		setTitle("设备总览");
 		setSize(1032, 432);
@@ -43,9 +115,23 @@ public class DevSumIFrame extends JInternalFrame {
 		setResizable(true);//	窗体可拉伸
 		setIconifiable(true);//	窗体可图标化
 		setClosable(true);//	窗体可关闭
-		tablePane = new JScrollPane();
+		getTablePane();
 		tablePane.setViewportView(getTable());
 		getContentPane().add(tablePane, BorderLayout.CENTER);
+		getAddPane();
+		addPane.setLayout(new GridBagLayout());
+		addComponent(addPane, idLabel, 0, 0, 1);
+		addComponent(addPane, idField, 1, 0, 2);
+		addComponent(addPane, nameLabel, 3, 0, 1);
+		addComponent(addPane, nameField, 4, 0, 2);
+		addComponent(addPane, statusLabel, 6, 0, 1);
+		addComponent(addPane, statusField, 7, 0, 2);
+		addComponent(addPane, desLabel, 0, 1, 1);
+		addComponent(addPane, desField, 0, 2, 9);
+		addComponent(addPane, remarkLabel, 0, 4, 1);
+		addComponent(addPane, remarkField, 0, 5, 9);
+		addComponent(addPane, getAddButton(), 0, 7, 9);
+		getContentPane().add(addPane, BorderLayout.SOUTH);
 	}
 
 	public JTable getTable() {
@@ -85,5 +171,52 @@ public class DevSumIFrame extends JInternalFrame {
 			}
 		}
 		return table;
+	}
+
+	public JScrollPane getTablePane() {
+		if(tablePane == null)
+			tablePane = new JScrollPane();
+		return tablePane;
+	}
+
+	public JPanel getAddPane() {
+		if(addPane == null)
+			addPane = new JPanel();
+		return addPane;
+	}
+	
+	public JButton getAddButton() {
+		if(addButton == null) {
+			addButton = new JButton("增加设备", new ImageIcon(
+					getClass().getResource("/res/icon/addDev.png")));
+			addButton.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO 自动生成的方法存根
+					
+				}
+			});
+		}
+		return addButton;
+	}
+
+	/**
+	 * 	按网格组布局管理器增加组件
+	 * @param pane 待增加组件的面板
+	 * @param com 待增加的组件
+	 * @param x gridx
+	 * @param y gridy
+	 * @param width gridwidth
+	 * @param fillHor 是否水平填满
+	 * @param fillVer 是否垂直填满
+	 */
+	private void addComponent(JPanel pane, JComponent com, 
+			int x, int y, int width) {
+		GridBagConstraints gbc = new GridBagConstraints();//	创建网格限制对象
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.gridwidth = width;
+		pane.add(com, gbc);
 	}
 }
