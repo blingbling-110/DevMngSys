@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import com.qzj.innerFrame.DevSumIFrame;
+import com.qzj.innerFrame.UserSumIFrame;
 
 /**
  * 	主窗体菜单栏
@@ -39,14 +40,19 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem exitItem = null;
 	
 	/**
-	 * 	设备菜单
+	 * 	管理菜单
 	 */
-	private JMenu deviceMenu = null;
+	private JMenu manageMenu = null;
 	
 	/**
 	 * 	设备总览菜单项
 	 */
 	private JMenuItem devSumItem = null;
+	
+	/**
+	 * 	人员总览菜单项
+	 */
+	private JMenuItem userSumItem = null;
 	
 	/**
 	 * 	内部窗体的Map集合
@@ -68,7 +74,7 @@ public class MenuBar extends JMenuBar {
 		this.stateLabel = stateLabel;
 		innerFrames = new HashMap<>();
 		add(getFileMenu());
-		add(getDeviceMenu());
+		add(getMangeMenu());
 	}
 	
 	/**
@@ -106,15 +112,16 @@ public class MenuBar extends JMenuBar {
 
 	/**
 	 * 	获取设备菜单
-	 * @return deviceMenu
+	 * @return manageMenu
 	 */
-	public JMenu getDeviceMenu() {
-		if(deviceMenu == null) {
-			deviceMenu = new JMenu("设备(D)");
-			deviceMenu.setMnemonic(KeyEvent.VK_D);
-			deviceMenu.add(getDevSumItem());
+	public JMenu getMangeMenu() {
+		if(manageMenu == null) {
+			manageMenu = new JMenu("管理(M)");
+			manageMenu.setMnemonic(KeyEvent.VK_M);
+			manageMenu.add(getDevSumItem());
+			manageMenu.add(getUserSumItem());
 		}
-		return deviceMenu;
+		return manageMenu;
 	}
 
 	/**
@@ -123,9 +130,9 @@ public class MenuBar extends JMenuBar {
 	 */
 	public JMenuItem getDevSumItem() {
 		if(devSumItem == null) {
-			devSumItem = new JMenuItem("设备总览(S)", new ImageIcon(
+			devSumItem = new JMenuItem("设备总览(D)", new ImageIcon(
 					getClass().getResource("/res/icon/devSum.png")));
-			devSumItem.setMnemonic(KeyEvent.VK_S);
+			devSumItem.setMnemonic(KeyEvent.VK_D);
 			devSumItem.addActionListener(new ActionListener() {
 				
 				@Override
@@ -135,6 +142,25 @@ public class MenuBar extends JMenuBar {
 			});
 		}
 		return devSumItem;
+	}
+
+	/**
+	 * @return userSumItem
+	 */
+	public JMenuItem getUserSumItem() {
+		if(userSumItem == null) {
+			userSumItem = new JMenuItem("人员总览(U)", new ImageIcon(
+					getClass().getResource("/res/icon/userSum.png")));
+			userSumItem.setMnemonic(KeyEvent.VK_U);
+			userSumItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					showInnerFrame(userSumItem, UserSumIFrame.class);
+				}
+			});
+		}
+		return userSumItem;
 	}
 
 	/**

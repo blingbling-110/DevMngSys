@@ -16,6 +16,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -26,11 +27,11 @@ import com.qzj.sqlOpr.SqlOpr;
 import com.qzj.sqlOpr.model.TbDevInfo;
 
 /**
- * 	设备总览内部窗体
+ * 	人员总览内部窗体
  * @author qinzijun
  *
  */
-public class DevSumIFrame extends JInternalFrame {
+public class UserSumIFrame extends JInternalFrame {
 
 	/**
 	 * 
@@ -48,49 +49,89 @@ public class DevSumIFrame extends JInternalFrame {
 	private JScrollPane tablePane = null;
 	
 	/**
-	 * 	增加设备面板
+	 * 	增加用户面板
 	 */
 	private JPanel addPane = null;
 	
 	/**
-	 * 	设备编号标签
+	 * 	工号标签
 	 */
-	private JLabel idLabel = new JLabel("设备编号：");
+	private JLabel idLabel = new JLabel("工号：");
 	
 	/**
-	 * 	设备编号文本框
+	 * 	工号文本框
 	 */
 	private JTextField idField = new JTextField(25);
 	
 	/**
-	 * 	设备名称标签
+	 * 	姓名标签
 	 */
-	private JLabel nameLabel = new JLabel("设备名称：");
+	private JLabel nameLabel = new JLabel("姓名：");
 	
 	/**
-	 * 	设备名称文本框
+	 * 	姓名文本框
 	 */
 	private JTextField nameField = new JTextField(25);
 	
 	/**
-	 * 	设备状态标签
+	 * 	用户名标签
 	 */
-	private JLabel statusLabel = new JLabel("设备状态：");
+	private JLabel userIdLabel = new JLabel("用户名：");
 	
 	/**
-	 * 	设备状态文本框
+	 * 	用户名文本框
 	 */
-	private JTextField statusField = new JTextField(25);
+	private JTextField userIdField = new JTextField(25);
 	
 	/**
-	 * 	设备描述标签
+	 * 	密码标签
 	 */
-	private JLabel desLabel = new JLabel("设备描述：");
+	private JLabel pwdLabel = new JLabel("密码：");
 	
 	/**
-	 * 	设备描述文本域
+	 * 	密码框
 	 */
-	private JTextField desField = new JTextField(120);
+	private JPasswordField pwdField = new JPasswordField(120);
+	
+	/**
+	 * 	职位标签
+	 */
+	private JLabel posLabel = new JLabel("职位：");
+	
+	/**
+	 * 	职位文本框
+	 */
+	private JTextField posField = new JTextField(120);
+	
+	/**
+	 * 	部门标签
+	 */
+	private JLabel depLabel = new JLabel("部门：");
+	
+	/**
+	 * 	部门文本框
+	 */
+	private JTextField depField = new JTextField(25);
+	
+	/**
+	 * 	邮箱标签
+	 */
+	private JLabel emailLabel = new JLabel("邮箱：");
+	
+	/**
+	 * 	邮箱文本框
+	 */
+	private JTextField emailField = new JTextField(25);
+	
+	/**
+	 * 	电话标签
+	 */
+	private JLabel telLabel = new JLabel("电话：");
+	
+	/**
+	 * 	电话文本框
+	 */
+	private JTextField telField = new JTextField(25);
 	
 	/**
 	 * 	备注标签
@@ -98,9 +139,9 @@ public class DevSumIFrame extends JInternalFrame {
 	private JLabel remarkLabel = new JLabel("备注：");
 	
 	/**
-	 * 	备注文本域
+	 * 	备注文本框
 	 */
-	private JTextField remarkField = new JTextField(120);
+	private JTextField remarkField = new JTextField(25);
 	
 	/**
 	 * 	增加设备按钮
@@ -117,7 +158,7 @@ public class DevSumIFrame extends JInternalFrame {
 	 */
 	private JButton refreshButton = null;
 	
-	public DevSumIFrame() {
+	public UserSumIFrame() {
 		setTitle("设备总览");
 		setSize(1032, 432);
 		setMaximizable(true);//	窗体可最大化
@@ -207,19 +248,19 @@ public class DevSumIFrame extends JInternalFrame {
 					if(idField.getText() == null || 
 							idField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "设备编号不能为空");
+								UserSumIFrame.this, "设备编号不能为空");
 						return;
 					}
 					if(nameField.getText() == null || 
 							nameField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "设备名称不能为空");
+								UserSumIFrame.this, "设备名称不能为空");
 						return;
 					}
 					if(statusField.getText() == null || 
 							statusField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "设备状态不能为空");
+								UserSumIFrame.this, "设备状态不能为空");
 						return;
 					}
 					TbDevInfo devInfo = new TbDevInfo();//	封装待增加设备信息的对象
@@ -238,7 +279,7 @@ public class DevSumIFrame extends JInternalFrame {
 						remarkField.setText("");
 					}else
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "增加设备失败");
+								UserSumIFrame.this, "增加设备失败");
 				}
 			});
 		}
@@ -259,14 +300,14 @@ public class DevSumIFrame extends JInternalFrame {
 					int[] rows = table.getSelectedRows();
 					if(rows.length == 0) {
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "未选择设备");
+								UserSumIFrame.this, "未选择设备");
 						return;
 					}
 					for(int i = 0; i < rows.length; i++) {
 						String id = table.getValueAt(rows[i], 0).toString();
 						boolean res = SqlOpr.deleteDevInfo(id);
 						if(!res) {
-							JOptionPane.showMessageDialog(DevSumIFrame.this,
+							JOptionPane.showMessageDialog(UserSumIFrame.this,
 									"删除设备失败，导致操作失败的设备编号：" + id);
 							break;
 						}

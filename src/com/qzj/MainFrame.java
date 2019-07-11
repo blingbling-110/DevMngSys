@@ -146,7 +146,7 @@ public class MainFrame extends JFrame {
 			 * 	ipadx：组件间的横向间距；
 			 * 	ipady：组件间的纵向间距；
 			 * 	insets：当组件不能填满其格时，
-			 * 		通过 insets来指定四周（即上下左右）所留空隙；
+			 * 		通过 insets来指定四周（即上左下右）所留空隙；
 			 * 	anchor：同样是当组件不能填满其格时，通过 anchor来设置组件的位置，
 			 * 		anchor有两种值，绝对和相对的值分别有 若干个，文档中有，可自行查看；
 			 * 	weightx：行的权重，通过这个属性来决定如何分配行的剩余空间；

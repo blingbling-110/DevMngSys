@@ -276,7 +276,7 @@ public class SqlOpr {
 			boolean autoCommit = conn.getAutoCommit();//	获取提交方式
 			conn.setAutoCommit(false);//	取消自动提交
 			//	增加借用表记录
-			insert("insert into tb_brw values('"+ brw.getId()
+			exeUpdate("insert into tb_brw values('"+ brw.getId()
 			+ "','" + brw.getDvId() + "'," + brw.getBrwerId()
 			+ ",'" + brw.getDate() + "','" + brw.getRemark() + "')");
 			//	更改设备信息
@@ -285,14 +285,16 @@ public class SqlOpr {
 			TbDevInfo devInfo = getDevInfo(item);
 			boolean res = false;
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
-				res = update("update tb_devinfo set status='" 
+				res = exeUpdate("update tb_devinfo set status='" 
 						+ brw.getBrwerId() + "',remark='" 
 						+ brw.getId() + "' where id='"
 						+ devInfo.getId() + "'");
 			if(res)
 				conn.commit();//	提交事务
-			else
+			else {
 				conn.rollback();//	回滚
+				return false;
+			}
 			conn.setAutoCommit(autoCommit);//	还原提交方式
 		} catch (SQLException e) {
 			return false;
@@ -310,7 +312,7 @@ public class SqlOpr {
 			boolean autoCommit = conn.getAutoCommit();//	获取提交方式
 			conn.setAutoCommit(false);//	取消自动提交
 			//	增加归还表记录
-			insert("insert into tb_rtn values('"+ rtn.getId()
+			exeUpdate("insert into tb_rtn values('"+ rtn.getId()
 			+ "','" + rtn.getDvId() + "'," + rtn.getRtnerId()
 			+ ",'" + rtn.getDate() + "','" + rtn.getRemark() + "')");
 			//	更改设备信息
@@ -319,14 +321,16 @@ public class SqlOpr {
 			TbDevInfo devInfo = getDevInfo(item);
 			boolean res = false;
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
-				res = update("update tb_devinfo set status='" 
+				res = exeUpdate("update tb_devinfo set status='" 
 						+ "库存中" + "',remark='" 
 						+ rtn.getId() + "' where id='"
 						+ devInfo.getId() + "'");
 			if(res)
 				conn.commit();//	提交事务
-			else
+			else {
 				conn.rollback();//	回滚
+				return false;
+			}
 			conn.setAutoCommit(autoCommit);//	还原提交方式
 		} catch (SQLException e) {
 			return false;
@@ -335,31 +339,17 @@ public class SqlOpr {
 	}
 
 	/**
-	 * 	执行SQL语句更改数据
+	 * 	执行SQL语句进行增、删、改操作
 	 * @param sql 欲执行的SQL语句
-	 * @return 数据更改成功与否
+	 * @return SQL语句更改成功与否
 	 */
-	private static boolean update(String sql) {
+	private static boolean exeUpdate(String sql) {
 		boolean res = false;
 		try {
 			PreparedStatement preSta = conn.prepareStatement(sql);
-			res = preSta.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return res;
-	}
-
-	/**
-	 * 	执行SQL语句增加数据
-	 * @param sql 欲执行的SQL语句
-	 * @return 数据增加成功与否
-	 */
-	private static boolean insert(String sql) {
-		boolean res = false;
-		try {
-			PreparedStatement preSta = conn.prepareStatement(sql);
-			res = preSta.execute();
+			int row = preSta.executeUpdate();
+			if(row > 0)
+				res = true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -614,5 +604,53 @@ public class SqlOpr {
 		if(res.next())
 			userName = res.getString("name");
 		return userName;
+	}
+	
+	/**
+	 * 	在事务中增加设备信息
+	 * @param devInfo 欲插入数据库的设备信息公共类对象
+	 * @return 数据插入成功与否
+	 */
+	public static boolean insertTbDevInfo(TbDevInfo devInfo) {
+		try {
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			boolean res = false;
+			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
+				res = exeUpdate("insert into tb_devinfo values('"
+						+ devInfo.getId() + "','" + devInfo.getName()
+						+ "','" + devInfo.getStatus() + "','" + devInfo.getDes()
+						+ "','" + devInfo.getRemark() + "')");
+			if(res)
+				conn.commit();
+			else {
+				conn.rollback();
+				return false;
+			}
+			conn.setAutoCommit(autoCommit);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean deleteDevInfo(String id) {
+		try {
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			boolean res = false;
+			if(id != null && !id.isEmpty())
+				res = exeUpdate("delete from tb_devinfo where id='" + id + "'");
+			if(res)
+				conn.commit();
+			else {
+				conn.rollback();
+				return false;
+			}
+			conn.setAutoCommit(autoCommit);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
 	}
 }
