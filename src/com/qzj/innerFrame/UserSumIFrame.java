@@ -298,7 +298,7 @@ public class UserSumIFrame extends JInternalFrame {
 					List<List<String>> allUserInfo = SqlOpr.getAllUserInfo();
 					for(int i = 0; i < allUserInfo.size(); i++) {
 						String userId = allUserInfo.get(i).get(2);
-						if(userIdField.getText() == userId) {
+						if(userIdField.getText().equals(userId)) {
 							JOptionPane.showMessageDialog(
 									UserSumIFrame.this, "用户名已存在");
 							return;
