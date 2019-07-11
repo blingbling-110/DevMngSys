@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import com.qzj.Item;
 import com.qzj.sqlOpr.SqlOpr;
-import com.qzj.sqlOpr.model.TbDevInfo;
+import com.qzj.sqlOpr.model.TbUserInfo;
 
 /**
  * 	人员总览内部窗体
@@ -61,7 +61,7 @@ public class UserSumIFrame extends JInternalFrame {
 	/**
 	 * 	工号文本框
 	 */
-	private JTextField idField = new JTextField(25);
+	private JTextField idField = new JTextField(20);
 	
 	/**
 	 * 	姓名标签
@@ -71,7 +71,7 @@ public class UserSumIFrame extends JInternalFrame {
 	/**
 	 * 	姓名文本框
 	 */
-	private JTextField nameField = new JTextField(25);
+	private JTextField nameField = new JTextField(20);
 	
 	/**
 	 * 	用户名标签
@@ -81,7 +81,7 @@ public class UserSumIFrame extends JInternalFrame {
 	/**
 	 * 	用户名文本框
 	 */
-	private JTextField userIdField = new JTextField(25);
+	private JTextField userIdField = new JTextField(20);
 	
 	/**
 	 * 	密码标签
@@ -91,17 +91,17 @@ public class UserSumIFrame extends JInternalFrame {
 	/**
 	 * 	密码框
 	 */
-	private JPasswordField pwdField = new JPasswordField(120);
+	private JPasswordField pwdField = new JPasswordField(20);
 	
 	/**
-	 * 	职位标签
+	 * 	职务标签
 	 */
-	private JLabel posLabel = new JLabel("职位：");
+	private JLabel posLabel = new JLabel("职务：");
 	
 	/**
-	 * 	职位文本框
+	 * 	职务文本框
 	 */
-	private JTextField posField = new JTextField(120);
+	private JTextField posField = new JTextField(53);
 	
 	/**
 	 * 	部门标签
@@ -111,7 +111,7 @@ public class UserSumIFrame extends JInternalFrame {
 	/**
 	 * 	部门文本框
 	 */
-	private JTextField depField = new JTextField(25);
+	private JTextField depField = new JTextField(53);
 	
 	/**
 	 * 	邮箱标签
@@ -121,7 +121,7 @@ public class UserSumIFrame extends JInternalFrame {
 	/**
 	 * 	邮箱文本框
 	 */
-	private JTextField emailField = new JTextField(25);
+	private JTextField emailField = new JTextField(53);
 	
 	/**
 	 * 	电话标签
@@ -131,7 +131,7 @@ public class UserSumIFrame extends JInternalFrame {
 	/**
 	 * 	电话文本框
 	 */
-	private JTextField telField = new JTextField(25);
+	private JTextField telField = new JTextField(53);
 	
 	/**
 	 * 	备注标签
@@ -141,7 +141,7 @@ public class UserSumIFrame extends JInternalFrame {
 	/**
 	 * 	备注文本框
 	 */
-	private JTextField remarkField = new JTextField(25);
+	private JTextField remarkField = new JTextField(120);
 	
 	/**
 	 * 	增加设备按钮
@@ -159,7 +159,7 @@ public class UserSumIFrame extends JInternalFrame {
 	private JButton refreshButton = null;
 	
 	public UserSumIFrame() {
-		setTitle("设备总览");
+		setTitle("人员总览");
 		setSize(1032, 432);
 		setMaximizable(true);//	窗体可最大化
 		setResizable(true);//	窗体可拉伸
@@ -171,25 +171,34 @@ public class UserSumIFrame extends JInternalFrame {
 		getAddPane();
 		addPane.setLayout(new GridBagLayout());
 		addComponent(addPane, idLabel, 0, 0, 1);
-		addComponent(addPane, idField, 1, 0, 2);
-		addComponent(addPane, nameLabel, 3, 0, 1);
-		addComponent(addPane, nameField, 4, 0, 2);
-		addComponent(addPane, statusLabel, 6, 0, 1);
-		addComponent(addPane, statusField, 7, 0, 2);
-		addComponent(addPane, desLabel, 0, 1, 1);
-		addComponent(addPane, desField, 0, 2, 9);
-		addComponent(addPane, remarkLabel, 0, 4, 1);
-		addComponent(addPane, remarkField, 0, 5, 9);
-		addComponent(addPane, getAddButton(), 0, 7, 3);
-		addComponent(addPane, getDeleteButton(), 3, 7, 3);
-		addComponent(addPane, getRefreshButton(), 6, 7, 3);
+		addComponent(addPane, idField, 1, 0, 1);
+		addComponent(addPane, nameLabel, 2, 0, 1);
+		addComponent(addPane, nameField, 3, 0, 1);
+		addComponent(addPane, userIdLabel, 4, 0, 1);
+		addComponent(addPane, userIdField, 5, 0, 1);
+		addComponent(addPane, pwdLabel, 6, 0, 1);
+		addComponent(addPane, pwdField, 7, 0, 1);
+		addComponent(addPane, posLabel, 0, 1, 1);
+		addComponent(addPane, posField, 1, 1, 3);
+		addComponent(addPane, depLabel, 4, 1, 1);
+		addComponent(addPane, depField, 5, 1, 3);
+		addComponent(addPane, emailLabel, 0, 2, 1);
+		addComponent(addPane, emailField, 1, 2, 3);
+		addComponent(addPane, telLabel, 4, 2, 1);
+		addComponent(addPane, telField, 5, 2, 3);
+		addComponent(addPane, remarkLabel, 0, 3, 1);
+		addComponent(addPane, remarkField, 1, 3, 7);
+		addComponent(addPane, getAddButton(), 0, 5, 3);
+		addComponent(addPane, getDeleteButton(), 3, 5, 2);
+		addComponent(addPane, getRefreshButton(), 5, 5, 3);
 		getContentPane().add(addPane, BorderLayout.SOUTH);
 	}
 
 	public JTable getTable() {
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//	关闭列的自动调节
-		String[] columnLabel = {"设备编号", "设备名称", "设备状态", "设备描述", "备注"};
+		String[] columnLabel = {"工号", "姓名", "用户名", "职务", 
+				"部门", "电子邮箱", "电话", "备注"};
 		//	DefaultTableModel是用于保存表格单元数值的表格模型类
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setColumnIdentifiers(columnLabel);//	设置表格模型的列名称
@@ -200,25 +209,29 @@ public class UserSumIFrame extends JInternalFrame {
 			TableColumn columnattr = table.getColumnModel().getColumn(i);
 			//	将表格各列的单元编辑器均设为只读编辑器
 			columnattr.setCellEditor(new DefaultCellEditor(readOnlyField));
-			if(i > 2)
-				columnattr.setPreferredWidth(300);//	调整表格列宽
+			if(i > 3)
+				columnattr.setPreferredWidth(168);//	调整表格列宽
 			else
 				columnattr.setPreferredWidth(100);//	调整表格列宽
 		}
 		//		初始化表格内容
-		List<List<String>> allDevInfo = SqlOpr.getAllDevInfo();//	获取所有设备信息
-		for(int i = 0; i < allDevInfo.size(); i++) {
-			List<String> infoList = allDevInfo.get(i);//	每个设备信息的List集合
-			Item item = new Item(infoList.get(0), infoList.get(1), null);
-			TbDevInfo devInfo = SqlOpr.getDevInfo(item);//	获取指定设备信息
+		List<List<String>> allUserInfo = SqlOpr.getAllUserInfo();//	获取所有人员信息
+		for(int i = 0; i < allUserInfo.size(); i++) {
+			List<String> infoList = allUserInfo.get(i);//	每个人员信息的List集合
+			Item item = new Item(infoList.get(2), infoList.get(1),
+					Integer.parseInt(infoList.get(0)));
+			TbUserInfo userInfo = SqlOpr.getUserInfo(item);//	获取指定人员信息
 			String[] row = new String[columnLabel.length];//	表格模型的一行
-			//	判断设备信息对象是否为空
-			if(devInfo.getId() != null && !devInfo.getId().isEmpty()) {
-				row[0] = devInfo.getId();
-				row[1] = devInfo.getName();
-				row[2] = devInfo.getStatus();
-				row[3] = devInfo.getDes();
-				row[4] = devInfo.getRemark();
+			//	判断人员信息对象是否为空
+			if(userInfo.getId() != null && userInfo.getId() != 0) {
+				row[0] = userInfo.getId().toString();
+				row[1] = userInfo.getName();
+				row[2] = userInfo.getUserId();
+				row[3] = userInfo.getPos();
+				row[4] = userInfo.getDep();
+				row[5] = userInfo.getEmail();
+				row[6] = userInfo.getTel();
+				row[7] = userInfo.getRemark();
 				tableModel.addRow(row);//	在表格模型末尾增加一行
 			}
 		}
@@ -239,8 +252,8 @@ public class UserSumIFrame extends JInternalFrame {
 	
 	public JButton getAddButton() {
 		if(addButton == null) {
-			addButton = new JButton("增加设备", new ImageIcon(
-					getClass().getResource("/res/icon/addDev.png")));
+			addButton = new JButton("增加人员", new ImageIcon(
+					getClass().getResource("/res/icon/add.png")));
 			addButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -248,38 +261,80 @@ public class UserSumIFrame extends JInternalFrame {
 					if(idField.getText() == null || 
 							idField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "设备编号不能为空");
+								UserSumIFrame.this, "工号不能为空");
 						return;
 					}
 					if(nameField.getText() == null || 
 							nameField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "设备名称不能为空");
+								UserSumIFrame.this, "姓名不能为空");
 						return;
 					}
-					if(statusField.getText() == null || 
-							statusField.getText().isEmpty()) {
+					if(userIdField.getText() == null || 
+							userIdField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "设备状态不能为空");
+								UserSumIFrame.this, "用户名不能为空");
 						return;
 					}
-					TbDevInfo devInfo = new TbDevInfo();//	封装待增加设备信息的对象
-					devInfo.setId(idField.getText());
-					devInfo.setName(nameField.getText());
-					devInfo.setStatus(statusField.getText());
-					devInfo.setDes(desField.getText());
-					devInfo.setRemark(remarkField.getText());
-					boolean res = SqlOpr.insertTbDevInfo(devInfo);
+					String pwd = new String(pwdField.getPassword());
+					if(pwd == null || pwd.isEmpty()) {
+						JOptionPane.showMessageDialog(
+								UserSumIFrame.this, "密码不能为空");
+						return;
+					}
+					if(emailField.getText() == null || 
+							emailField.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(
+								UserSumIFrame.this, "邮箱不能为空");
+						return;
+					}
+					if(telField.getText() == null || 
+							telField.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(
+								UserSumIFrame.this, "电话不能为空");
+						return;
+					}
+					//	获取所有人员信息
+					List<List<String>> allUserInfo = SqlOpr.getAllUserInfo();
+					for(int i = 0; i < allUserInfo.size(); i++) {
+						String userId = allUserInfo.get(i).get(2);
+						if(userIdField.getText() == userId) {
+							JOptionPane.showMessageDialog(
+									UserSumIFrame.this, "用户名已存在");
+							return;
+						}
+					}
+					TbUserInfo userInfo = new TbUserInfo();//	封装待增加人员信息的对象
+					try {
+						userInfo.setId(Integer.parseInt(idField.getText()));
+					}catch(NumberFormatException exc) {
+						JOptionPane.showMessageDialog(UserSumIFrame.this, 
+								"工号只能为整数，且不能超过" + Integer.MAX_VALUE);
+						return;
+					}
+					userInfo.setName(nameField.getText());
+					userInfo.setUserId(userIdField.getText());
+					userInfo.setPwd(pwd);
+					userInfo.setPos(posField.getText());
+					userInfo.setDep(depField.getText());
+					userInfo.setEmail(emailField.getText());
+					userInfo.setTel(telField.getText());
+					userInfo.setRemark(remarkField.getText());
+					boolean res = SqlOpr.insertTbUserInfo(userInfo);
 					if(res) {
 						refreshButton.doClick();
 						idField.setText("");
 						nameField.setText("");
-						statusField.setText("");
-						desField.setText("");
+						userIdField.setText("");
+						pwdField.setText("");
+						posField.setText("");
+						depField.setText("");
+						emailField.setText("");
+						telField.setText("");
 						remarkField.setText("");
 					}else
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "增加设备失败");
+								UserSumIFrame.this, "增加人员失败");
 				}
 			});
 		}
@@ -291,8 +346,8 @@ public class UserSumIFrame extends JInternalFrame {
 	 */
 	public JButton getDeleteButton() {
 		if(deleteButton == null) {
-			deleteButton = new JButton("删除所选设备", new ImageIcon(
-					getClass().getResource("/res/icon/delDev.png")));
+			deleteButton = new JButton("删除所选人员", new ImageIcon(
+					getClass().getResource("/res/icon/del.png")));
 			deleteButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -300,15 +355,15 @@ public class UserSumIFrame extends JInternalFrame {
 					int[] rows = table.getSelectedRows();
 					if(rows.length == 0) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "未选择设备");
+								UserSumIFrame.this, "未选择人员");
 						return;
 					}
 					for(int i = 0; i < rows.length; i++) {
 						String id = table.getValueAt(rows[i], 0).toString();
-						boolean res = SqlOpr.deleteDevInfo(id);
+						boolean res = SqlOpr.deleteUserInfo(id);
 						if(!res) {
 							JOptionPane.showMessageDialog(UserSumIFrame.this,
-									"删除设备失败，导致操作失败的设备编号：" + id);
+									"删除人员失败，导致操作失败的人员工号：" + id);
 							break;
 						}
 					}

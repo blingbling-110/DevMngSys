@@ -90,7 +90,7 @@ public class DevSumIFrame extends JInternalFrame {
 	/**
 	 * 	设备描述文本域
 	 */
-	private JTextField desField = new JTextField(120);
+	private JTextField desField = new JTextField(110);
 	
 	/**
 	 * 	备注标签
@@ -100,7 +100,7 @@ public class DevSumIFrame extends JInternalFrame {
 	/**
 	 * 	备注文本域
 	 */
-	private JTextField remarkField = new JTextField(120);
+	private JTextField remarkField = new JTextField(110);
 	
 	/**
 	 * 	增加设备按钮
@@ -136,12 +136,12 @@ public class DevSumIFrame extends JInternalFrame {
 		addComponent(addPane, statusLabel, 6, 0, 1);
 		addComponent(addPane, statusField, 7, 0, 2);
 		addComponent(addPane, desLabel, 0, 1, 1);
-		addComponent(addPane, desField, 0, 2, 9);
-		addComponent(addPane, remarkLabel, 0, 4, 1);
-		addComponent(addPane, remarkField, 0, 5, 9);
-		addComponent(addPane, getAddButton(), 0, 7, 3);
-		addComponent(addPane, getDeleteButton(), 3, 7, 3);
-		addComponent(addPane, getRefreshButton(), 6, 7, 3);
+		addComponent(addPane, desField, 1, 1, 8);
+		addComponent(addPane, remarkLabel, 0, 2, 1);
+		addComponent(addPane, remarkField, 1, 2, 8);
+		addComponent(addPane, getAddButton(), 0, 3, 3);
+		addComponent(addPane, getDeleteButton(), 3, 3, 3);
+		addComponent(addPane, getRefreshButton(), 6, 3, 3);
 		getContentPane().add(addPane, BorderLayout.SOUTH);
 	}
 
@@ -199,7 +199,7 @@ public class DevSumIFrame extends JInternalFrame {
 	public JButton getAddButton() {
 		if(addButton == null) {
 			addButton = new JButton("增加设备", new ImageIcon(
-					getClass().getResource("/res/icon/addDev.png")));
+					getClass().getResource("/res/icon/add.png")));
 			addButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -251,7 +251,7 @@ public class DevSumIFrame extends JInternalFrame {
 	public JButton getDeleteButton() {
 		if(deleteButton == null) {
 			deleteButton = new JButton("删除所选设备", new ImageIcon(
-					getClass().getResource("/res/icon/delDev.png")));
+					getClass().getResource("/res/icon/del.png")));
 			deleteButton.addActionListener(new ActionListener() {
 				
 				@Override

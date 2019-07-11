@@ -206,7 +206,7 @@ public class SqlOpr {
 	 */
 	public static List<List<String>> getAllUserInfo() {
 		List<List<String>> list = findForList(
-				"select name, userid from tb_userinfo");
+				"select id, name, userid from tb_userinfo");
 		return list;
 	}
 
@@ -634,6 +634,11 @@ public class SqlOpr {
 		return true;
 	}
 	
+	/**
+	 * 	在事务中删除设备信息
+	 * @param id 欲删除设备的编号
+	 * @return 数据删除成功与否
+	 */
 	public static boolean deleteDevInfo(String id) {
 		try {
 			boolean autoCommit = conn.getAutoCommit();
@@ -641,6 +646,63 @@ public class SqlOpr {
 			boolean res = false;
 			if(id != null && !id.isEmpty())
 				res = exeUpdate("delete from tb_devinfo where id='" + id + "'");
+			if(res)
+				conn.commit();
+			else {
+				conn.rollback();
+				return false;
+			}
+			conn.setAutoCommit(autoCommit);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 	在事务中增加人员信息
+	 * @param userInfo 欲插入数据库的人员信息公共类对象
+	 * @return 数据插入成功与否
+	 */
+	public static boolean insertTbUserInfo(TbUserInfo userInfo) {
+		try {
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			boolean res = false;
+			if(userInfo.getId() != null && userInfo.getId() != 0)
+				res = exeUpdate("insert into tb_userinfo values("
+						+ userInfo.getId() + ",'" + userInfo.getName()
+						+ "','" + userInfo.getUserId() + "','"
+						+ userInfo.getPwd() + "','" + userInfo.getPos()
+						+ "','" + userInfo.getDep() + "','"
+						+ userInfo.getEmail() + "','" + userInfo.getTel()
+						+ "','" + userInfo.getRemark() +"')");
+			if(res)
+				conn.commit();
+			else {
+				conn.rollback();
+				return false;
+			}
+			conn.setAutoCommit(autoCommit);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 	在事务中删除人员信息
+	 * @param id 欲删除人员的工号
+	 * @return 数据删除成功与否
+	 */
+	public static boolean deleteUserInfo(String id) {
+		try {
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			boolean res = false;
+			if(id != null && !id.isEmpty())
+				res = exeUpdate("delete from tb_userinfo where id='" + id + "'");
 			if(res)
 				conn.commit();
 			else {
