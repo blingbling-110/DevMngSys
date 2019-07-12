@@ -51,6 +51,11 @@ public class TbUserInfo {
 	 */
 	private String remark;
 	
+	/**
+	 * 	是否拥有管理权限
+	 */
+	private boolean isAdmin;
+	
 	public TbUserInfo() {
 	}
 	
@@ -198,5 +203,19 @@ public class TbUserInfo {
 	 */
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	/**
+	 * @return isAdmin
+	 */
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	/**
+	 * @param isAdmin 要设置的 isAdmin
+	 */
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }

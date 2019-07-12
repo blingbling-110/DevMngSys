@@ -82,7 +82,6 @@ public class LoginDialog extends JFrame {
 			 */
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			initialize();
-			mainFrame = new MainFrame();//	实例化主窗体
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -173,6 +172,7 @@ public class LoginDialog extends JFrame {
 					//密码框的getPassword()方法返回字符数组
 					String pwd = new String(pwdField.getPassword());
 					String userName = null;
+					boolean isAdmin = false;
 					try {
 						if(!SqlOpr.checkLogin(userId, pwd)) {//	验证用户名、密码
 							JOptionPane.showMessageDialog(LoginDialog.this, 
@@ -181,13 +181,15 @@ public class LoginDialog extends JFrame {
 							return;
 						}
 						userName = SqlOpr.getUserNameFromUserId(userId);
+						isAdmin = SqlOpr.isAdminFromUserId(userId);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
 					setVisible(false);//	设置登录窗体不可见
-					mainFrame.setVisible(true);//	设置主窗体可见
+					mainFrame = new MainFrame(isAdmin);//	实例化主窗体
 					mainFrame.setTitle("企业设备管理系统——" + userName);
 					mainFrame.getUserLabel().setText("当前登录用户：" + userName);
+					mainFrame.setVisible(true);//	设置主窗体可见
 				}
 			});
 		}

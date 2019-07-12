@@ -146,6 +146,7 @@ public class SqlOpr {
 				info.setEmail(res.getString("email").trim());
 				info.setTel(res.getString("tel").trim());
 				info.setRemark(res.getString("remark").trim());
+				info.setAdmin(res.getBoolean("isadmin"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -676,7 +677,8 @@ public class SqlOpr {
 						+ userInfo.getPwd() + "','" + userInfo.getPos()
 						+ "','" + userInfo.getDep() + "','"
 						+ userInfo.getEmail() + "','" + userInfo.getTel()
-						+ "','" + userInfo.getRemark() +"')");
+						+ "','" + userInfo.getRemark() + "'," 
+						+ userInfo.isAdmin() + ")");
 			if(res)
 				conn.commit();
 			else {
@@ -702,7 +704,7 @@ public class SqlOpr {
 			conn.setAutoCommit(false);
 			boolean res = false;
 			if(id != null && !id.isEmpty())
-				res = exeUpdate("delete from tb_userinfo where id='" + id + "'");
+				res = exeUpdate("delete from tb_userinfo where id=" + id);
 			if(res)
 				conn.commit();
 			else {
@@ -714,5 +716,22 @@ public class SqlOpr {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * 	由用户名获取用户是否拥有管理权限
+	 * @param userId 用户名
+	 * @return 用户是否拥有管理权限
+	 * @throws SQLException
+	 */
+	public static boolean isAdminFromUserId(String userId) throws SQLException {
+		boolean isAdmin = false;
+		PreparedStatement preSta = conn.prepareStatement(
+				"select isadmin from tb_userinfo where userid='"
+				+ userId + "'");
+		ResultSet res = preSta.executeQuery();
+		if(res.next())
+			isAdmin = res.getBoolean("isadmin");
+		return isAdmin;
 	}
 }

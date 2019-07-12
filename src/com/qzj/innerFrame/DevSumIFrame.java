@@ -117,7 +117,7 @@ public class DevSumIFrame extends JInternalFrame {
 	 */
 	private JButton refreshButton = null;
 	
-	public DevSumIFrame() {
+	public DevSumIFrame(boolean isAdmin) {
 		setTitle("设备总览");
 		setSize(1032, 432);
 		setMaximizable(true);//	窗体可最大化
@@ -129,19 +129,23 @@ public class DevSumIFrame extends JInternalFrame {
 		getContentPane().add(tablePane, BorderLayout.CENTER);
 		getAddPane();
 		addPane.setLayout(new GridBagLayout());
-		addComponent(addPane, idLabel, 0, 0, 1);
-		addComponent(addPane, idField, 1, 0, 2);
-		addComponent(addPane, nameLabel, 3, 0, 1);
-		addComponent(addPane, nameField, 4, 0, 2);
-		addComponent(addPane, statusLabel, 6, 0, 1);
-		addComponent(addPane, statusField, 7, 0, 2);
-		addComponent(addPane, desLabel, 0, 1, 1);
-		addComponent(addPane, desField, 1, 1, 8);
-		addComponent(addPane, remarkLabel, 0, 2, 1);
-		addComponent(addPane, remarkField, 1, 2, 8);
-		addComponent(addPane, getAddButton(), 0, 3, 3);
-		addComponent(addPane, getDeleteButton(), 3, 3, 3);
-		addComponent(addPane, getRefreshButton(), 6, 3, 3);
+		if(isAdmin) {
+			addComponent(addPane, idLabel, 0, 0, 1);
+			addComponent(addPane, idField, 1, 0, 2);
+			addComponent(addPane, nameLabel, 3, 0, 1);
+			addComponent(addPane, nameField, 4, 0, 2);
+			addComponent(addPane, statusLabel, 6, 0, 1);
+			addComponent(addPane, statusField, 7, 0, 2);
+			addComponent(addPane, desLabel, 0, 1, 1);
+			addComponent(addPane, desField, 1, 1, 8);
+			addComponent(addPane, remarkLabel, 0, 2, 1);
+			addComponent(addPane, remarkField, 1, 2, 8);
+			addComponent(addPane, getAddButton(), 0, 3, 3);
+			addComponent(addPane, getDeleteButton(), 3, 3, 3);
+			addComponent(addPane, getRefreshButton(), 6, 3, 3);
+		}else {
+			addComponent(addPane, getRefreshButton(), 0, 0, 1);
+		}
 		getContentPane().add(addPane, BorderLayout.SOUTH);
 	}
 

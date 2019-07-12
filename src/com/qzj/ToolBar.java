@@ -21,10 +21,10 @@ public class ToolBar extends JToolBar {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public ToolBar(MenuBar mainMenuBar) {
+	public ToolBar(MenuBar mainMenuBar, boolean isAdmin) {
 		//	设置工具栏的边框
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		add(addToolButton(mainMenuBar.getDevSumItem()));
+		add(addToolButton(mainMenuBar.getDevSumItem(isAdmin)));
 		add(addToolButton(mainMenuBar.getExitItem()));
 	}
 	

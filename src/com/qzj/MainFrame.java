@@ -67,24 +67,25 @@ public class MainFrame extends JFrame {
 	 */
 	private JLabel userLabel = null;
 	
-	public MainFrame() {
+	public MainFrame(boolean isAdmin) {
 		setTitle("企业设备管理系统");
 		setIconImage(new ImageIcon(getClass().getResource(
 				"/res/root.jpg")).getImage());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
 		setLocationRelativeTo(null);//	设置窗体居中
-		setJMenuBar(getMainMenuBar());
-		setContentPane(getMainContentPane());
+		setJMenuBar(getMainMenuBar(isAdmin));
+		setContentPane(getMainContentPane(isAdmin));
 	}
 
 	/**
 	 * 	获取主窗体菜单栏
 	 * @return mainMenuBar
 	 */
-	public MenuBar getMainMenuBar() {
+	public MenuBar getMainMenuBar(boolean isAdmin) {
 		if(mainMenuBar == null) {
-			mainMenuBar = new MenuBar(getDesktopPane(), getStateLabel());
+			mainMenuBar = new MenuBar(getDesktopPane(), 
+					getStateLabel(), isAdmin);
 		}
 		return mainMenuBar;
 	}
@@ -93,9 +94,9 @@ public class MainFrame extends JFrame {
 	 * 	获取主窗体工具栏
 	 * @return mainToolBar
 	 */
-	public ToolBar getMainToolBar() {
+	public ToolBar getMainToolBar(boolean isAdmin) {
 		if(mainToolBar == null) {
-			mainToolBar = new ToolBar(getMainMenuBar());
+			mainToolBar = new ToolBar(getMainMenuBar(isAdmin), isAdmin);
 			//	设置光标图像
 			mainToolBar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}
@@ -106,10 +107,10 @@ public class MainFrame extends JFrame {
 	 * 	获取主窗体内容面板
 	 * @return mainContentPane
 	 */
-	public JPanel getMainContentPane() {
+	public JPanel getMainContentPane(boolean isAdmin) {
 		if(mainContentPane == null) {
 			mainContentPane = new JPanel(new BorderLayout());
-			mainContentPane.add(getMainToolBar(), BorderLayout.NORTH);
+			mainContentPane.add(getMainToolBar(isAdmin), BorderLayout.NORTH);
 			mainContentPane.add(getDesktopPane(), BorderLayout.CENTER);
 			mainContentPane.add(getStatePane(), BorderLayout.SOUTH);
 		}
@@ -220,7 +221,7 @@ public class MainFrame extends JFrame {
 			try {
 				//	窗体风格本地化
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new MainFrame().setVisible(true);
+				new MainFrame(true).setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

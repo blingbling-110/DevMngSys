@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -144,6 +145,11 @@ public class UserSumIFrame extends JInternalFrame {
 	private JTextField remarkField = new JTextField(120);
 	
 	/**
+	 * 	是否拥有管理权限选择框
+	 */
+	private JCheckBox isAdminBox = new JCheckBox("是否拥有管理权限");
+	
+	/**
 	 * 	增加设备按钮
 	 */
 	private JButton addButton = null;
@@ -158,7 +164,7 @@ public class UserSumIFrame extends JInternalFrame {
 	 */
 	private JButton refreshButton = null;
 	
-	public UserSumIFrame() {
+	public UserSumIFrame(boolean isAdmin) {
 		setTitle("人员总览");
 		setSize(1032, 432);
 		setMaximizable(true);//	窗体可最大化
@@ -188,17 +194,18 @@ public class UserSumIFrame extends JInternalFrame {
 		addComponent(addPane, telField, 5, 2, 3);
 		addComponent(addPane, remarkLabel, 0, 3, 1);
 		addComponent(addPane, remarkField, 1, 3, 7);
-		addComponent(addPane, getAddButton(), 0, 5, 3);
-		addComponent(addPane, getDeleteButton(), 3, 5, 2);
-		addComponent(addPane, getRefreshButton(), 5, 5, 3);
+		addComponent(addPane, isAdminBox, 0, 5, 2);
+		addComponent(addPane, getAddButton(), 2, 5, 2);
+		addComponent(addPane, getDeleteButton(), 4, 5, 2);
+		addComponent(addPane, getRefreshButton(), 6, 5, 2);
 		getContentPane().add(addPane, BorderLayout.SOUTH);
 	}
 
 	public JTable getTable() {
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//	关闭列的自动调节
-		String[] columnLabel = {"工号", "姓名", "用户名", "职务", 
-				"部门", "电子邮箱", "电话", "备注"};
+		String[] columnLabel = {"工号", "姓名", "用户名", "是否拥有管理权限",
+				"职务", "部门", "电子邮箱", "电话", "备注"};
 		//	DefaultTableModel是用于保存表格单元数值的表格模型类
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setColumnIdentifiers(columnLabel);//	设置表格模型的列名称
@@ -209,10 +216,12 @@ public class UserSumIFrame extends JInternalFrame {
 			TableColumn columnattr = table.getColumnModel().getColumn(i);
 			//	将表格各列的单元编辑器均设为只读编辑器
 			columnattr.setCellEditor(new DefaultCellEditor(readOnlyField));
-			if(i > 3)
+			if(i > 5)
 				columnattr.setPreferredWidth(168);//	调整表格列宽
+			else if(i < 3)
+				columnattr.setPreferredWidth(100);
 			else
-				columnattr.setPreferredWidth(100);//	调整表格列宽
+				columnattr.setPreferredWidth(110);
 		}
 		//		初始化表格内容
 		List<List<String>> allUserInfo = SqlOpr.getAllUserInfo();//	获取所有人员信息
@@ -227,11 +236,12 @@ public class UserSumIFrame extends JInternalFrame {
 				row[0] = userInfo.getId().toString();
 				row[1] = userInfo.getName();
 				row[2] = userInfo.getUserId();
-				row[3] = userInfo.getPos();
-				row[4] = userInfo.getDep();
-				row[5] = userInfo.getEmail();
-				row[6] = userInfo.getTel();
-				row[7] = userInfo.getRemark();
+				row[3] = Boolean.toString(userInfo.isAdmin());
+				row[4] = userInfo.getPos();
+				row[5] = userInfo.getDep();
+				row[6] = userInfo.getEmail();
+				row[7] = userInfo.getTel();
+				row[8] = userInfo.getRemark();
 				tableModel.addRow(row);//	在表格模型末尾增加一行
 			}
 		}
@@ -297,7 +307,13 @@ public class UserSumIFrame extends JInternalFrame {
 					//	获取所有人员信息
 					List<List<String>> allUserInfo = SqlOpr.getAllUserInfo();
 					for(int i = 0; i < allUserInfo.size(); i++) {
+						String id = allUserInfo.get(i).get(0);
 						String userId = allUserInfo.get(i).get(2);
+						if(idField.getText().equals(id)) {
+							JOptionPane.showMessageDialog(
+									UserSumIFrame.this, "工号已存在");
+							return;
+						}
 						if(userIdField.getText().equals(userId)) {
 							JOptionPane.showMessageDialog(
 									UserSumIFrame.this, "用户名已存在");
@@ -320,6 +336,7 @@ public class UserSumIFrame extends JInternalFrame {
 					userInfo.setEmail(emailField.getText());
 					userInfo.setTel(telField.getText());
 					userInfo.setRemark(remarkField.getText());
+					userInfo.setAdmin(isAdminBox.isSelected());
 					boolean res = SqlOpr.insertTbUserInfo(userInfo);
 					if(res) {
 						refreshButton.doClick();
@@ -332,6 +349,7 @@ public class UserSumIFrame extends JInternalFrame {
 						emailField.setText("");
 						telField.setText("");
 						remarkField.setText("");
+						isAdminBox.setSelected(false);
 					}else
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "增加人员失败");
@@ -360,11 +378,16 @@ public class UserSumIFrame extends JInternalFrame {
 					}
 					for(int i = 0; i < rows.length; i++) {
 						String id = table.getValueAt(rows[i], 0).toString();
+						if(id.equals("10915")) {
+							JOptionPane.showMessageDialog(UserSumIFrame.this,
+									"无法删除超级管理员");
+							continue;
+						}
 						boolean res = SqlOpr.deleteUserInfo(id);
 						if(!res) {
 							JOptionPane.showMessageDialog(UserSumIFrame.this,
-									"删除人员失败，导致操作失败的人员工号：" + id);
-							break;
+									"删除人员失败的人员工号：" + id);
+							continue;
 						}
 					}
 					refreshButton.doClick();

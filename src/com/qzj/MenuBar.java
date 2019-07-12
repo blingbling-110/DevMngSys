@@ -69,19 +69,20 @@ public class MenuBar extends JMenuBar {
 	 */
 	private JLabel stateLabel = null;
 	
-	public MenuBar(DesktopPane desktopPane, JLabel stateLabel) {
+	public MenuBar(DesktopPane desktopPane, 
+			JLabel stateLabel, boolean isAdmin) {
 		this.desktopPane = desktopPane;
 		this.stateLabel = stateLabel;
 		innerFrames = new HashMap<>();
-		add(getFileMenu());
-		add(getMangeMenu());
+		add(getFileMenu(isAdmin));
+		add(getMangeMenu(isAdmin));
 	}
 	
 	/**
 	 * 	获取文件菜单
 	 * @return 文件菜单
 	 */
-	public JMenu getFileMenu() {
+	public JMenu getFileMenu(boolean isAdmin) {
 		if(fileMenu == null) {
 			fileMenu = new JMenu("文件(F)");
 			fileMenu.setMnemonic(KeyEvent.VK_F);//	设置快捷键
@@ -114,12 +115,13 @@ public class MenuBar extends JMenuBar {
 	 * 	获取设备菜单
 	 * @return manageMenu
 	 */
-	public JMenu getMangeMenu() {
+	public JMenu getMangeMenu(boolean isAdmin) {
 		if(manageMenu == null) {
-			manageMenu = new JMenu("管理(M)");
-			manageMenu.setMnemonic(KeyEvent.VK_M);
-			manageMenu.add(getDevSumItem());
-			manageMenu.add(getUserSumItem());
+			manageMenu = new JMenu("总览(S)");
+			manageMenu.setMnemonic(KeyEvent.VK_S);
+			manageMenu.add(getDevSumItem(isAdmin));
+			if(isAdmin)
+				manageMenu.add(getUserSumItem());
 		}
 		return manageMenu;
 	}
@@ -128,7 +130,7 @@ public class MenuBar extends JMenuBar {
 	 * 	获取设备总览菜单
 	 * @return devSumItem
 	 */
-	public JMenuItem getDevSumItem() {
+	public JMenuItem getDevSumItem(boolean isAdmin) {
 		if(devSumItem == null) {
 			devSumItem = new JMenuItem("设备总览(D)", new ImageIcon(
 					getClass().getResource("/res/icon/devSum.png")));
@@ -137,7 +139,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(devSumItem, DevSumIFrame.class);
+					showInnerFrame(devSumItem, DevSumIFrame.class, isAdmin);
 				}
 			});
 		}
@@ -156,7 +158,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(userSumItem, UserSumIFrame.class);
+					showInnerFrame(userSumItem, UserSumIFrame.class, true);
 				}
 			});
 		}
@@ -169,12 +171,13 @@ public class MenuBar extends JMenuBar {
 	 * @param jInternalFrame 内部窗体
 	 */
 	protected void showInnerFrame(JMenuItem jMenuItem, 
-			Class<? extends JInternalFrame> innerFrameC) {
+			Class<? extends JInternalFrame> innerFrameC, boolean isAdmin) {
 		JInternalFrame innerFrame = innerFrames.get(jMenuItem);
 		try {
 			if(innerFrame == null || innerFrame.isClosed()) {
 				//	利用反射调用内部窗体构造方法的newInstance()方法
-				innerFrame = innerFrameC.getConstructor().newInstance();
+				innerFrame = innerFrameC.getConstructor(
+						boolean.class).newInstance(isAdmin);
 				innerFrames.put(jMenuItem, innerFrame);
 				desktopPane.add(innerFrame);
 				innerFrame.setFrameIcon(jMenuItem.getIcon());
