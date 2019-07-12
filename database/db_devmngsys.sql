@@ -111,6 +111,7 @@ CREATE TABLE `tb_userinfo` (
   `email` varchar(30) DEFAULT NULL COMMENT '电子邮箱',
   `tel` varchar(30) DEFAULT NULL COMMENT '电话',
   `remark` varchar(50) DEFAULT NULL COMMENT '备注',
+  `isadmin` tinyint(1) DEFAULT NULL COMMENT '是否拥有管理权限',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -121,7 +122,7 @@ CREATE TABLE `tb_userinfo` (
 
 LOCK TABLES `tb_userinfo` WRITE;
 /*!40000 ALTER TABLE `tb_userinfo` DISABLE KEYS */;
-INSERT INTO `tb_userinfo` VALUES (10915,'覃子俊','admin','dias,11','软件工程师','CP（控制器平台）','qinzijun@dias.com.cn','+86(21)60305233','系统管理员');
+INSERT INTO `tb_userinfo` VALUES (10915,'覃子俊','admin','dias,11','软件工程师','CP（控制器平台）','qinzijun@dias.com.cn','+86(21)60305233','系统管理员',1),(54312,'普通用户','user','dias,11','','','no','no','',0),(54321,'管理员','manager','dias,11','','','no','no','',1);
 /*!40000 ALTER TABLE `tb_userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,4 +205,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-11 16:57:19
+-- Dump completed on 2019-07-12 11:09:30
