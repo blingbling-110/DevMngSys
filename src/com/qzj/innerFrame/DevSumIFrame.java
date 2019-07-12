@@ -88,7 +88,7 @@ public class DevSumIFrame extends JInternalFrame {
 	private JLabel desLabel = new JLabel("设备描述：");
 	
 	/**
-	 * 	设备描述文本域
+	 * 	设备描述文本框
 	 */
 	private JTextField desField = new JTextField(110);
 	
@@ -98,7 +98,7 @@ public class DevSumIFrame extends JInternalFrame {
 	private JLabel remarkLabel = new JLabel("备注：");
 	
 	/**
-	 * 	备注文本域
+	 * 	备注文本框
 	 */
 	private JTextField remarkField = new JTextField(110);
 	

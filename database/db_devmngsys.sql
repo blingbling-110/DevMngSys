@@ -64,7 +64,7 @@ CREATE TABLE `tb_devinfo` (
 
 LOCK TABLES `tb_devinfo` WRITE;
 /*!40000 ALTER TABLE `tb_devinfo` DISABLE KEYS */;
-INSERT INTO `tb_devinfo` VALUES ('DZ-BD-012','CANAPE','喻延福','功能开发及调试设备','用于测试设备总览内部窗体');
+INSERT INTO `tb_devinfo` VALUES ('DZ-BD-012','CANAPE','喻延福','功能开发及调试设备','用于测试设备总览内部窗体'),('DZ-CA-001','CANAPE','杨化方','功能开发及调试设备','用于测试刷新按钮'),('DZ-CA-002','CANAPE','苏健','功能开发及调试设备','用于测试增加设备按钮');
 /*!40000 ALTER TABLE `tb_devinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,4 +204,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-10 16:49:46
+-- Dump completed on 2019-07-11 16:57:19
