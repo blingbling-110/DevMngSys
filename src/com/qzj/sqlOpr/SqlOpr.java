@@ -84,10 +84,13 @@ public class SqlOpr {
 				conn = DriverManager.getConnection(DB_URL, DB_USER_ID, DB_PWD);
 			} catch (ClassNotFoundException e) {
 				//	弹出提示框
-				JOptionPane.showMessageDialog(null, "请将JDBC驱动包放置在lib文件夹中");
+				JOptionPane.showMessageDialog(null, 
+						"请将JDBC驱动包放置在lib文件夹中", 
+						"数据库错误", JOptionPane.ERROR_MESSAGE);
 				System.exit(1);//	非正常退出 
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "数据库连接对象创建失败");
+				JOptionPane.showMessageDialog(null, "数据库连接对象创建失败", 
+						"数据库错误", JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
 			}
 		}
@@ -253,7 +256,8 @@ public class SqlOpr {
 	public static boolean checkLogin(String userid, String pwd) 
 			throws SQLException {
 		if(conn == null)
-			JOptionPane.showMessageDialog(null, "尚未创建数据库连接对象");;
+			JOptionPane.showMessageDialog(null, "尚未创建数据库连接对象", 
+					"数据库错误", JOptionPane.ERROR_MESSAGE);
 		PreparedStatement preSta = conn.prepareStatement(//	通过预处理防范SQL注入
 				"select * from tb_userinfo where userid=? and pwd=?");
 		preSta.setString(1, userid);
@@ -372,7 +376,7 @@ public class SqlOpr {
 		for(int i = 0; i < tables.length; i++) {//	遍历数据表名称数组
 			Statement sta = conn.createStatement();
 			//	desc <table name>等价于show columns from <table name>
-			ResultSet res = sta.executeQuery("desc" + tables[i]);//	查询数据表结构
+			ResultSet res = sta.executeQuery("desc " + tables[i]);//	查询数据表结构
 			ArrayList<Columns> columns = new ArrayList<>();//	列模型对象的集合
 			while(res.next()) {
 				Columns column = new Columns();
@@ -429,7 +433,7 @@ public class SqlOpr {
 			
 			//	插入数据的SQL语句
 			Statement sta = conn.createStatement();
-			ResultSet res = sta.executeQuery("select * from" + table.getName());
+			ResultSet res = sta.executeQuery("select * from " + table.getName());
 			while(res.next()) {
 				StringBuilder insertSql = new StringBuilder();
 				insertSql.append("insert into " + table.getName() + " values(");
@@ -532,7 +536,7 @@ public class SqlOpr {
 				}
 			}
 		}
-		return backupFilePath;
+		return sqlFile.getAbsolutePath();//	返回备份文件的绝对路径
 	}
 	
 	/**

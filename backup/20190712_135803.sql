@@ -1,0 +1,18 @@
+drop table if exists tb_brw;
+create table `tb_brw`(`id` varchar(30) not null primary key,`dvid` varchar(20),`brwerid` int(11),`date` datetime,`remark` varchar(50)) engine=innodb default charset=utf8;
+drop table if exists tb_devinfo;
+create table `tb_devinfo`(`id` varchar(20) not null primary key,`name` varchar(20),`status` varchar(10),`des` varchar(50),`remark` varchar(50)) engine=innodb default charset=utf8;
+insert into tb_devinfo values('DZ-BD-012','CANAPE','喻延福','功能开发及调试设备','用于测试设备总览内部窗体');
+insert into tb_devinfo values('DZ-CA-001','CANAPE','杨化方','功能开发及调试设备','用于测试刷新按钮');
+insert into tb_devinfo values('DZ-CA-002','CANAPE','苏健','功能开发及调试设备','用于测试增加设备按钮');
+drop table if exists tb_rtn;
+create table `tb_rtn`(`id` varchar(30) not null primary key,`dvid` varchar(20),`rtnerid` int(11),`date` datetime,`remark` varchar(50)) engine=innodb default charset=utf8;
+drop table if exists tb_userinfo;
+create table `tb_userinfo`(`id` int(11) not null primary key,`name` varchar(20),`userid` varchar(20),`pwd` varchar(50),`pos` varchar(20),`dep` varchar(20),`email` varchar(30),`tel` varchar(30),`remark` varchar(50),`isadmin` tinyint(1)) engine=innodb default charset=utf8;
+insert into tb_userinfo values(10915,'覃子俊','admin','dias,11','软件工程师','CP（控制器平台）','qinzijun@dias.com.cn','+86(21)60305233','系统管理员',1);
+insert into tb_userinfo values(54312,'普通用户','user','dias,11','','','no','no','',0);
+insert into tb_userinfo values(54321,'管理员','manager','dias,11','','','no','no','',1);
+drop view if exists v_brwInfo;
+create view v_brwInfo as select tb_brw.id, tb_devinfo.name as devname, tb_brw.dvid, tb_userinfo.name as username, tb_userinfo.email, tb_userinfo.tel from tb_brw inner join tb_devinfo on tb_brw.dvid = tb_devinfo.id inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;
+drop view if exists v_rtninfo;
+create view v_rtninfo as select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.dvid, tb_userinfo.name as username, tb_userinfo.email, tb_userinfo.tel from tb_rtn inner join tb_devinfo on tb_rtn.dvid = tb_devinfo.id inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;

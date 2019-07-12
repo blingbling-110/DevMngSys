@@ -206,7 +206,7 @@ public class MainFrame extends JFrame {
 	 */
 	public JLabel getUserLabel() {
 		if(userLabel == null) {
-			userLabel = new JLabel("当前登录用户：");
+			userLabel = new JLabel("当前登录用户：超级管理员");
 		}
 		return userLabel;
 	}

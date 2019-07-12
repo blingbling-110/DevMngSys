@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
@@ -164,7 +165,7 @@ public class UserSumIFrame extends JInternalFrame {
 	 */
 	private JButton refreshButton = null;
 	
-	public UserSumIFrame(boolean isAdmin) {
+	public UserSumIFrame() {
 		setTitle("人员总览");
 		setSize(1032, 432);
 		setMaximizable(true);//	窗体可最大化
@@ -262,8 +263,9 @@ public class UserSumIFrame extends JInternalFrame {
 	
 	public JButton getAddButton() {
 		if(addButton == null) {
-			addButton = new JButton("增加人员", new ImageIcon(
+			addButton = new JButton("增加人员(A)", new ImageIcon(
 					getClass().getResource("/res/icon/add.png")));
+			addButton.setMnemonic(KeyEvent.VK_A);
 			addButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -271,37 +273,43 @@ public class UserSumIFrame extends JInternalFrame {
 					if(idField.getText() == null || 
 							idField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "工号不能为空");
+								UserSumIFrame.this, "工号不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					if(nameField.getText() == null || 
 							nameField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "姓名不能为空");
+								UserSumIFrame.this, "姓名不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					if(userIdField.getText() == null || 
 							userIdField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "用户名不能为空");
+								UserSumIFrame.this, "用户名不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					String pwd = new String(pwdField.getPassword());
 					if(pwd == null || pwd.isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "密码不能为空");
+								UserSumIFrame.this, "密码不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					if(emailField.getText() == null || 
 							emailField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "邮箱不能为空");
+								UserSumIFrame.this, "邮箱不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					if(telField.getText() == null || 
 							telField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "电话不能为空");
+								UserSumIFrame.this, "电话不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					//	获取所有人员信息
@@ -311,12 +319,14 @@ public class UserSumIFrame extends JInternalFrame {
 						String userId = allUserInfo.get(i).get(2);
 						if(idField.getText().equals(id)) {
 							JOptionPane.showMessageDialog(
-									UserSumIFrame.this, "工号已存在");
+									UserSumIFrame.this, "工号已存在", 
+									"输入错误", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 						if(userIdField.getText().equals(userId)) {
 							JOptionPane.showMessageDialog(
-									UserSumIFrame.this, "用户名已存在");
+									UserSumIFrame.this, "用户名已存在", 
+									"输入错误", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 					}
@@ -325,7 +335,8 @@ public class UserSumIFrame extends JInternalFrame {
 						userInfo.setId(Integer.parseInt(idField.getText()));
 					}catch(NumberFormatException exc) {
 						JOptionPane.showMessageDialog(UserSumIFrame.this, 
-								"工号只能为整数，且不能超过" + Integer.MAX_VALUE);
+								"工号只能为整数，且不能超过" + Integer.MAX_VALUE, 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					userInfo.setName(nameField.getText());
@@ -352,7 +363,8 @@ public class UserSumIFrame extends JInternalFrame {
 						isAdminBox.setSelected(false);
 					}else
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "增加人员失败");
+								UserSumIFrame.this, "增加人员失败", 
+								"操作失败", JOptionPane.ERROR_MESSAGE);
 				}
 			});
 		}
@@ -364,8 +376,9 @@ public class UserSumIFrame extends JInternalFrame {
 	 */
 	public JButton getDeleteButton() {
 		if(deleteButton == null) {
-			deleteButton = new JButton("删除所选人员", new ImageIcon(
+			deleteButton = new JButton("删除所选人员(D)", new ImageIcon(
 					getClass().getResource("/res/icon/del.png")));
+			deleteButton.setMnemonic(KeyEvent.VK_D);
 			deleteButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -373,20 +386,23 @@ public class UserSumIFrame extends JInternalFrame {
 					int[] rows = table.getSelectedRows();
 					if(rows.length == 0) {
 						JOptionPane.showMessageDialog(
-								UserSumIFrame.this, "未选择人员");
+								UserSumIFrame.this, "未选择人员", 
+								"操作失败", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					for(int i = 0; i < rows.length; i++) {
 						String id = table.getValueAt(rows[i], 0).toString();
 						if(id.equals("10915")) {
 							JOptionPane.showMessageDialog(UserSumIFrame.this,
-									"无法删除超级管理员");
+									"无法删除超级管理员", "操作失败", 
+									JOptionPane.ERROR_MESSAGE);
 							continue;
 						}
 						boolean res = SqlOpr.deleteUserInfo(id);
 						if(!res) {
 							JOptionPane.showMessageDialog(UserSumIFrame.this,
-									"删除人员失败的人员工号：" + id);
+									"删除失败的人员工号：" + id, "操作失败", 
+									JOptionPane.ERROR_MESSAGE);
 							continue;
 						}
 					}
@@ -402,8 +418,9 @@ public class UserSumIFrame extends JInternalFrame {
 	 */
 	public JButton getRefreshButton() {
 		if(refreshButton == null) {
-			refreshButton = new JButton("刷新", new ImageIcon(
+			refreshButton = new JButton("刷新(R)", new ImageIcon(
 					getClass().getResource("/res/icon/refresh.png")));
+			refreshButton.setMnemonic(KeyEvent.VK_R);
 			refreshButton.addActionListener(new ActionListener() {
 				
 				@Override

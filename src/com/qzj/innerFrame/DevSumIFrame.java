@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
@@ -202,8 +203,9 @@ public class DevSumIFrame extends JInternalFrame {
 	
 	public JButton getAddButton() {
 		if(addButton == null) {
-			addButton = new JButton("增加设备", new ImageIcon(
+			addButton = new JButton("增加设备(A)", new ImageIcon(
 					getClass().getResource("/res/icon/add.png")));
+			addButton.setMnemonic(KeyEvent.VK_A);
 			addButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -211,19 +213,22 @@ public class DevSumIFrame extends JInternalFrame {
 					if(idField.getText() == null || 
 							idField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "设备编号不能为空");
+								DevSumIFrame.this, "设备编号不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					if(nameField.getText() == null || 
 							nameField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "设备名称不能为空");
+								DevSumIFrame.this, "设备名称不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					if(statusField.getText() == null || 
 							statusField.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "设备状态不能为空");
+								DevSumIFrame.this, "设备状态不能为空", 
+								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					TbDevInfo devInfo = new TbDevInfo();//	封装待增加设备信息的对象
@@ -242,7 +247,8 @@ public class DevSumIFrame extends JInternalFrame {
 						remarkField.setText("");
 					}else
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "增加设备失败");
+								DevSumIFrame.this, "增加设备失败", 
+								"操作失败", JOptionPane.ERROR_MESSAGE);
 				}
 			});
 		}
@@ -254,8 +260,9 @@ public class DevSumIFrame extends JInternalFrame {
 	 */
 	public JButton getDeleteButton() {
 		if(deleteButton == null) {
-			deleteButton = new JButton("删除所选设备", new ImageIcon(
+			deleteButton = new JButton("删除所选设备(D)", new ImageIcon(
 					getClass().getResource("/res/icon/del.png")));
+			deleteButton.setMnemonic(KeyEvent.VK_D);
 			deleteButton.addActionListener(new ActionListener() {
 				
 				@Override
@@ -263,7 +270,8 @@ public class DevSumIFrame extends JInternalFrame {
 					int[] rows = table.getSelectedRows();
 					if(rows.length == 0) {
 						JOptionPane.showMessageDialog(
-								DevSumIFrame.this, "未选择设备");
+								DevSumIFrame.this, "未选择设备", 
+								"操作失败", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					for(int i = 0; i < rows.length; i++) {
@@ -271,8 +279,9 @@ public class DevSumIFrame extends JInternalFrame {
 						boolean res = SqlOpr.deleteDevInfo(id);
 						if(!res) {
 							JOptionPane.showMessageDialog(DevSumIFrame.this,
-									"删除设备失败，导致操作失败的设备编号：" + id);
-							break;
+									"删除失败的设备编号：" + id, 
+									"操作失败", JOptionPane.ERROR_MESSAGE);
+							continue;
 						}
 					}
 					refreshButton.doClick();
@@ -287,8 +296,9 @@ public class DevSumIFrame extends JInternalFrame {
 	 */
 	public JButton getRefreshButton() {
 		if(refreshButton == null) {
-			refreshButton = new JButton("刷新", new ImageIcon(
+			refreshButton = new JButton("刷新(R)", new ImageIcon(
 					getClass().getResource("/res/icon/refresh.png")));
+			refreshButton.setMnemonic(KeyEvent.VK_R);
 			refreshButton.addActionListener(new ActionListener() {
 				
 				@Override
