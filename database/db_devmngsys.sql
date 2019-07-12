@@ -23,11 +23,11 @@ DROP TABLE IF EXISTS `tb_brw`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tb_brw` (
-  `id` varchar(30) NOT NULL COMMENT '借用单编号',
-  `dvid` varchar(20) DEFAULT NULL COMMENT '借用设备编号',
-  `brwerid` int(11) DEFAULT NULL COMMENT '借用人编号',
-  `date` datetime DEFAULT NULL COMMENT '借用日期',
-  `remark` varchar(50) DEFAULT NULL COMMENT '备注',
+  `id` varchar(30) NOT NULL,
+  `dvid` varchar(20) DEFAULT NULL,
+  `brwerid` int(11) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `remark` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -49,10 +49,10 @@ DROP TABLE IF EXISTS `tb_devinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tb_devinfo` (
-  `id` varchar(20) NOT NULL COMMENT '设备编号',
-  `name` varchar(20) DEFAULT NULL COMMENT '设备名称',
-  `status` varchar(10) DEFAULT NULL COMMENT '设备状态',
-  `des` varchar(50) DEFAULT NULL COMMENT '设备描述',
+  `id` varchar(20) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `des` varchar(50) DEFAULT NULL,
   `remark` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -76,11 +76,11 @@ DROP TABLE IF EXISTS `tb_rtn`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tb_rtn` (
-  `id` varchar(30) NOT NULL COMMENT '归还单编号',
-  `dvid` varchar(20) DEFAULT NULL COMMENT '归还设备编号',
-  `rtnerid` int(11) DEFAULT NULL COMMENT '归还人编号',
-  `date` datetime DEFAULT NULL COMMENT '归还日期',
-  `remark` varchar(50) DEFAULT NULL COMMENT '备注',
+  `id` varchar(30) NOT NULL,
+  `dvid` varchar(20) DEFAULT NULL,
+  `rtnerid` int(11) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `remark` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -102,16 +102,16 @@ DROP TABLE IF EXISTS `tb_userinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tb_userinfo` (
-  `id` int(11) NOT NULL COMMENT '人员编号',
-  `name` varchar(20) DEFAULT NULL COMMENT '姓名',
-  `userid` varchar(20) DEFAULT NULL COMMENT '用户名',
-  `pwd` varchar(50) DEFAULT NULL COMMENT '密码',
-  `pos` varchar(20) DEFAULT NULL COMMENT '职务',
-  `dep` varchar(20) DEFAULT NULL COMMENT '部门',
-  `email` varchar(30) DEFAULT NULL COMMENT '电子邮箱',
-  `tel` varchar(30) DEFAULT NULL COMMENT '电话',
-  `remark` varchar(50) DEFAULT NULL COMMENT '备注',
-  `isadmin` tinyint(1) DEFAULT NULL COMMENT '是否拥有管理权限',
+  `id` int(11) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `userid` varchar(20) DEFAULT NULL,
+  `pwd` varchar(50) DEFAULT NULL,
+  `pos` varchar(20) DEFAULT NULL,
+  `dep` varchar(20) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `tel` varchar(30) DEFAULT NULL,
+  `remark` varchar(50) DEFAULT NULL,
+  `isadmin` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -139,6 +139,7 @@ SET character_set_client = utf8mb4;
  1 AS `devname`,
  1 AS `dvid`,
  1 AS `username`,
+ 1 AS `date`,
  1 AS `email`,
  1 AS `tel`*/;
 SET character_set_client = @saved_cs_client;
@@ -156,6 +157,7 @@ SET character_set_client = utf8mb4;
  1 AS `devname`,
  1 AS `dvid`,
  1 AS `username`,
+ 1 AS `date`,
  1 AS `email`,
  1 AS `tel`*/;
 SET character_set_client = @saved_cs_client;
@@ -168,12 +170,12 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = gbk */;
-/*!50001 SET character_set_results     = gbk */;
-/*!50001 SET collation_connection      = gbk_chinese_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_brwinfo` AS select `tb_brw`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_brw`.`dvid` AS `dvid`,`tb_userinfo`.`name` AS `username`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_brw` join `tb_devinfo` on((`tb_brw`.`dvid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_brw`.`brwerid` = `tb_userinfo`.`id`))) */;
+/*!50001 VIEW `v_brwinfo` AS select `tb_brw`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_brw`.`dvid` AS `dvid`,`tb_userinfo`.`name` AS `username`,`tb_brw`.`date` AS `date`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_brw` join `tb_devinfo` on((`tb_brw`.`dvid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_brw`.`brwerid` = `tb_userinfo`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -186,12 +188,12 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = gbk */;
-/*!50001 SET character_set_results     = gbk */;
-/*!50001 SET collation_connection      = gbk_chinese_ci */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_rtninfo` AS select `tb_rtn`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_rtn`.`dvid` AS `dvid`,`tb_userinfo`.`name` AS `username`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_rtn` join `tb_devinfo` on((`tb_rtn`.`dvid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_rtn`.`rtnerid` = `tb_userinfo`.`id`))) */;
+/*!50001 VIEW `v_rtninfo` AS select `tb_rtn`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_rtn`.`dvid` AS `dvid`,`tb_userinfo`.`name` AS `username`,`tb_rtn`.`date` AS `date`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_rtn` join `tb_devinfo` on((`tb_rtn`.`dvid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_rtn`.`rtnerid` = `tb_userinfo`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -205,4 +207,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-12 11:09:30
+-- Dump completed on 2019-07-12 22:08:40

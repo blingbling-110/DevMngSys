@@ -68,7 +68,7 @@ public class MainFrame extends JFrame {
 	private JLabel userLabel = null;
 	
 	public MainFrame(boolean isAdmin) {
-		setTitle("企业设备管理系统");
+		setTitle("企业设备管理系统——超级管理员");
 		setIconImage(new ImageIcon(getClass().getResource(
 				"/res/root.jpg")).getImage());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -80,6 +80,7 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * 	获取主窗体菜单栏
+	 * @param isAdmin 是否拥有管理权限
 	 * @return mainMenuBar
 	 */
 	public MenuBar getMainMenuBar(boolean isAdmin) {
@@ -92,6 +93,7 @@ public class MainFrame extends JFrame {
 	
 	/**
 	 * 	获取主窗体工具栏
+	 * @param isAdmin 是否拥有管理权限
 	 * @return mainToolBar
 	 */
 	public ToolBar getMainToolBar(boolean isAdmin) {
@@ -105,6 +107,7 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * 	获取主窗体内容面板
+	 * @param isAdmin 是否拥有管理权限
 	 * @return mainContentPane
 	 */
 	public JPanel getMainContentPane(boolean isAdmin) {

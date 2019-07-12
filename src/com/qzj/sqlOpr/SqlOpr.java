@@ -471,15 +471,15 @@ public class SqlOpr {
 		sqls.add("drop view if exists v_brwInfo;");
 		sqls.add("create view v_brwInfo as "
 				+ "select tb_brw.id, tb_devinfo.name as devname, tb_brw.dvid, "
-				+ "tb_userinfo.name as username, tb_userinfo.email, "
-				+ "tb_userinfo.tel from tb_brw "
+				+ "tb_userinfo.name as username, tb_brw.date, "
+				+ "tb_userinfo.email, tb_userinfo.tel from tb_brw "
 				+ "inner join tb_devinfo on tb_brw.dvid = tb_devinfo.id "
 				+ "inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;");
 		sqls.add("drop view if exists v_rtninfo;");
 		sqls.add("create view v_rtninfo as "
 				+ "select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.dvid, "
-				+ "tb_userinfo.name as username, tb_userinfo.email, "
-				+ "tb_userinfo.tel from tb_rtn "
+				+ "tb_userinfo.name as username, tb_rtn.date, "
+				+ "tb_userinfo.email, tb_userinfo.tel from tb_rtn "
 				+ "inner join tb_devinfo on tb_rtn.dvid = tb_devinfo.id "
 				+ "inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;");
 		

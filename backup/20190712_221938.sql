@@ -13,6 +13,6 @@ insert into tb_userinfo values(10915,'覃子俊','admin','dias,11','软件工程师','CP
 insert into tb_userinfo values(54312,'普通用户','user','dias,11','','','no','no','',0);
 insert into tb_userinfo values(54321,'管理员','manager','dias,11','','','no','no','',1);
 drop view if exists v_brwInfo;
-create view v_brwInfo as select tb_brw.id, tb_devinfo.name as devname, tb_brw.dvid, tb_userinfo.name as username, tb_userinfo.email, tb_userinfo.tel from tb_brw inner join tb_devinfo on tb_brw.dvid = tb_devinfo.id inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;
+create view v_brwInfo as select tb_brw.id, tb_devinfo.name as devname, tb_brw.dvid, tb_userinfo.name as username, tb_brw.date, tb_userinfo.email, tb_userinfo.tel from tb_brw inner join tb_devinfo on tb_brw.dvid = tb_devinfo.id inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;
 drop view if exists v_rtninfo;
-create view v_rtninfo as select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.dvid, tb_userinfo.name as username, tb_userinfo.email, tb_userinfo.tel from tb_rtn inner join tb_devinfo on tb_rtn.dvid = tb_devinfo.id inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;
+create view v_rtninfo as select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.dvid, tb_userinfo.name as username, tb_rtn.date, tb_userinfo.email, tb_userinfo.tel from tb_rtn inner join tb_devinfo on tb_rtn.dvid = tb_devinfo.id inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;

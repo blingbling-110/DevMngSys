@@ -55,9 +55,9 @@ public class MenuBar extends JMenuBar {
 	private JMenuItem exitItem = null;
 	
 	/**
-	 * 	管理菜单
+	 * 	总览菜单
 	 */
-	private JMenu manageMenu = null;
+	private JMenu sumMenu = null;
 	
 	/**
 	 * 	设备总览菜单项
@@ -68,6 +68,51 @@ public class MenuBar extends JMenuBar {
 	 * 	人员总览菜单项
 	 */
 	private JMenuItem userSumItem = null;
+	
+	/**
+	 * 	管理菜单
+	 */
+	private JMenu manageMenu = null;
+	
+	/**
+	 * 	借用管理菜单项
+	 */
+	private JMenuItem brwItem = null;
+	
+	/**
+	 * 	归还管理菜单项
+	 */
+	private JMenuItem rtnItem = null;
+	
+	/**
+	 * 	搜索菜单
+	 */
+	private JMenu searchMenu = null;
+	
+	/**
+	 * 	搜索设备菜单项
+	 */
+	private JMenuItem devItem = null;
+	
+	/**
+	 * 	搜索人员菜单项
+	 */
+	private JMenuItem userItem = null;
+	
+	/**
+	 * 	帮助菜单
+	 */
+	private JMenu helpMenu = null;
+	
+	/**
+	 * 	修改密码菜单项
+	 */
+	private JMenuItem pwdItem = null;
+	
+	/**
+	 * 	关于菜单项
+	 */
+	private JMenuItem aboutItem = null;
 	
 	/**
 	 * 	内部窗体的Map集合
@@ -90,11 +135,16 @@ public class MenuBar extends JMenuBar {
 		this.stateLabel = stateLabel;
 		innerFrames = new HashMap<>();
 		add(getFileMenu(isAdmin));
-		add(getMangeMenu(isAdmin));
+		add(getSumMenu(isAdmin));
+		if(isAdmin)
+			add(getManageMenu());
+		add(getSearchMenu(isAdmin));
+		add(getHelpMenu());
 	}
 	
 	/**
 	 * 	获取文件菜单
+	 * @param isAdmin 是否拥有管理权限
 	 * @return 文件菜单
 	 */
 	public JMenu getFileMenu(boolean isAdmin) {
@@ -178,22 +228,24 @@ public class MenuBar extends JMenuBar {
 	}
 
 	/**
-	 * 	获取设备菜单
-	 * @return manageMenu
+	 * 	获取总览菜单
+	 * @param isAdmin 是否拥有管理权限
+	 * @return sumMenu
 	 */
-	public JMenu getMangeMenu(boolean isAdmin) {
-		if(manageMenu == null) {
-			manageMenu = new JMenu("总览(S)");
-			manageMenu.setMnemonic(KeyEvent.VK_S);
-			manageMenu.add(getDevSumItem(isAdmin));
+	public JMenu getSumMenu(boolean isAdmin) {
+		if(sumMenu == null) {
+			sumMenu = new JMenu("总览(S)");
+			sumMenu.setMnemonic(KeyEvent.VK_S);
+			sumMenu.add(getDevSumItem(isAdmin));
 			if(isAdmin)
-				manageMenu.add(getUserSumItem());
+				sumMenu.add(getUserSumItem());
 		}
-		return manageMenu;
+		return sumMenu;
 	}
 
 	/**
-	 * 	获取设备总览菜单
+	 * 	获取设备总览菜单项
+	 * @param isAdmin 是否拥有管理权限
 	 * @return devSumItem
 	 */
 	public JMenuItem getDevSumItem(boolean isAdmin) {
@@ -213,6 +265,7 @@ public class MenuBar extends JMenuBar {
 	}
 
 	/**
+	 * 	获取人员总览菜单项
 	 * @return userSumItem
 	 */
 	public JMenuItem getUserSumItem() {
@@ -232,9 +285,181 @@ public class MenuBar extends JMenuBar {
 	}
 
 	/**
+	 * 	获取管理菜单
+	 * @return manageMenu
+	 */
+	public JMenu getManageMenu() {
+		if(manageMenu == null) {
+			manageMenu = new JMenu("管理(M)");
+			manageMenu.setMnemonic(KeyEvent.VK_M);
+			manageMenu.add(getBrwItem());
+			manageMenu.add(getRtnItem());
+		}
+		return manageMenu;
+	}
+
+	/**
+	 * 	获取借用管理菜单项
+	 * @return brwItem
+	 */
+	public JMenuItem getBrwItem() {
+		if(brwItem == null) {
+			brwItem = new JMenuItem("借用管理(B)", new ImageIcon(
+					getClass().getResource("/res/icon/brw.png")));
+			brwItem.setMnemonic(KeyEvent.VK_B);
+			brwItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO 自动生成的方法存根
+					
+				}
+			});
+		}
+		return brwItem;
+	}
+
+	/**
+	 * 	获取归还管理菜单项
+	 * @return rtnItem
+	 */
+	public JMenuItem getRtnItem() {
+		if(rtnItem == null) {
+			rtnItem = new JMenuItem("归还管理(R)", new ImageIcon(
+					getClass().getResource("/res/icon/rtn.png")));
+			rtnItem.setMnemonic(KeyEvent.VK_R);
+			rtnItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO 自动生成的方法存根
+					
+				}
+			});
+		}
+		return rtnItem;
+	}
+
+	/**
+	 * 	获取搜索菜单
+	 * @param isAdmin 是否拥有管理权限
+	 * @return searchMenu
+	 */
+	public JMenu getSearchMenu(boolean isAdmin) {
+		if(searchMenu == null) {
+			searchMenu = new JMenu("搜索(E)");
+			searchMenu.setMnemonic(KeyEvent.VK_E);
+			searchMenu.add(getDevItem(isAdmin));
+			if(isAdmin)
+				searchMenu.add(getUserItem());
+		}
+		return searchMenu;
+	}
+
+	/**
+	 * 	获取搜索设备菜单
+	 * @param isAdmin 是否拥有管理权限
+	 * @return devMenu
+	 */
+	public JMenuItem getDevItem(boolean isAdmin) {
+		if(devItem == null) {
+			devItem = new JMenuItem("搜索设备(D)", new ImageIcon(
+					getClass().getResource("/res/icon/search.png")));
+			devItem.setMnemonic(KeyEvent.VK_D);
+			devItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO 自动生成的方法存根
+					
+				}
+			});
+		}
+		return devItem;
+	}
+
+	/**
+	 * 	获取搜索人员菜单
+	 * @return userMenu
+	 */
+	public JMenuItem getUserItem() {
+		if(userItem == null) {
+			userItem = new JMenuItem("搜索人员(U)", new ImageIcon(
+					getClass().getResource("/res/icon/finger.png")));
+			userItem.setMnemonic(KeyEvent.VK_U);
+			userItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO 自动生成的方法存根
+					
+				}
+			});
+		}
+		return userItem;
+	}
+
+	/**
+	 * 	获取帮助菜单
+	 * @return helpMenu
+	 */
+	public JMenu getHelpMenu() {
+		if(helpMenu == null) {
+			helpMenu = new JMenu("帮助(H)");
+			helpMenu.setMnemonic(KeyEvent.VK_H);
+			helpMenu.add(getPwdItem());
+			helpMenu.add(getAboutItem());
+		}
+		return helpMenu;
+	}
+
+	/**
+	 * 	获取修改密码菜单项
+	 * @return pwdItem
+	 */
+	public JMenuItem getPwdItem() {
+		if(pwdItem == null) {
+			pwdItem = new JMenuItem("修改密码(C)", new ImageIcon(
+					getClass().getResource("/res/icon/key.png")));
+			pwdItem.setMnemonic(KeyEvent.VK_C);
+			pwdItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO 自动生成的方法存根
+					
+				}
+			});
+		}
+		return pwdItem;
+	}
+
+	/**
+	 * 	获取关于菜单项
+	 * @return aboutItem
+	 */
+	public JMenuItem getAboutItem() {
+		if(aboutItem == null) {
+			aboutItem = new JMenuItem("关于(A)", new ImageIcon(
+					getClass().getResource("/res/icon/root.png")));
+			aboutItem.setMnemonic(KeyEvent.VK_A);
+			aboutItem.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO 自动生成的方法存根
+					
+				}
+			});
+		}
+		return aboutItem;
+	}
+
+	/**
 	 * 	显示内部窗体，利用反射实例化内部窗体对象
 	 * @param jMenuItem 内部窗体的来源菜单项
-	 * @param jInternalFrame 内部窗体
+	 * @param innerFrameC 内部窗体类
+	 * @param isAdmin 是否拥有管理权限
 	 */
 	protected void showInnerFrame(JMenuItem jMenuItem, 
 			Class<? extends JInternalFrame> innerFrameC, boolean isAdmin) {
