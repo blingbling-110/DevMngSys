@@ -185,9 +185,9 @@ public class LoginDialog extends JFrame {
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
-					setVisible(false);//	设置登录窗体不可见
+					dispose();//	释放登录窗体的资源
 					mainFrame = new MainFrame(isAdmin);//	实例化主窗体
-					mainFrame.setTitle("企业设备管理系统——" + userName);
+					MainFrame.userId = userId;
 					mainFrame.getUserLabel().setText("当前登录用户：" + userName);
 					mainFrame.setVisible(true);//	设置主窗体可见
 				}

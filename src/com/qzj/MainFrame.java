@@ -68,11 +68,16 @@ public class MainFrame extends JFrame {
 	private JLabel userLabel = null;
 	
 	/**
+	 * 	登录用户名
+	 */
+	public static String userId = null;
+	
+	/**
 	 * 	主窗体构造方法
 	 * @param isAdmin 是否拥有管理权限
 	 */
 	public MainFrame(boolean isAdmin) {
-		setTitle("企业设备管理系统——超级管理员");
+		setTitle("企业设备管理系统");
 		setIconImage(new ImageIcon(getClass().getResource(
 				"/res/root.jpg")).getImage());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -228,7 +233,9 @@ public class MainFrame extends JFrame {
 			try {
 				//	窗体风格本地化
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				new MainFrame(true).setVisible(true);
+				MainFrame mainFrame =  new MainFrame(true);
+				MainFrame.userId = "root";
+				mainFrame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

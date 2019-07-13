@@ -140,8 +140,8 @@ public class MenuBar extends JMenuBar {
 	 * @param stateLabel 主窗体状态标签
 	 * @param isAdmin 是否拥有管理权限
 	 */
-	public MenuBar(DesktopPane desktopPane, 
-			JLabel stateLabel, boolean isAdmin) {
+	public MenuBar(DesktopPane desktopPane, JLabel stateLabel, 
+			boolean isAdmin) {
 		this.desktopPane = desktopPane;
 		this.stateLabel = stateLabel;
 		innerFrames = new HashMap<>();
@@ -453,8 +453,19 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO 自动生成的方法存根
-					
+					JOptionPane.showMessageDialog(null, 
+							"企业设备管理系统\n\n"
+							+ "本系统出于学习Java编程以及MySQL数据库操作"
+							+ "而编写，水平有限，多多指教。\n\n"
+							+ "作者：覃子俊\n"
+							+ "版本：Alpha\n"
+							+ "日期：2019年7月14日\n"
+							+ "源码地址："
+							+ "https://github.com/blingbling-110/DevMngSys\n"
+							+ "联系方式：523497359@qq.com", 
+							"关于本系统", JOptionPane.INFORMATION_MESSAGE, 
+							new ImageIcon(getClass().getResource(
+									"/res/root.jpg")));
 				}
 			});
 		}
@@ -489,8 +500,10 @@ public class MenuBar extends JMenuBar {
 			innerFrame.setFrameIcon(jMenuItem.getIcon());
 			//	随机初始位置
 			innerFrame.setLocation(
-					(int)(Math.random() * (desktopPane.getWidth() - 1032)), 
-					(int)(Math.random() * (desktopPane.getHeight() - 432)));
+					(int)(Math.random() * (desktopPane.getWidth() 
+							- innerFrame.getWidth())), 
+					(int)(Math.random() * (desktopPane.getHeight() 
+							- innerFrame.getHeight())));
 			innerFrame.setVisible(true);
 		}
 		try {

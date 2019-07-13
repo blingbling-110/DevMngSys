@@ -821,4 +821,13 @@ public class SqlOpr {
 			status = res.getString("status");
 		return status;
 	}
+	
+	public static boolean changePwd(String userId, 
+			String oriPwd, String newPwd) {
+		boolean res = false;
+		res = exeUpdate("update tb_userinfo set pwd = '" + newPwd 
+				+ "' where userid = '" + userId + "' and pwd = '"
+				+ oriPwd + "'");
+		return res;
+	}
 }
