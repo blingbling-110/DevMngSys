@@ -14,10 +14,10 @@ public class TbBrw {
 	/**
 	 * 	借用设备编号
 	 */
-	private String dvId;
+	private String devId;
 	
 	/**
-	 * 	借用人编号
+	 * 	借用人工号
 	 */
 	private Integer brwerId;
 	
@@ -38,10 +38,10 @@ public class TbBrw {
 		this.id = id;
 	}
 
-	public TbBrw(String id, String dvId, Integer brwerId, 
+	public TbBrw(String id, String devId, Integer brwerId, 
 			String date, String remark) {
 		this.id = id;
-		this.dvId = dvId;
+		this.devId = devId;
 		this.brwerId = brwerId;
 		this.date = date;
 		this.remark = remark;
@@ -64,17 +64,17 @@ public class TbBrw {
 	}
 
 	/**
-	 * @return dvId
+	 * @return devId
 	 */
-	public String getDvId() {
-		return dvId;
+	public String getDevId() {
+		return devId;
 	}
 
 	/**
-	 * @param dvId 要设置的 dvId
+	 * @param devId 要设置的 devId
 	 */
-	public void setDvId(String dvId) {
-		this.dvId = dvId;
+	public void setDevId(String devId) {
+		this.devId = devId;
 	}
 
 	/**

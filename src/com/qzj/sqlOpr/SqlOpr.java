@@ -135,8 +135,8 @@ public class SqlOpr {
 	 */
 	public static TbUserInfo getUserInfo(Item item) {
 		String where = "name='" + item.getName() + "'";
-		if(item.getJobNum() != 0)
-			where = "id='" + item.getJobNum() + "'";
+		if(item.getJobNum() != null)
+			where = "id=" + item.getJobNum();
 		TbUserInfo info = new TbUserInfo();
 		ResultSet res = findForRes("select * from tb_userinfo where " + where);
 		try {
@@ -155,6 +155,52 @@ public class SqlOpr {
 			e.printStackTrace();
 		}
 		return info;
+	}
+	
+	/**
+	 * 	读取借用单
+	 * @param item 欲读取的借用单
+	 * @return 该借用单的公共类对象
+	 */
+	public static TbBrw getBrw(Item item) {
+		String where = "id='" + item.getId() + "'";
+		TbBrw brw = new TbBrw();
+		ResultSet res = findForRes("select * from tb_brw where " + where);
+		try {
+			if(res.next()) {
+				brw.setId(res.getString("id").trim());
+				brw.setDevId(res.getString("devid").trim());
+				brw.setBrwerId(res.getInt("brwerid"));
+				brw.setDate(res.getString("date").trim());
+				brw.setRemark(res.getString("remark").trim());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return brw;
+	}
+	
+	/**
+	 * 	读取归还单
+	 * @param item 欲读取的归还单
+	 * @return 该归还单的公共类对象
+	 */
+	public static TbRtn getRtn(Item item) {
+		String where = "id='" + item.getId() + "'";
+		TbRtn rtn = new TbRtn();
+		ResultSet res = findForRes("select * from tb_rtn where " + where);
+		try {
+			if(res.next()) {
+				rtn.setId(res.getString("id").trim());
+				rtn.setDevId(res.getString("devid").trim());
+				rtn.setRtnerId(res.getInt("rtnerid"));
+				rtn.setDate(res.getString("date").trim());
+				rtn.setRemark(res.getString("remark").trim());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rtn;
 	}
 
 	/**
@@ -211,6 +257,26 @@ public class SqlOpr {
 	public static List<List<String>> getAllUserInfo() {
 		List<List<String>> list = findForList(
 				"select id, name, userid from tb_userinfo");
+		return list;
+	}
+	
+	/**
+	 * 	读取所有借用单
+	 * @return 包含所有借用单的List集合
+	 */
+	public static List<List<String>> getAllBrw() {
+		List<List<String>> list = findForList(
+				"select id from tb_brw order by id desc");//	倒序
+		return list;
+	}
+	
+	/**
+	 * 	读取所有归还单
+	 * @return 包含所有归还单的List集合
+	 */
+	public static List<List<String>> getAllRtn() {
+		List<List<String>> list = findForList(
+				"select id from tb_rtn order by id desc");//	倒序
 		return list;
 	}
 
@@ -282,18 +348,18 @@ public class SqlOpr {
 			conn.setAutoCommit(false);//	取消自动提交
 			//	增加借用表记录
 			exeUpdate("insert into tb_brw values('"+ brw.getId()
-			+ "','" + brw.getDvId() + "'," + brw.getBrwerId()
+			+ "','" + brw.getDevId() + "'," + brw.getBrwerId()
 			+ ",'" + brw.getDate() + "','" + brw.getRemark() + "')");
 			//	更改设备信息
 			Item item = new Item();
-			item.setId(brw.getDvId());//	获取借用设备编号
+			item.setId(brw.getDevId());//	获取借用设备编号
 			TbDevInfo devInfo = getDevInfo(item);
 			boolean res = false;
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
 				res = exeUpdate("update tb_devinfo set status='" 
-						+ brw.getBrwerId() + "',remark='" 
-						+ brw.getId() + "' where id='"
-						+ devInfo.getId() + "'");
+						+ "借用人工号：" + brw.getBrwerId() 
+						+ "',remark='" + brw.getRemark() 
+						+ "' where id='" + devInfo.getId() + "'");
 			if(res)
 				conn.commit();//	提交事务
 			else {
@@ -318,18 +384,17 @@ public class SqlOpr {
 			conn.setAutoCommit(false);//	取消自动提交
 			//	增加归还表记录
 			exeUpdate("insert into tb_rtn values('"+ rtn.getId()
-			+ "','" + rtn.getDvId() + "'," + rtn.getRtnerId()
+			+ "','" + rtn.getDevId() + "'," + rtn.getRtnerId()
 			+ ",'" + rtn.getDate() + "','" + rtn.getRemark() + "')");
 			//	更改设备信息
 			Item item = new Item();
-			item.setId(rtn.getDvId());//	获取归还设备编号
+			item.setId(rtn.getDevId());//	获取归还设备编号
 			TbDevInfo devInfo = getDevInfo(item);
 			boolean res = false;
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
 				res = exeUpdate("update tb_devinfo set status='" 
-						+ "库存中" + "',remark='" 
-						+ rtn.getId() + "' where id='"
-						+ devInfo.getId() + "'");
+						+ "库存中" + "',remark='" + rtn.getRemark() 
+						+ "' where id='" + devInfo.getId() + "'");
 			if(res)
 				conn.commit();//	提交事务
 			else {
@@ -470,17 +535,17 @@ public class SqlOpr {
 		 */
 		sqls.add("drop view if exists v_brwInfo;");
 		sqls.add("create view v_brwInfo as "
-				+ "select tb_brw.id, tb_devinfo.name as devname, tb_brw.dvid, "
+				+ "select tb_brw.id, tb_devinfo.name as devname, tb_brw.devid, "
 				+ "tb_userinfo.name as username, tb_brw.date, "
 				+ "tb_userinfo.email, tb_userinfo.tel from tb_brw "
-				+ "inner join tb_devinfo on tb_brw.dvid = tb_devinfo.id "
+				+ "inner join tb_devinfo on tb_brw.devid = tb_devinfo.id "
 				+ "inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;");
 		sqls.add("drop view if exists v_rtninfo;");
 		sqls.add("create view v_rtninfo as "
-				+ "select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.dvid, "
+				+ "select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.devid, "
 				+ "tb_userinfo.name as username, tb_rtn.date, "
 				+ "tb_userinfo.email, tb_userinfo.tel from tb_rtn "
-				+ "inner join tb_devinfo on tb_rtn.dvid = tb_devinfo.id "
+				+ "inner join tb_devinfo on tb_rtn.devid = tb_devinfo.id "
 				+ "inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;");
 		
 		//	输出备份文件
@@ -674,7 +739,7 @@ public class SqlOpr {
 			boolean autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit(false);
 			boolean res = false;
-			if(userInfo.getId() != null && userInfo.getId() != 0)
+			if(userInfo.getId() != null)
 				res = exeUpdate("insert into tb_userinfo values("
 						+ userInfo.getId() + ",'" + userInfo.getName()
 						+ "','" + userInfo.getUserId() + "','"
@@ -737,5 +802,23 @@ public class SqlOpr {
 		if(res.next())
 			isAdmin = res.getBoolean("isadmin");
 		return isAdmin;
+	}
+	
+	/**
+	 * 	由设备编号获取设备状态
+	 * @param devId 设备编号
+	 * @return 设备状态
+	 * @throws SQLException
+	 */
+	public static String getStatusFromDevId(String devId) 
+			throws SQLException {
+		PreparedStatement preSta = conn.prepareStatement(
+				"select status from tb_devinfo where id=?");
+		preSta.setString(1, devId);
+		ResultSet res = preSta.executeQuery();
+		String status = null;
+		if(res.next())
+			status = res.getString("status");
+		return status;
 	}
 }

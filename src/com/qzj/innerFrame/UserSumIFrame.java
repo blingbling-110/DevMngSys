@@ -39,16 +39,16 @@ public class UserSumIFrame extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * 	表格模型
-	 */
-	private JTable table = null;
 	
 	/**
 	 * 	表格滚动面板
 	 */
 	private JScrollPane tablePane = null;
+
+	/**
+	 * 	表格
+	 */
+	private JTable table = null;
 	
 	/**
 	 * 	增加用户面板
@@ -176,30 +176,13 @@ public class UserSumIFrame extends JInternalFrame {
 		tablePane.setViewportView(getTable());
 		getContentPane().add(tablePane, BorderLayout.CENTER);
 		getAddPane();
-		addPane.setLayout(new GridBagLayout());
-		addComponent(addPane, idLabel, 0, 0, 1);
-		addComponent(addPane, idField, 1, 0, 1);
-		addComponent(addPane, nameLabel, 2, 0, 1);
-		addComponent(addPane, nameField, 3, 0, 1);
-		addComponent(addPane, userIdLabel, 4, 0, 1);
-		addComponent(addPane, userIdField, 5, 0, 1);
-		addComponent(addPane, pwdLabel, 6, 0, 1);
-		addComponent(addPane, pwdField, 7, 0, 1);
-		addComponent(addPane, posLabel, 0, 1, 1);
-		addComponent(addPane, posField, 1, 1, 3);
-		addComponent(addPane, depLabel, 4, 1, 1);
-		addComponent(addPane, depField, 5, 1, 3);
-		addComponent(addPane, emailLabel, 0, 2, 1);
-		addComponent(addPane, emailField, 1, 2, 3);
-		addComponent(addPane, telLabel, 4, 2, 1);
-		addComponent(addPane, telField, 5, 2, 3);
-		addComponent(addPane, remarkLabel, 0, 3, 1);
-		addComponent(addPane, remarkField, 1, 3, 7);
-		addComponent(addPane, isAdminBox, 0, 5, 2);
-		addComponent(addPane, getAddButton(), 2, 5, 2);
-		addComponent(addPane, getDeleteButton(), 4, 5, 2);
-		addComponent(addPane, getRefreshButton(), 6, 5, 2);
 		getContentPane().add(addPane, BorderLayout.SOUTH);
+	}
+
+	public JScrollPane getTablePane() {
+		if(tablePane == null)
+			tablePane = new JScrollPane();
+		return tablePane;
 	}
 
 	public JTable getTable() {
@@ -233,7 +216,7 @@ public class UserSumIFrame extends JInternalFrame {
 			TbUserInfo userInfo = SqlOpr.getUserInfo(item);//	获取指定人员信息
 			String[] row = new String[columnLabel.length];//	表格模型的一行
 			//	判断人员信息对象是否为空
-			if(userInfo.getId() != null && userInfo.getId() != 0) {
+			if(userInfo.getId() != null) {
 				row[0] = userInfo.getId().toString();
 				row[1] = userInfo.getName();
 				row[2] = userInfo.getUserId();
@@ -249,15 +232,33 @@ public class UserSumIFrame extends JInternalFrame {
 		return table;
 	}
 
-	public JScrollPane getTablePane() {
-		if(tablePane == null)
-			tablePane = new JScrollPane();
-		return tablePane;
-	}
-
 	public JPanel getAddPane() {
-		if(addPane == null)
+		if(addPane == null) {
 			addPane = new JPanel();
+			addPane.setLayout(new GridBagLayout());
+			addComponent(addPane, idLabel, 0, 0, 1);
+			addComponent(addPane, idField, 1, 0, 1);
+			addComponent(addPane, nameLabel, 2, 0, 1);
+			addComponent(addPane, nameField, 3, 0, 1);
+			addComponent(addPane, userIdLabel, 4, 0, 1);
+			addComponent(addPane, userIdField, 5, 0, 1);
+			addComponent(addPane, pwdLabel, 6, 0, 1);
+			addComponent(addPane, pwdField, 7, 0, 1);
+			addComponent(addPane, posLabel, 0, 1, 1);
+			addComponent(addPane, posField, 1, 1, 3);
+			addComponent(addPane, depLabel, 4, 1, 1);
+			addComponent(addPane, depField, 5, 1, 3);
+			addComponent(addPane, emailLabel, 0, 2, 1);
+			addComponent(addPane, emailField, 1, 2, 3);
+			addComponent(addPane, telLabel, 4, 2, 1);
+			addComponent(addPane, telField, 5, 2, 3);
+			addComponent(addPane, remarkLabel, 0, 3, 1);
+			addComponent(addPane, remarkField, 1, 3, 7);
+			addComponent(addPane, isAdminBox, 0, 5, 2);
+			addComponent(addPane, getAddButton(), 2, 5, 2);
+			addComponent(addPane, getDeleteButton(), 4, 5, 2);
+			addComponent(addPane, getRefreshButton(), 6, 5, 2);
+		}
 		return addPane;
 	}
 	
@@ -270,22 +271,22 @@ public class UserSumIFrame extends JInternalFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(idField.getText() == null || 
-							idField.getText().isEmpty()) {
+					if(idField.getText().trim() == null || 
+							idField.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "工号不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(nameField.getText() == null || 
-							nameField.getText().isEmpty()) {
+					if(nameField.getText().trim() == null || 
+							nameField.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "姓名不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(userIdField.getText() == null || 
-							userIdField.getText().isEmpty()) {
+					if(userIdField.getText().trim() == null || 
+							userIdField.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "用户名不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -298,15 +299,15 @@ public class UserSumIFrame extends JInternalFrame {
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(emailField.getText() == null || 
-							emailField.getText().isEmpty()) {
+					if(emailField.getText().trim() == null || 
+							emailField.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "邮箱不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(telField.getText() == null || 
-							telField.getText().isEmpty()) {
+					if(telField.getText().trim() == null || 
+							telField.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "电话不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -317,36 +318,38 @@ public class UserSumIFrame extends JInternalFrame {
 					for(int i = 0; i < allUserInfo.size(); i++) {
 						String id = allUserInfo.get(i).get(0);
 						String userId = allUserInfo.get(i).get(2);
-						if(idField.getText().equals(id)) {
+						if(idField.getText().trim().equals(id)) {
 							JOptionPane.showMessageDialog(
 									UserSumIFrame.this, "工号已存在", 
 									"输入错误", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-						if(userIdField.getText().equals(userId)) {
+						if(userIdField.getText().trim().equals(userId)) {
 							JOptionPane.showMessageDialog(
 									UserSumIFrame.this, "用户名已存在", 
 									"输入错误", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
 					}
-					TbUserInfo userInfo = new TbUserInfo();//	封装待增加人员信息的对象
+					//	封装待增加人员信息的对象
+					TbUserInfo userInfo = new TbUserInfo();
 					try {
-						userInfo.setId(Integer.parseInt(idField.getText()));
+						userInfo.setId(Integer.parseInt(
+								idField.getText().trim()));
 					}catch(NumberFormatException exc) {
 						JOptionPane.showMessageDialog(UserSumIFrame.this, 
-								"工号只能为整数，且不能超过" + Integer.MAX_VALUE, 
+								"工号只能为整数，且不能超过" + Integer.MAX_VALUE,
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					userInfo.setName(nameField.getText());
-					userInfo.setUserId(userIdField.getText());
+					userInfo.setName(nameField.getText().trim());
+					userInfo.setUserId(userIdField.getText().trim());
 					userInfo.setPwd(pwd);
-					userInfo.setPos(posField.getText());
-					userInfo.setDep(depField.getText());
-					userInfo.setEmail(emailField.getText());
-					userInfo.setTel(telField.getText());
-					userInfo.setRemark(remarkField.getText());
+					userInfo.setPos(posField.getText().trim());
+					userInfo.setDep(depField.getText().trim());
+					userInfo.setEmail(emailField.getText().trim());
+					userInfo.setTel(telField.getText().trim());
+					userInfo.setRemark(remarkField.getText().trim());
 					userInfo.setAdmin(isAdminBox.isSelected());
 					boolean res = SqlOpr.insertTbUserInfo(userInfo);
 					if(res) {
@@ -392,7 +395,7 @@ public class UserSumIFrame extends JInternalFrame {
 					}
 					for(int i = 0; i < rows.length; i++) {
 						String id = table.getValueAt(rows[i], 0).toString();
-						if(id.equals("10915")) {
+						if(id.equals("0")) {
 							JOptionPane.showMessageDialog(UserSumIFrame.this,
 									"无法删除超级管理员", "操作失败", 
 									JOptionPane.ERROR_MESSAGE);
@@ -440,8 +443,6 @@ public class UserSumIFrame extends JInternalFrame {
 	 * @param x gridx
 	 * @param y gridy
 	 * @param width gridwidth
-	 * @param fillHor 是否水平填满
-	 * @param fillVer 是否垂直填满
 	 */
 	private void addComponent(JPanel pane, JComponent com, 
 			int x, int y, int width) {

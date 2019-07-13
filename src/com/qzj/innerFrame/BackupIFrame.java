@@ -74,8 +74,8 @@ public class BackupIFrame extends JInternalFrame {
 					String filePath = null;
 					try {
 						filePath = SqlOpr.backup();
-					} catch (SQLException e1) {
-						e1.printStackTrace();
+					} catch (SQLException exc) {
+						exc.printStackTrace();
 					}
 					getPathField().setText("±¸·ÝÂ·¾¶£º" + filePath);
 					JOptionPane.showMessageDialog(BackupIFrame.this, 

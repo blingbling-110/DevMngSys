@@ -67,6 +67,10 @@ public class MainFrame extends JFrame {
 	 */
 	private JLabel userLabel = null;
 	
+	/**
+	 * 	主窗体构造方法
+	 * @param isAdmin 是否拥有管理权限
+	 */
 	public MainFrame(boolean isAdmin) {
 		setTitle("企业设备管理系统——超级管理员");
 		setIconImage(new ImageIcon(getClass().getResource(

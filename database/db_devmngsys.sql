@@ -24,9 +24,9 @@ DROP TABLE IF EXISTS `tb_brw`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tb_brw` (
   `id` varchar(30) NOT NULL,
-  `dvid` varchar(20) DEFAULT NULL,
+  `devid` varchar(20) DEFAULT NULL,
   `brwerid` int(11) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
+  `date` varchar(50) DEFAULT NULL,
   `remark` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -64,7 +64,7 @@ CREATE TABLE `tb_devinfo` (
 
 LOCK TABLES `tb_devinfo` WRITE;
 /*!40000 ALTER TABLE `tb_devinfo` DISABLE KEYS */;
-INSERT INTO `tb_devinfo` VALUES ('DZ-BD-012','CANAPE','喻延福','功能开发及调试设备','用于测试设备总览内部窗体'),('DZ-CA-001','CANAPE','杨化方','功能开发及调试设备','用于测试刷新按钮'),('DZ-CA-002','CANAPE','苏健','功能开发及调试设备','用于测试增加设备按钮');
+INSERT INTO `tb_devinfo` VALUES ('Dev001','设备001','库存中','',''),('Dev002','设备002','库存中','',''),('Dev003','设备003','库存中','','');
 /*!40000 ALTER TABLE `tb_devinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,9 +77,9 @@ DROP TABLE IF EXISTS `tb_rtn`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tb_rtn` (
   `id` varchar(30) NOT NULL,
-  `dvid` varchar(20) DEFAULT NULL,
+  `devid` varchar(20) DEFAULT NULL,
   `rtnerid` int(11) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
+  `date` varchar(50) DEFAULT NULL,
   `remark` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -122,7 +122,7 @@ CREATE TABLE `tb_userinfo` (
 
 LOCK TABLES `tb_userinfo` WRITE;
 /*!40000 ALTER TABLE `tb_userinfo` DISABLE KEYS */;
-INSERT INTO `tb_userinfo` VALUES (10915,'覃子俊','admin','dias,11','软件工程师','CP（控制器平台）','qinzijun@dias.com.cn','+86(21)60305233','系统管理员',1),(54312,'普通用户','user','dias,11','','','no','no','',0),(54321,'管理员','manager','dias,11','','','no','no','',1);
+INSERT INTO `tb_userinfo` VALUES (-2,'用户','user','123456','','','no','no','',0),(-1,'管理员','admin','123456','','','no','no','',1),(0,'超级管理员','root','123456','','','no','no','',1);
 /*!40000 ALTER TABLE `tb_userinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,7 +137,7 @@ SET character_set_client = utf8mb4;
 /*!50001 CREATE VIEW `v_brwinfo` AS SELECT 
  1 AS `id`,
  1 AS `devname`,
- 1 AS `dvid`,
+ 1 AS `devid`,
  1 AS `username`,
  1 AS `date`,
  1 AS `email`,
@@ -155,7 +155,7 @@ SET character_set_client = utf8mb4;
 /*!50001 CREATE VIEW `v_rtninfo` AS SELECT 
  1 AS `id`,
  1 AS `devname`,
- 1 AS `dvid`,
+ 1 AS `devid`,
  1 AS `username`,
  1 AS `date`,
  1 AS `email`,
@@ -175,7 +175,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_brwinfo` AS select `tb_brw`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_brw`.`dvid` AS `dvid`,`tb_userinfo`.`name` AS `username`,`tb_brw`.`date` AS `date`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_brw` join `tb_devinfo` on((`tb_brw`.`dvid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_brw`.`brwerid` = `tb_userinfo`.`id`))) */;
+/*!50001 VIEW `v_brwinfo` AS select `tb_brw`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_brw`.`devid` AS `devid`,`tb_userinfo`.`name` AS `username`,`tb_brw`.`date` AS `date`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_brw` join `tb_devinfo` on((`tb_brw`.`devid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_brw`.`brwerid` = `tb_userinfo`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -193,7 +193,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `v_rtninfo` AS select `tb_rtn`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_rtn`.`dvid` AS `dvid`,`tb_userinfo`.`name` AS `username`,`tb_rtn`.`date` AS `date`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_rtn` join `tb_devinfo` on((`tb_rtn`.`dvid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_rtn`.`rtnerid` = `tb_userinfo`.`id`))) */;
+/*!50001 VIEW `v_rtninfo` AS select `tb_rtn`.`id` AS `id`,`tb_devinfo`.`name` AS `devname`,`tb_rtn`.`devid` AS `devid`,`tb_userinfo`.`name` AS `username`,`tb_rtn`.`date` AS `date`,`tb_userinfo`.`email` AS `email`,`tb_userinfo`.`tel` AS `tel` from ((`tb_rtn` join `tb_devinfo` on((`tb_rtn`.`devid` = `tb_devinfo`.`id`))) join `tb_userinfo` on((`tb_rtn`.`rtnerid` = `tb_userinfo`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -207,4 +207,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-07-12 22:08:40
+-- Dump completed on 2019-07-13 18:43:37

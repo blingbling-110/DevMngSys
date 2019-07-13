@@ -37,16 +37,16 @@ public class DevSumIFrame extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * 	表格模型
-	 */
-	private JTable table = null;
 	
 	/**
 	 * 	表格滚动面板
 	 */
 	private JScrollPane tablePane = null;
+
+	/**
+	 * 	表格
+	 */
+	private JTable table = null;
 	
 	/**
 	 * 	增加设备面板
@@ -150,6 +150,18 @@ public class DevSumIFrame extends JInternalFrame {
 		getContentPane().add(addPane, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * @return tablePane
+	 */
+	public JScrollPane getTablePane() {
+		if(tablePane == null)
+			tablePane = new JScrollPane();
+		return tablePane;
+	}
+
+	/**
+	 * @return table
+	 */
 	public JTable getTable() {
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//	关闭列的自动调节
@@ -167,7 +179,7 @@ public class DevSumIFrame extends JInternalFrame {
 			if(i > 2)
 				columnattr.setPreferredWidth(300);//	调整表格列宽
 			else
-				columnattr.setPreferredWidth(100);//	调整表格列宽
+				columnattr.setPreferredWidth(130);//	调整表格列宽
 		}
 		//		初始化表格内容
 		List<List<String>> allDevInfo = SqlOpr.getAllDevInfo();//	获取所有设备信息
@@ -189,12 +201,6 @@ public class DevSumIFrame extends JInternalFrame {
 		return table;
 	}
 
-	public JScrollPane getTablePane() {
-		if(tablePane == null)
-			tablePane = new JScrollPane();
-		return tablePane;
-	}
-
 	public JPanel getAddPane() {
 		if(addPane == null)
 			addPane = new JPanel();
@@ -210,33 +216,45 @@ public class DevSumIFrame extends JInternalFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(idField.getText() == null || 
-							idField.getText().isEmpty()) {
+					if(idField.getText().trim() == null || 
+							idField.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(
 								DevSumIFrame.this, "设备编号不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(nameField.getText() == null || 
-							nameField.getText().isEmpty()) {
+					if(nameField.getText().trim() == null || 
+							nameField.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(
 								DevSumIFrame.this, "设备名称不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(statusField.getText() == null || 
-							statusField.getText().isEmpty()) {
+					if(statusField.getText().trim() == null || 
+							statusField.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(
 								DevSumIFrame.this, "设备状态不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					TbDevInfo devInfo = new TbDevInfo();//	封装待增加设备信息的对象
-					devInfo.setId(idField.getText());
-					devInfo.setName(nameField.getText());
-					devInfo.setStatus(statusField.getText());
-					devInfo.setDes(desField.getText());
-					devInfo.setRemark(remarkField.getText());
+					//	获取所有设备信息
+					List<List<String>> allDevInfo = SqlOpr.getAllDevInfo();
+					for(int i = 0; i < allDevInfo.size(); i++) {
+						String id = allDevInfo.get(i).get(0);
+						if(idField.getText().equals(id)) {
+							JOptionPane.showMessageDialog(
+									DevSumIFrame.this, "设备编号已存在", 
+									"输入错误", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+					}
+					//	封装待增加设备信息的对象
+					TbDevInfo devInfo = new TbDevInfo();
+					devInfo.setId(idField.getText().trim());
+					devInfo.setName(nameField.getText().trim());
+					devInfo.setStatus(statusField.getText().trim());
+					devInfo.setDes(desField.getText().trim());
+					devInfo.setRemark(remarkField.getText().trim());
 					boolean res = SqlOpr.insertTbDevInfo(devInfo);
 					if(res) {
 						refreshButton.doClick();
@@ -318,8 +336,6 @@ public class DevSumIFrame extends JInternalFrame {
 	 * @param x gridx
 	 * @param y gridy
 	 * @param width gridwidth
-	 * @param fillHor 是否水平填满
-	 * @param fillVer 是否垂直填满
 	 */
 	private void addComponent(JPanel pane, JComponent com, 
 			int x, int y, int width) {

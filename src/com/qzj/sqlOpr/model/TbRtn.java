@@ -14,10 +14,10 @@ public class TbRtn {
 	/**
 	 * 	归还设备编号
 	 */
-	private String dvId;
+	private String devId;
 	
 	/**
-	 * 	归还人编号
+	 * 	归还人工号
 	 */
 	private Integer rtnerId;
 	
@@ -38,10 +38,10 @@ public class TbRtn {
 		this.id = id;
 	}
 
-	public TbRtn(String id, String dvId, Integer rtnerId, 
+	public TbRtn(String id, String devId, Integer rtnerId, 
 			String date, String remark) {
 		this.id = id;
-		this.dvId = dvId;
+		this.devId = devId;
 		this.rtnerId = rtnerId;
 		this.date = date;
 		this.remark = remark;
@@ -64,17 +64,17 @@ public class TbRtn {
 	}
 
 	/**
-	 * @return dvId
+	 * @return devId
 	 */
-	public String getDvId() {
-		return dvId;
+	public String getDevId() {
+		return devId;
 	}
 
 	/**
-	 * @param dvId 要设置的 dvId
+	 * @param devId 要设置的 devId
 	 */
-	public void setDvId(String dvId) {
-		this.dvId = dvId;
+	public void setDevId(String devId) {
+		this.devId = devId;
 	}
 
 	/**

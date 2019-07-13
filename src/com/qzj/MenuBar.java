@@ -18,8 +18,13 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import com.qzj.innerFrame.BackupIFrame;
+import com.qzj.innerFrame.BrwIFrame;
+import com.qzj.innerFrame.DevIFrame;
 import com.qzj.innerFrame.DevSumIFrame;
+import com.qzj.innerFrame.PwdIFrame;
 import com.qzj.innerFrame.RestoreIFrame;
+import com.qzj.innerFrame.RtnIFrame;
+import com.qzj.innerFrame.UserIFrame;
 import com.qzj.innerFrame.UserSumIFrame;
 
 /**
@@ -129,6 +134,12 @@ public class MenuBar extends JMenuBar {
 	 */
 	private JLabel stateLabel = null;
 	
+	/**
+	 * 	主窗体菜单栏构造方法
+	 * @param desktopPane 主窗体桌面面板
+	 * @param stateLabel 主窗体状态标签
+	 * @param isAdmin 是否拥有管理权限
+	 */
 	public MenuBar(DesktopPane desktopPane, 
 			JLabel stateLabel, boolean isAdmin) {
 		this.desktopPane = desktopPane;
@@ -311,8 +322,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO 自动生成的方法存根
-					
+					showInnerFrame(brwItem, BrwIFrame.class, true);
 				}
 			});
 		}
@@ -332,8 +342,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO 自动生成的方法存根
-					
+					showInnerFrame(rtnItem, RtnIFrame.class, true);
 				}
 			});
 		}
@@ -370,8 +379,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO 自动生成的方法存根
-					
+					showInnerFrame(devItem, DevIFrame.class, isAdmin);
 				}
 			});
 		}
@@ -391,8 +399,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO 自动生成的方法存根
-					
+					showInnerFrame(userItem, UserIFrame.class, true);
 				}
 			});
 		}
@@ -426,8 +433,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO 自动生成的方法存根
-					
+					showInnerFrame(pwdItem, PwdIFrame.class, false);
 				}
 			});
 		}

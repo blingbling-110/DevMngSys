@@ -1,0 +1,18 @@
+drop table if exists tb_brw;
+create table `tb_brw`(`id` varchar(30) not null primary key,`devid` varchar(20),`brwerid` int(11),`date` varchar(50),`remark` varchar(50)) engine=innodb default charset=utf8;
+drop table if exists tb_devinfo;
+create table `tb_devinfo`(`id` varchar(20) not null primary key,`name` varchar(20),`status` varchar(10),`des` varchar(50),`remark` varchar(50)) engine=innodb default charset=utf8;
+insert into tb_devinfo values('Dev001','设备001','库存中','','');
+insert into tb_devinfo values('Dev002','设备002','库存中','','');
+insert into tb_devinfo values('Dev003','设备003','库存中','','');
+drop table if exists tb_rtn;
+create table `tb_rtn`(`id` varchar(30) not null primary key,`devid` varchar(20),`rtnerid` int(11),`date` varchar(50),`remark` varchar(50)) engine=innodb default charset=utf8;
+drop table if exists tb_userinfo;
+create table `tb_userinfo`(`id` int(11) not null primary key,`name` varchar(20),`userid` varchar(20),`pwd` varchar(50),`pos` varchar(20),`dep` varchar(20),`email` varchar(30),`tel` varchar(30),`remark` varchar(50),`isadmin` tinyint(1)) engine=innodb default charset=utf8;
+insert into tb_userinfo values(-2,'用户','user','123456','','','no','no','',0);
+insert into tb_userinfo values(-1,'管理员','admin','123456','','','no','no','',1);
+insert into tb_userinfo values(0,'超级管理员','root','123456','','','no','no','',1);
+drop view if exists v_brwInfo;
+create view v_brwInfo as select tb_brw.id, tb_devinfo.name as devname, tb_brw.devid, tb_userinfo.name as username, tb_brw.date, tb_userinfo.email, tb_userinfo.tel from tb_brw inner join tb_devinfo on tb_brw.devid = tb_devinfo.id inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;
+drop view if exists v_rtninfo;
+create view v_rtninfo as select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.devid, tb_userinfo.name as username, tb_rtn.date, tb_userinfo.email, tb_userinfo.tel from tb_rtn inner join tb_devinfo on tb_rtn.devid = tb_devinfo.id inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;
