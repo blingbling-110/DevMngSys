@@ -226,8 +226,7 @@ public class BrwIFrame extends JInternalFrame {
 						return;
 					}
 					try {
-						jobNum = Integer.parseInt(
-								brwerId);
+						jobNum = Integer.parseInt(brwerId);
 					}catch(NumberFormatException exc) {
 						JOptionPane.showMessageDialog(BrwIFrame.this, 
 								"工号只能为整数，且不能超过" + Integer.MAX_VALUE,

@@ -226,8 +226,7 @@ public class RtnIFrame extends JInternalFrame {
 						return;
 					}
 					try {
-						jobNum = Integer.parseInt(
-								rtnerId);
+						jobNum = Integer.parseInt(rtnerId);
 					}catch(NumberFormatException exc) {
 						JOptionPane.showMessageDialog(RtnIFrame.this, 
 								"工号只能为整数，且不能超过" + Integer.MAX_VALUE,

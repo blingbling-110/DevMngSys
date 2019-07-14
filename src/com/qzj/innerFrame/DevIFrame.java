@@ -8,6 +8,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
@@ -152,7 +154,7 @@ public class DevIFrame extends JInternalFrame {
 	private JButton updateButton = null;
 	
 	/**
-	 * 	搜索设备内部窗体构造函数
+	 * 	搜索设备内部窗体构造方法
 	 */
 	public DevIFrame() {
 		setTitle("搜索设备");
@@ -185,7 +187,7 @@ public class DevIFrame extends JInternalFrame {
 			addComponent(inputPane, iDesField, 1, 1, 5);
 			addComponent(inputPane, iRemarkLabel, 0, 2, 1);
 			addComponent(inputPane, iRemarkField, 1, 2, 5);
-			addComponent(inputPane, getSearchButton(), 2, 3, 2);
+			addComponent(inputPane, getSearchButton(), 0, 3, 6);
 		}
 		return inputPane;
 	}
@@ -266,6 +268,22 @@ public class DevIFrame extends JInternalFrame {
 				tableModel.addRow(row);//	在表格模型末尾增加一行
 			}
 		}
+		//	给表格添加鼠标监听器
+		table.addMouseListener(new MouseAdapter() {
+
+			/* （非 Javadoc）
+			 * @see java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+			 */
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				int row = table.rowAtPoint(e.getPoint());
+				uNameField.setText(table.getValueAt(row, 1).toString());
+				uDesField.setText(table.getValueAt(row, 3).toString());
+				uRemarkField.setText(table.getValueAt(row, 4).toString());
+			}
+			
+		});
 		return table;
 	}
 
@@ -300,26 +318,24 @@ public class DevIFrame extends JInternalFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					int row = table.getSelectedRow();
-					String uName = uNameField.getText().trim();
 					if(row == -1) {
 						JOptionPane.showMessageDialog(
 								DevIFrame.this, "未选择设备", 
 								"操作失败", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
+					String id = table.getValueAt(row, 0).toString();
+					String uName = uNameField.getText().trim();
 					if(uName == null || uName.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								DevIFrame.this, "设备名称不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					String id = table.getValueAt(row, 0).toString();
-					String status = table.getValueAt(row, 2).toString();
-					//	封装待增加设备信息的对象
+					//	封装待更新设备信息的对象
 					TbDevInfo devInfo = new TbDevInfo();
 					devInfo.setId(id);
 					devInfo.setName(uName);
-					devInfo.setStatus(status);
 					devInfo.setDes(uDesField.getText().trim());
 					devInfo.setRemark(uRemarkField.getText().trim());
 					boolean res = SqlOpr.updateTbDevInfo(devInfo);

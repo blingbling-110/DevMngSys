@@ -7,7 +7,7 @@ package com.qzj.sqlOpr.model;
  */
 public class TbUserInfo {
 	/**
-	 * 	人员编号
+	 * 	工号
 	 */
 	private Integer id;
 	
@@ -37,7 +37,7 @@ public class TbUserInfo {
 	private String dep;
 	
 	/**
-	 * 	电子邮箱
+	 * 	邮箱
 	 */
 	private String email;
 	

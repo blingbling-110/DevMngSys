@@ -274,6 +274,7 @@ public class UserSumIFrame extends JInternalFrame {
 					String id = idField.getText().trim();
 					String name = nameField.getText().trim();
 					String userId = userIdField.getText().trim();
+					String pwd = new String(pwdField.getPassword());
 					String email = emailField.getText().trim();
 					String tel = telField.getText().trim();
 					if(id == null || id.isEmpty()) {
@@ -294,7 +295,6 @@ public class UserSumIFrame extends JInternalFrame {
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					String pwd = new String(pwdField.getPassword());
 					if(pwd == null || pwd.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "密码不能为空", 
@@ -334,8 +334,7 @@ public class UserSumIFrame extends JInternalFrame {
 					//	封装待增加人员信息的对象
 					TbUserInfo userInfo = new TbUserInfo();
 					try {
-						userInfo.setId(Integer.parseInt(
-								id));
+						userInfo.setId(Integer.parseInt(id));
 					}catch(NumberFormatException exc) {
 						JOptionPane.showMessageDialog(UserSumIFrame.this, 
 								"工号只能为整数，且不能超过" + Integer.MAX_VALUE,

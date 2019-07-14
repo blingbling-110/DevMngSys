@@ -832,8 +832,8 @@ public class SqlOpr {
 	public static boolean changePwd(String userId, 
 			String oriPwd, String newPwd) {
 		boolean res = false;
-		res = exeUpdate("update tb_userinfo set pwd = '" + newPwd 
-				+ "' where userid = '" + userId + "' and pwd = '"
+		res = exeUpdate("update tb_userinfo set pwd='" + newPwd 
+				+ "' where userid='" + userId + "' and pwd='"
 				+ oriPwd + "'");
 		return res;
 	}
@@ -867,19 +867,21 @@ public class SqlOpr {
 		return list;
 	}
 	
-	/*
-	
-	 * 	在事务中删除设备信息
-	 * @param id 欲删除设备的编号
-	 * @return 数据删除成功与否
-	 
-	public static boolean deleteDevInfo(String id) {
+	/**
+	 * 	在事务中更新设备信息
+	 * @param devInfo 欲更新的设备信息公共类对象
+	 * @return 数据更新成功与否
+	 */
+	public static boolean updateTbDevInfo(TbDevInfo devInfo) {
 		try {
 			boolean autoCommit = conn.getAutoCommit();
 			conn.setAutoCommit(false);
 			boolean res = false;
-			if(id != null && !id.isEmpty())
-				res = exeUpdate("delete from tb_devinfo where id='" + id + "'");
+			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
+				res = exeUpdate("update tb_devinfo set name='" 
+						+ devInfo.getName() + "', des='" + devInfo.getDes()
+						+ "', remark='" + devInfo.getRemark()
+						+ "' where id='" + devInfo.getId() + "'");
 			if(res)
 				conn.commit();
 			else {
@@ -892,10 +894,77 @@ public class SqlOpr {
 		}
 		return true;
 	}
-	*/
-	
-	public static boolean updateTbDevInfo(TbDevInfo devInfo) {
-		// TODO 自动生成的方法存根
+
+	/**
+	 * 	搜索人员信息
+	 * @param iId 欲搜索的工号
+	 * @param iName 欲搜索的姓名
+	 * @param iUserId 欲搜索的用户名
+	 * @param iPos 欲搜索的职位
+	 * @param iDep 欲搜索的部门
+	 * @param iEmail 欲搜索的邮箱
+	 * @param iTel 欲搜索的电话
+	 * @param iRemark 欲搜索的备注
+	 * @return 包含返回的人员信息的List集合
+	 */
+	public static List<List<String>> searchUserInfo(String iId, 
+			String iName, String iUserId, String iPos, String iDep, 
+			String iEmail, String iTel, String iRemark, boolean iIsAdmin) {
+		if(iId == null || iId.isEmpty())
+			iId = "'%'";
+		if(iName == null || iName.isEmpty())
+			iName = "%";
+		if(iUserId == null || iUserId.isEmpty())
+			iUserId = "%";
+		if(iPos == null || iPos.isEmpty())
+			iPos = "%";
+		if(iDep == null || iDep.isEmpty())
+			iDep = "%";
+		if(iEmail == null || iEmail.isEmpty())
+			iEmail = "%";
+		if(iTel == null || iTel.isEmpty())
+			iTel = "%";
+		if(iRemark == null || iRemark.isEmpty())
+			iRemark = "%";
+		String sql = "select id, name, userid from tb_userinfo where "
+				+ "id like " + iId + " and name like '" + iName
+				+ "' and userId like '" + iUserId + "' and pos like '"
+				+ iPos + "' and dep like '" + iDep + "' and email like '"
+				+ iEmail + "' and tel like '" + iTel + "' and remark like '" 
+				+ iRemark + "' and isadmin like " + iIsAdmin;
+		List<List<String>> list = findForList(sql);
+		return list;
+	}
+
+	/**
+	 * 	在事务中更新人员信息
+	 * @param userInfo 欲更新的人员信息公共类对象
+	 * @return 数据更新成功与否
+	 */
+	public static boolean updateTbUserInfo(TbUserInfo userInfo) {
+		try {
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			boolean res = false;
+			if(userInfo.getId() != null)
+				res = exeUpdate("update tb_userinfo set name='"
+						+ userInfo.getName() + "', userid='" 
+						+ userInfo.getUserId() + "', pos='" 
+						+ userInfo.getPos() + "', dep='" + userInfo.getDep()
+						+ "', email='" + userInfo.getEmail() + "', tel='"
+						+ userInfo.getTel() + "', remark='" 
+						+ userInfo.getRemark() + "', isadmin=" 
+						+ userInfo.isAdmin() + " where id=" + userInfo.getId());
+			if(res)
+				conn.commit();
+			else {
+				conn.rollback();
+				return false;
+			}
+			conn.setAutoCommit(autoCommit);
+		} catch (SQLException e) {
+			return false;
+		}
 		return true;
 	}
 }

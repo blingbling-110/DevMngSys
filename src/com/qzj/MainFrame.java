@@ -15,6 +15,8 @@ import javax.swing.JSeparator;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 
+import com.qzj.login.LoginDialog;
+
 /**
  * 	企业设备管理系统主窗体
  * @author qinzijun
@@ -241,5 +243,14 @@ public class MainFrame extends JFrame {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * 	程序主方法
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		LoginDialog loginDialog = new LoginDialog();
+		loginDialog.setVisible(true);
 	}
 }

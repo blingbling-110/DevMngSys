@@ -185,12 +185,12 @@ public class LoginDialog extends JFrame {
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					}
-					dispose();//	释放登录窗体的资源
 					MainFrame.isAdmin = isAdmin;
 					MainFrame.userId = userId;
 					mainFrame = new MainFrame();//	实例化主窗体
 					mainFrame.getUserLabel().setText("当前登录用户：" + userName);
 					mainFrame.setVisible(true);//	设置主窗体可见
+					dispose();//	释放登录窗体的资源
 				}
 			});
 		}
