@@ -525,29 +525,6 @@ public class SqlOpr {
 			sta.close();
 		}
 		
-		/*
-		 * 	增加删除、创建视图的SQL语句
-		 * 
-		 * 	视图（view）：
-		 * 		是一种虚拟存在的逻辑表，本身并不包含数据，
-		 * 		而是作为一个select语句保存在数据字典中。
-		 * 		使用视图的大部分情况是为了保障数据安全性，提高查询效率。
-		 */
-		sqls.add("drop view if exists v_brwInfo;");
-		sqls.add("create view v_brwInfo as "
-				+ "select tb_brw.id, tb_devinfo.name as devname, tb_brw.devid, "
-				+ "tb_userinfo.name as username, tb_brw.date, "
-				+ "tb_userinfo.email, tb_userinfo.tel from tb_brw "
-				+ "inner join tb_devinfo on tb_brw.devid = tb_devinfo.id "
-				+ "inner join tb_userinfo on tb_brw.brwerid = tb_userinfo.id;");
-		sqls.add("drop view if exists v_rtninfo;");
-		sqls.add("create view v_rtninfo as "
-				+ "select tb_rtn.id, tb_devinfo.name as devname, tb_rtn.devid, "
-				+ "tb_userinfo.name as username, tb_rtn.date, "
-				+ "tb_userinfo.email, tb_userinfo.tel from tb_rtn "
-				+ "inner join tb_devinfo on tb_rtn.devid = tb_devinfo.id "
-				+ "inner join tb_userinfo on tb_rtn.rtnerid = tb_userinfo.id;");
-		
 		//	输出备份文件
 		Date date = new Date();//	获取当前毫秒值
 		/*
