@@ -68,46 +68,47 @@ public class MainFrame extends JFrame {
 	private JLabel userLabel = null;
 	
 	/**
+	 * 	是否拥有管理权限
+	 */
+	public static boolean isAdmin = false;
+	
+	/**
 	 * 	登录用户名
 	 */
 	public static String userId = null;
 	
 	/**
 	 * 	主窗体构造方法
-	 * @param isAdmin 是否拥有管理权限
 	 */
-	public MainFrame(boolean isAdmin) {
+	public MainFrame() {
 		setTitle("企业设备管理系统");
 		setIconImage(new ImageIcon(getClass().getResource(
 				"/res/root.jpg")).getImage());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1280, 720);
 		setLocationRelativeTo(null);//	设置窗体居中
-		setJMenuBar(getMainMenuBar(isAdmin));
-		setContentPane(getMainContentPane(isAdmin));
+		setJMenuBar(getMainMenuBar());
+		setContentPane(getMainContentPane());
 	}
 
 	/**
 	 * 	获取主窗体菜单栏
-	 * @param isAdmin 是否拥有管理权限
 	 * @return mainMenuBar
 	 */
-	public MenuBar getMainMenuBar(boolean isAdmin) {
+	public MenuBar getMainMenuBar() {
 		if(mainMenuBar == null) {
-			mainMenuBar = new MenuBar(getDesktopPane(), 
-					getStateLabel(), isAdmin);
+			mainMenuBar = new MenuBar(getDesktopPane(), getStateLabel());
 		}
 		return mainMenuBar;
 	}
 	
 	/**
 	 * 	获取主窗体工具栏
-	 * @param isAdmin 是否拥有管理权限
 	 * @return mainToolBar
 	 */
-	public ToolBar getMainToolBar(boolean isAdmin) {
+	public ToolBar getMainToolBar() {
 		if(mainToolBar == null) {
-			mainToolBar = new ToolBar(getMainMenuBar(isAdmin), isAdmin);
+			mainToolBar = new ToolBar(getMainMenuBar());
 			//	设置光标图像
 			mainToolBar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		}
@@ -116,13 +117,12 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * 	获取主窗体内容面板
-	 * @param isAdmin 是否拥有管理权限
 	 * @return mainContentPane
 	 */
-	public JPanel getMainContentPane(boolean isAdmin) {
+	public JPanel getMainContentPane() {
 		if(mainContentPane == null) {
 			mainContentPane = new JPanel(new BorderLayout());
-			mainContentPane.add(getMainToolBar(isAdmin), BorderLayout.NORTH);
+			mainContentPane.add(getMainToolBar(), BorderLayout.NORTH);
 			mainContentPane.add(getDesktopPane(), BorderLayout.CENTER);
 			mainContentPane.add(getStatePane(), BorderLayout.SOUTH);
 		}
@@ -233,8 +233,9 @@ public class MainFrame extends JFrame {
 			try {
 				//	窗体风格本地化
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				MainFrame mainFrame =  new MainFrame(true);
+				MainFrame.isAdmin = true;
 				MainFrame.userId = "root";
+				MainFrame mainFrame =  new MainFrame();
 				mainFrame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();

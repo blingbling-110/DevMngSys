@@ -194,6 +194,9 @@ public class BrwIFrame extends JInternalFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String devId = devIdField.getText().trim();
+					boolean isDevExist = false;//	判断设备编号是否存在
+					Integer jobNum = null;
+					String brwerId = brwerIdField.getText().trim();
 					if(devId == null || devId.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								BrwIFrame.this, "借用设备编号不能为空", 
@@ -202,7 +205,6 @@ public class BrwIFrame extends JInternalFrame {
 					}
 					//	获取所有设备信息
 					List<List<String>> allDevInfo = SqlOpr.getAllDevInfo();
-					boolean isDevExist = false;//	判断设备编号是否存在
 					for(int i = 0; i < allDevInfo.size(); i++) {
 						//	获取数据库中已存在的设备编号
 						String existDevId = allDevInfo.get(i).get(0);
@@ -217,9 +219,7 @@ public class BrwIFrame extends JInternalFrame {
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					Integer jobNum = null;
-					if(brwerIdField.getText().trim() == null || 
-							brwerIdField.getText().trim().isEmpty()) {
+					if(brwerId == null || brwerId.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								BrwIFrame.this, "借用人工号不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -227,7 +227,7 @@ public class BrwIFrame extends JInternalFrame {
 					}
 					try {
 						jobNum = Integer.parseInt(
-								brwerIdField.getText().trim());
+								brwerId);
 					}catch(NumberFormatException exc) {
 						JOptionPane.showMessageDialog(BrwIFrame.this, 
 								"工号只能为整数，且不能超过" + Integer.MAX_VALUE,

@@ -138,31 +138,28 @@ public class MenuBar extends JMenuBar {
 	 * 	主窗体菜单栏构造方法
 	 * @param desktopPane 主窗体桌面面板
 	 * @param stateLabel 主窗体状态标签
-	 * @param isAdmin 是否拥有管理权限
 	 */
-	public MenuBar(DesktopPane desktopPane, JLabel stateLabel, 
-			boolean isAdmin) {
+	public MenuBar(DesktopPane desktopPane, JLabel stateLabel) {
 		this.desktopPane = desktopPane;
 		this.stateLabel = stateLabel;
 		innerFrames = new HashMap<>();
-		add(getFileMenu(isAdmin));
-		add(getSumMenu(isAdmin));
-		if(isAdmin)
+		add(getFileMenu());
+		add(getSumMenu());
+		if(MainFrame.isAdmin)
 			add(getManageMenu());
-		add(getSearchMenu(isAdmin));
+		add(getSearchMenu());
 		add(getHelpMenu());
 	}
 	
 	/**
 	 * 	获取文件菜单
-	 * @param isAdmin 是否拥有管理权限
 	 * @return 文件菜单
 	 */
-	public JMenu getFileMenu(boolean isAdmin) {
+	public JMenu getFileMenu() {
 		if(fileMenu == null) {
 			fileMenu = new JMenu("文件(F)");
 			fileMenu.setMnemonic(KeyEvent.VK_F);//	设置快捷键
-			if(isAdmin) {
+			if(MainFrame.isAdmin) {
 				fileMenu.add(getBackupItem());
 				fileMenu.add(getRestoreItem());
 			}
@@ -184,7 +181,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(backupItem, BackupIFrame.class, true);
+					showInnerFrame(backupItem, BackupIFrame.class);
 				}
 			});
 		}
@@ -211,7 +208,7 @@ public class MenuBar extends JMenuBar {
 							JOptionPane.OK_CANCEL_OPTION, 
 							JOptionPane.WARNING_MESSAGE) == 
 							JOptionPane.OK_OPTION)
-						showInnerFrame(restoreItem, RestoreIFrame.class, true);
+						showInnerFrame(restoreItem, RestoreIFrame.class);
 				}
 			});
 		}
@@ -240,15 +237,14 @@ public class MenuBar extends JMenuBar {
 
 	/**
 	 * 	获取总览菜单
-	 * @param isAdmin 是否拥有管理权限
 	 * @return sumMenu
 	 */
-	public JMenu getSumMenu(boolean isAdmin) {
+	public JMenu getSumMenu() {
 		if(sumMenu == null) {
 			sumMenu = new JMenu("总览(S)");
 			sumMenu.setMnemonic(KeyEvent.VK_S);
-			sumMenu.add(getDevSumItem(isAdmin));
-			if(isAdmin)
+			sumMenu.add(getDevSumItem());
+			if(MainFrame.isAdmin)
 				sumMenu.add(getUserSumItem());
 		}
 		return sumMenu;
@@ -256,10 +252,9 @@ public class MenuBar extends JMenuBar {
 
 	/**
 	 * 	获取设备总览菜单项
-	 * @param isAdmin 是否拥有管理权限
 	 * @return devSumItem
 	 */
-	public JMenuItem getDevSumItem(boolean isAdmin) {
+	public JMenuItem getDevSumItem() {
 		if(devSumItem == null) {
 			devSumItem = new JMenuItem("设备总览(D)", new ImageIcon(
 					getClass().getResource("/res/icon/devSum.png")));
@@ -268,7 +263,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(devSumItem, DevSumIFrame.class, isAdmin);
+					showInnerFrame(devSumItem, DevSumIFrame.class);
 				}
 			});
 		}
@@ -288,7 +283,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(userSumItem, UserSumIFrame.class, true);
+					showInnerFrame(userSumItem, UserSumIFrame.class);
 				}
 			});
 		}
@@ -322,7 +317,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(brwItem, BrwIFrame.class, true);
+					showInnerFrame(brwItem, BrwIFrame.class);
 				}
 			});
 		}
@@ -342,7 +337,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(rtnItem, RtnIFrame.class, true);
+					showInnerFrame(rtnItem, RtnIFrame.class);
 				}
 			});
 		}
@@ -351,15 +346,14 @@ public class MenuBar extends JMenuBar {
 
 	/**
 	 * 	获取搜索菜单
-	 * @param isAdmin 是否拥有管理权限
 	 * @return searchMenu
 	 */
-	public JMenu getSearchMenu(boolean isAdmin) {
+	public JMenu getSearchMenu() {
 		if(searchMenu == null) {
 			searchMenu = new JMenu("搜索(E)");
 			searchMenu.setMnemonic(KeyEvent.VK_E);
-			searchMenu.add(getDevItem(isAdmin));
-			if(isAdmin)
+			searchMenu.add(getDevItem());
+			if(MainFrame.isAdmin)
 				searchMenu.add(getUserItem());
 		}
 		return searchMenu;
@@ -367,10 +361,9 @@ public class MenuBar extends JMenuBar {
 
 	/**
 	 * 	获取搜索设备菜单
-	 * @param isAdmin 是否拥有管理权限
 	 * @return devMenu
 	 */
-	public JMenuItem getDevItem(boolean isAdmin) {
+	public JMenuItem getDevItem() {
 		if(devItem == null) {
 			devItem = new JMenuItem("搜索设备(D)", new ImageIcon(
 					getClass().getResource("/res/icon/search.png")));
@@ -379,7 +372,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(devItem, DevIFrame.class, isAdmin);
+					showInnerFrame(devItem, DevIFrame.class);
 				}
 			});
 		}
@@ -399,7 +392,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(userItem, UserIFrame.class, true);
+					showInnerFrame(userItem, UserIFrame.class);
 				}
 			});
 		}
@@ -433,7 +426,7 @@ public class MenuBar extends JMenuBar {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showInnerFrame(pwdItem, PwdIFrame.class, false);
+					showInnerFrame(pwdItem, PwdIFrame.class);
 				}
 			});
 		}
@@ -476,22 +469,14 @@ public class MenuBar extends JMenuBar {
 	 * 	显示内部窗体，利用反射实例化内部窗体对象
 	 * @param jMenuItem 内部窗体的来源菜单项
 	 * @param innerFrameC 内部窗体类
-	 * @param isAdmin 是否拥有管理权限
 	 */
 	protected void showInnerFrame(JMenuItem jMenuItem, 
-			Class<? extends JInternalFrame> innerFrameC, boolean isAdmin) {
+			Class<? extends JInternalFrame> innerFrameC) {
 		JInternalFrame innerFrame = innerFrames.get(jMenuItem);
 		if(innerFrame == null || innerFrame.isClosed()) {
 			//	利用反射调用内部窗体构造方法的newInstance()方法
 			try {
-				innerFrame = innerFrameC.getConstructor(
-						boolean.class).newInstance(isAdmin);
-			} catch (NoSuchMethodException e) {
-				try {
-					innerFrame = innerFrameC.getConstructor().newInstance();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+				innerFrame = innerFrameC.getConstructor().newInstance();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

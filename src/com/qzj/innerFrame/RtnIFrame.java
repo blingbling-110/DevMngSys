@@ -194,6 +194,7 @@ public class RtnIFrame extends JInternalFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String devId = devIdField.getText().trim();
+					String rtnerId = rtnerIdField.getText().trim();
 					if(devId == null || devId.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								RtnIFrame.this, "归还设备编号不能为空", 
@@ -218,8 +219,7 @@ public class RtnIFrame extends JInternalFrame {
 						return;
 					}
 					Integer jobNum = null;
-					if(rtnerIdField.getText().trim() == null || 
-							rtnerIdField.getText().trim().isEmpty()) {
+					if(rtnerId == null || rtnerId.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								RtnIFrame.this, "归还人工号不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -227,7 +227,7 @@ public class RtnIFrame extends JInternalFrame {
 					}
 					try {
 						jobNum = Integer.parseInt(
-								rtnerIdField.getText().trim());
+								rtnerId);
 					}catch(NumberFormatException exc) {
 						JOptionPane.showMessageDialog(RtnIFrame.this, 
 								"工号只能为整数，且不能超过" + Integer.MAX_VALUE,

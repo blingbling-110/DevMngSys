@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import com.qzj.Item;
+import com.qzj.MainFrame;
 import com.qzj.sqlOpr.SqlOpr;
 import com.qzj.sqlOpr.model.TbDevInfo;
 
@@ -118,7 +119,7 @@ public class DevSumIFrame extends JInternalFrame {
 	 */
 	private JButton refreshButton = null;
 	
-	public DevSumIFrame(boolean isAdmin) {
+	public DevSumIFrame() {
 		setTitle("设备总览");
 		setSize(1032, 432);
 		setMaximizable(true);//	窗体可最大化
@@ -129,8 +130,9 @@ public class DevSumIFrame extends JInternalFrame {
 		tablePane.setViewportView(getTable());
 		getContentPane().add(tablePane, BorderLayout.CENTER);
 		getAddPane();
-		addPane.setLayout(new GridBagLayout());
-		if(isAdmin) {
+		if(!MainFrame.isAdmin) {
+			addComponent(addPane, getRefreshButton(), 0, 0, 1);
+		}else {
 			addComponent(addPane, idLabel, 0, 0, 1);
 			addComponent(addPane, idField, 1, 0, 2);
 			addComponent(addPane, nameLabel, 3, 0, 1);
@@ -144,8 +146,6 @@ public class DevSumIFrame extends JInternalFrame {
 			addComponent(addPane, getAddButton(), 0, 3, 3);
 			addComponent(addPane, getDeleteButton(), 3, 3, 3);
 			addComponent(addPane, getRefreshButton(), 6, 3, 3);
-		}else {
-			addComponent(addPane, getRefreshButton(), 0, 0, 1);
 		}
 		getContentPane().add(addPane, BorderLayout.SOUTH);
 	}
@@ -181,7 +181,7 @@ public class DevSumIFrame extends JInternalFrame {
 			else
 				columnattr.setPreferredWidth(130);//	调整表格列宽
 		}
-		//		初始化表格内容
+		//	初始化表格内容
 		List<List<String>> allDevInfo = SqlOpr.getAllDevInfo();//	获取所有设备信息
 		for(int i = 0; i < allDevInfo.size(); i++) {
 			List<String> infoList = allDevInfo.get(i);//	每个设备信息的List集合
@@ -202,8 +202,10 @@ public class DevSumIFrame extends JInternalFrame {
 	}
 
 	public JPanel getAddPane() {
-		if(addPane == null)
+		if(addPane == null) {
 			addPane = new JPanel();
+			addPane.setLayout(new GridBagLayout());
+		}
 		return addPane;
 	}
 	
@@ -216,22 +218,22 @@ public class DevSumIFrame extends JInternalFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(idField.getText().trim() == null || 
-							idField.getText().trim().isEmpty()) {
+					String id = idField.getText().trim();
+					String name = nameField.getText().trim();
+					String status = statusField.getText().trim();
+					if(id == null || id.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								DevSumIFrame.this, "设备编号不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(nameField.getText().trim() == null || 
-							nameField.getText().trim().isEmpty()) {
+					if(name == null || name.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								DevSumIFrame.this, "设备名称不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(statusField.getText().trim() == null || 
-							statusField.getText().trim().isEmpty()) {
+					if(status == null || status.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								DevSumIFrame.this, "设备状态不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -240,8 +242,8 @@ public class DevSumIFrame extends JInternalFrame {
 					//	获取所有设备信息
 					List<List<String>> allDevInfo = SqlOpr.getAllDevInfo();
 					for(int i = 0; i < allDevInfo.size(); i++) {
-						String id = allDevInfo.get(i).get(0);
-						if(idField.getText().equals(id)) {
+						String eachId = allDevInfo.get(i).get(0);
+						if(id.equals(eachId)) {
 							JOptionPane.showMessageDialog(
 									DevSumIFrame.this, "设备编号已存在", 
 									"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -250,9 +252,9 @@ public class DevSumIFrame extends JInternalFrame {
 					}
 					//	封装待增加设备信息的对象
 					TbDevInfo devInfo = new TbDevInfo();
-					devInfo.setId(idField.getText().trim());
-					devInfo.setName(nameField.getText().trim());
-					devInfo.setStatus(statusField.getText().trim());
+					devInfo.setId(id);
+					devInfo.setName(name);
+					devInfo.setStatus(status);
 					devInfo.setDes(desField.getText().trim());
 					devInfo.setRemark(remarkField.getText().trim());
 					boolean res = SqlOpr.insertTbDevInfo(devInfo);

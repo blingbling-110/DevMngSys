@@ -357,7 +357,7 @@ public class SqlOpr {
 			boolean res = false;
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
 				res = exeUpdate("update tb_devinfo set status='" 
-						+ "借用人工号：" + brw.getBrwerId() 
+						+ "工号：" + brw.getBrwerId() 
 						+ "',remark='" + brw.getRemark() 
 						+ "' where id='" + devInfo.getId() + "'");
 			if(res)
@@ -822,6 +822,13 @@ public class SqlOpr {
 		return status;
 	}
 	
+	/**
+	 * 	修改密码
+	 * @param userId 用户名
+	 * @param oriPwd 原密码
+	 * @param newPwd 新密码
+	 * @return 密码修改成功与否
+	 */
 	public static boolean changePwd(String userId, 
 			String oriPwd, String newPwd) {
 		boolean res = false;
@@ -829,5 +836,66 @@ public class SqlOpr {
 				+ "' where userid = '" + userId + "' and pwd = '"
 				+ oriPwd + "'");
 		return res;
+	}
+
+	/**
+	 * 	搜索设备信息
+	 * @param iId 欲搜索的设备编号
+	 * @param iName 欲搜索的设备名称
+	 * @param iStatus 欲搜索的设备状态
+	 * @param iDes 欲搜索的设备描述
+	 * @param iRemark 欲搜索的备注
+	 * @return 包含返回的设备信息的List集合
+	 */
+	public static List<List<String>> searchDevInfo(String iId, 
+			String iName, String iStatus, String iDes, String iRemark) {
+		if(iId == null || iId.isEmpty())
+			iId = "%";
+		if(iName == null || iName.isEmpty())
+			iName = "%";
+		if(iStatus == null || iStatus.isEmpty())
+			iStatus = "%";
+		if(iDes == null || iDes.isEmpty())
+			iDes = "%";
+		if(iRemark == null || iRemark.isEmpty())
+			iRemark = "%";
+		String sql = "select id, name from tb_devinfo where "
+				+ "id like '" + iId + "' and name like '" + iName
+				+ "' and status like '" + iStatus + "' and des like '"
+				+ iDes + "' and remark like '" + iRemark + "'";
+		List<List<String>> list = findForList(sql);
+		return list;
+	}
+	
+	/*
+	
+	 * 	在事务中删除设备信息
+	 * @param id 欲删除设备的编号
+	 * @return 数据删除成功与否
+	 
+	public static boolean deleteDevInfo(String id) {
+		try {
+			boolean autoCommit = conn.getAutoCommit();
+			conn.setAutoCommit(false);
+			boolean res = false;
+			if(id != null && !id.isEmpty())
+				res = exeUpdate("delete from tb_devinfo where id='" + id + "'");
+			if(res)
+				conn.commit();
+			else {
+				conn.rollback();
+				return false;
+			}
+			conn.setAutoCommit(autoCommit);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	*/
+	
+	public static boolean updateTbDevInfo(TbDevInfo devInfo) {
+		// TODO 自动生成的方法存根
+		return true;
 	}
 }

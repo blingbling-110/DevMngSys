@@ -24,19 +24,18 @@ public class ToolBar extends JToolBar {
 	/**
 	 * 	主窗体工具栏构造方法
 	 * @param menuBar 主窗体菜单栏
-	 * @param isAdmin 是否拥有管理权限
 	 */
-	public ToolBar(MenuBar menuBar, boolean isAdmin) {
+	public ToolBar(MenuBar menuBar) {
 		//	设置工具栏的边框
 		setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		add(addToolButton(menuBar.getDevSumItem(isAdmin)));
-		if(isAdmin) {
+		add(addToolButton(menuBar.getDevSumItem()));
+		if(MainFrame.isAdmin) {
 			add(addToolButton(menuBar.getUserSumItem()));
 			add(addToolButton(menuBar.getBrwItem()));
 			add(addToolButton(menuBar.getRtnItem()));
 		}
-		add(addToolButton(menuBar.getDevItem(isAdmin)));
-		if(isAdmin)
+		add(addToolButton(menuBar.getDevItem()));
+		if(MainFrame.isAdmin)
 			add(addToolButton(menuBar.getUserItem()));
 		add(addToolButton(menuBar.getExitItem()));
 	}

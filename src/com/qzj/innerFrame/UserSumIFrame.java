@@ -271,22 +271,24 @@ public class UserSumIFrame extends JInternalFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if(idField.getText().trim() == null || 
-							idField.getText().trim().isEmpty()) {
+					String id = idField.getText().trim();
+					String name = nameField.getText().trim();
+					String userId = userIdField.getText().trim();
+					String email = emailField.getText().trim();
+					String tel = telField.getText().trim();
+					if(id == null || id.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "工号不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(nameField.getText().trim() == null || 
-							nameField.getText().trim().isEmpty()) {
+					if(name == null || name.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "姓名不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(userIdField.getText().trim() == null || 
-							userIdField.getText().trim().isEmpty()) {
+					if(userId == null || userId.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "用户名不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -299,15 +301,13 @@ public class UserSumIFrame extends JInternalFrame {
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(emailField.getText().trim() == null || 
-							emailField.getText().trim().isEmpty()) {
+					if(email == null || email.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "邮箱不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					if(telField.getText().trim() == null || 
-							telField.getText().trim().isEmpty()) {
+					if(tel == null || tel.isEmpty()) {
 						JOptionPane.showMessageDialog(
 								UserSumIFrame.this, "电话不能为空", 
 								"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -316,15 +316,15 @@ public class UserSumIFrame extends JInternalFrame {
 					//	获取所有人员信息
 					List<List<String>> allUserInfo = SqlOpr.getAllUserInfo();
 					for(int i = 0; i < allUserInfo.size(); i++) {
-						String id = allUserInfo.get(i).get(0);
-						String userId = allUserInfo.get(i).get(2);
-						if(idField.getText().trim().equals(id)) {
+						String eachId = allUserInfo.get(i).get(0);
+						String eachUserId = allUserInfo.get(i).get(2);
+						if(id.equals(eachId)) {
 							JOptionPane.showMessageDialog(
 									UserSumIFrame.this, "工号已存在", 
 									"输入错误", JOptionPane.ERROR_MESSAGE);
 							return;
 						}
-						if(userIdField.getText().trim().equals(userId)) {
+						if(userId.equals(eachUserId)) {
 							JOptionPane.showMessageDialog(
 									UserSumIFrame.this, "用户名已存在", 
 									"输入错误", JOptionPane.ERROR_MESSAGE);
@@ -335,20 +335,20 @@ public class UserSumIFrame extends JInternalFrame {
 					TbUserInfo userInfo = new TbUserInfo();
 					try {
 						userInfo.setId(Integer.parseInt(
-								idField.getText().trim()));
+								id));
 					}catch(NumberFormatException exc) {
 						JOptionPane.showMessageDialog(UserSumIFrame.this, 
 								"工号只能为整数，且不能超过" + Integer.MAX_VALUE,
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					userInfo.setName(nameField.getText().trim());
-					userInfo.setUserId(userIdField.getText().trim());
+					userInfo.setName(name);
+					userInfo.setUserId(userId);
 					userInfo.setPwd(pwd);
 					userInfo.setPos(posField.getText().trim());
 					userInfo.setDep(depField.getText().trim());
-					userInfo.setEmail(emailField.getText().trim());
-					userInfo.setTel(telField.getText().trim());
+					userInfo.setEmail(email);
+					userInfo.setTel(tel);
 					userInfo.setRemark(remarkField.getText().trim());
 					userInfo.setAdmin(isAdminBox.isSelected());
 					boolean res = SqlOpr.insertTbUserInfo(userInfo);

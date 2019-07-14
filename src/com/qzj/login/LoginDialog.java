@@ -186,8 +186,9 @@ public class LoginDialog extends JFrame {
 						e1.printStackTrace();
 					}
 					dispose();//	释放登录窗体的资源
-					mainFrame = new MainFrame(isAdmin);//	实例化主窗体
+					MainFrame.isAdmin = isAdmin;
 					MainFrame.userId = userId;
+					mainFrame = new MainFrame();//	实例化主窗体
 					mainFrame.getUserLabel().setText("当前登录用户：" + userName);
 					mainFrame.setVisible(true);//	设置主窗体可见
 				}
