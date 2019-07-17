@@ -348,7 +348,7 @@ public class UserIFrame extends JInternalFrame {
 				iUserId, iPos, iDep, iEmail, iTel, iRemark, iIsAdmin);
 		for(int i = 0; i < selUserInfo.size(); i++) {
 			List<String> infoList = selUserInfo.get(i);//	每个人员信息的List集合
-			Item item = new Item(infoList.get(2), infoList.get(1),
+			Item item = new Item(null, infoList.get(1),
 					Integer.parseInt(infoList.get(0)));
 			TbUserInfo userInfo = SqlOpr.getUserInfo(item);//	获取指定人员信息
 			String[] row = new String[columnLabel.length];//	表格模型的一行
