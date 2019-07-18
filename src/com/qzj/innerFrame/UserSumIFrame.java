@@ -211,7 +211,7 @@ public class UserSumIFrame extends JInternalFrame {
 		List<List<String>> allUserInfo = SqlOpr.getAllUserInfo();//	获取所有人员信息
 		for(int i = 0; i < allUserInfo.size(); i++) {
 			List<String> infoList = allUserInfo.get(i);//	每个人员信息的List集合
-			Item item = new Item(infoList.get(2), infoList.get(1),
+			Item item = new Item(null, infoList.get(1),
 					Integer.parseInt(infoList.get(0)));
 			TbUserInfo userInfo = SqlOpr.getUserInfo(item);//	获取指定人员信息
 			String[] row = new String[columnLabel.length];//	表格模型的一行

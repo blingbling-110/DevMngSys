@@ -30,6 +30,7 @@ import com.qzj.Item;
 import com.qzj.MainFrame;
 import com.qzj.sqlOpr.SqlOpr;
 import com.qzj.sqlOpr.model.TbDevInfo;
+import com.qzj.sqlOpr.model.TbUserInfo;
 
 /**
  * 	搜索设备内部窗体
@@ -39,7 +40,7 @@ import com.qzj.sqlOpr.model.TbDevInfo;
 public class DevIFrame extends JInternalFrame {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -47,112 +48,112 @@ public class DevIFrame extends JInternalFrame {
 	 * 	输入面板
 	 */
 	private JPanel inputPane = null;
-	
+
 	/**
 	 * 	输入设备编号标签
 	 */
 	private JLabel iIdLabel = new JLabel("设备编号：");
-	
+
 	/**
 	 * 	输入设备编号文本框
 	 */
 	private JTextField iIdField = new JTextField(25);
-	
+
 	/**
 	 * 	输入设备名称标签
 	 */
 	private JLabel iNameLabel = new JLabel("设备名称：");
-	
+
 	/**
 	 * 	输入设备名称文本框
 	 */
 	private JTextField iNameField = new JTextField(25);
-	
+
 	/**
 	 * 	输入设备状态标签
 	 */
 	private JLabel iStatusLabel = new JLabel("设备状态：");
-	
+
 	/**
 	 * 	输入设备状态文本框
 	 */
 	private JTextField iStatusField = new JTextField(25);
-	
+
 	/**
 	 * 	输入设备描述标签
 	 */
 	private JLabel iDesLabel = new JLabel("设备描述：");
-	
+
 	/**
 	 * 	输入设备描述文本框
 	 */
 	private JTextField iDesField = new JTextField(110);
-	
+
 	/**
 	 * 	输入备注标签
 	 */
 	private JLabel iRemarkLabel = new JLabel("备注：");
-	
+
 	/**
 	 * 	输入备注文本框
 	 */
 	private JTextField iRemarkField = new JTextField(110);
-	
+
 	/**
 	 * 	搜索按钮
 	 */
 	private JButton searchButton = null;
-	
+
 	/**
 	 * 	表格面板
 	 */
-	private JScrollPane tablePane = null; 
-	
+	private JScrollPane tablePane = null;
+
 	/**
 	 * 	表格
 	 */
 	private JTable table = null;
-	
+
 	/**
 	 * 	更新面板
 	 */
 	private JPanel updatePane = null;
-	
+
 	/**
 	 * 	更新设备名称标签
 	 */
 	private JLabel uNameLabel = new JLabel("设备名称：");
-	
+
 	/**
 	 * 	更新设备名称文本框
 	 */
 	private JTextField uNameField = new JTextField(25);
-	
+
 	/**
 	 * 	更新设备描述标签
 	 */
 	private JLabel uDesLabel = new JLabel("设备描述：");
-	
+
 	/**
 	 * 	更新设备描述文本框
 	 */
 	private JTextField uDesField = new JTextField(110);
-	
+
 	/**
 	 * 	更新备注标签
 	 */
 	private JLabel uRemarkLabel = new JLabel("备注：");
-	
+
 	/**
 	 * 	更新备注文本框
 	 */
 	private JTextField uRemarkField = new JTextField(110);
-	
+
 	/**
 	 * 	更新按钮
 	 */
 	private JButton updateButton = null;
-	
+
 	/**
 	 * 	搜索设备内部窗体构造方法
 	 */
@@ -201,7 +202,7 @@ public class DevIFrame extends JInternalFrame {
 					getClass().getResource("/res/icon/search.png")));
 			searchButton.setMnemonic(KeyEvent.VK_S);
 			searchButton.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					tablePane.setViewportView(getTable());
@@ -229,7 +230,8 @@ public class DevIFrame extends JInternalFrame {
 	public JTable getTable() {
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//	关闭列的自动调节
-		String[] columnLabel = {"设备编号", "设备名称", "设备状态", "设备描述", "备注"};
+		String[] columnLabel = {"设备编号", "设备名称", "设备状态",
+				"设备描述", "备注", "借用人姓名", "电子邮箱", "电话"};
 		//	DefaultTableModel是用于保存表格单元数值的表格模型类
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setColumnIdentifiers(columnLabel);//	设置表格模型的列名称
@@ -240,10 +242,12 @@ public class DevIFrame extends JInternalFrame {
 			TableColumn columnattr = table.getColumnModel().getColumn(i);
 			//	将表格各列的单元编辑器均设为只读编辑器
 			columnattr.setCellEditor(new DefaultCellEditor(readOnlyField));
-			if(i > 2)
+			if(i > 2 && i < 5)
 				columnattr.setPreferredWidth(300);//	调整表格列宽
-			else
-				columnattr.setPreferredWidth(130);//	调整表格列宽
+			else if (i > 5)
+				columnattr.setPreferredWidth(200);
+            else
+				columnattr.setPreferredWidth(130);
 		}
 		String iId = iIdField.getText().trim();
 		String iName = iNameField.getText().trim();
@@ -255,8 +259,15 @@ public class DevIFrame extends JInternalFrame {
 				iId, iName, iStatus, iDes, iRemark);
 		for(int i = 0; i < selDevInfo.size(); i++) {
 			List<String> infoList = selDevInfo.get(i);//	每个设备信息的List集合
-			Item item = new Item(infoList.get(0), infoList.get(1), null);
-			TbDevInfo devInfo = SqlOpr.getDevInfo(item);//	获取指定设备信息
+			Item devItem = new Item(infoList.get(0), infoList.get(1), null);
+			TbDevInfo devInfo = SqlOpr.getDevInfo(devItem);//	获取指定设备信息
+			TbUserInfo userInfo = new TbUserInfo();
+			//	判断是否借出
+			if (!devInfo.getStatus().equals("库存中")) {
+				Item userItem = new Item(null,null,
+						Integer.parseInt(devInfo.getStatus().substring(3)));
+				userInfo = SqlOpr.getUserInfo(userItem);//	获取指定人员信息
+			}
 			String[] row = new String[columnLabel.length];//	表格模型的一行
 			//	判断设备信息对象是否为空
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty()) {
@@ -265,6 +276,11 @@ public class DevIFrame extends JInternalFrame {
 				row[2] = devInfo.getStatus();
 				row[3] = devInfo.getDes();
 				row[4] = devInfo.getRemark();
+				if (!row[2].equals("库存中")) {
+					row[5] = userInfo.getName();
+					row[6] = userInfo.getEmail();
+					row[7] = userInfo.getTel();
+				}
 				tableModel.addRow(row);//	在表格模型末尾增加一行
 			}
 		}
@@ -282,7 +298,7 @@ public class DevIFrame extends JInternalFrame {
 				uDesField.setText(table.getValueAt(row, 3).toString());
 				uRemarkField.setText(table.getValueAt(row, 4).toString());
 			}
-			
+
 		});
 		return table;
 	}
@@ -314,13 +330,13 @@ public class DevIFrame extends JInternalFrame {
 					getClass().getResource("/res/icon/update.png")));
 			updateButton.setMnemonic(KeyEvent.VK_U);
 			updateButton.addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					int row = table.getSelectedRow();
 					if(row == -1) {
 						JOptionPane.showMessageDialog(
-								DevIFrame.this, "未选择设备", 
+								DevIFrame.this, "未选择设备",
 								"操作失败", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
@@ -328,7 +344,7 @@ public class DevIFrame extends JInternalFrame {
 					String uName = uNameField.getText().trim();
 					if(uName == null || uName.isEmpty()) {
 						JOptionPane.showMessageDialog(
-								DevIFrame.this, "设备名称不能为空", 
+								DevIFrame.this, "设备名称不能为空",
 								"输入错误", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
@@ -346,7 +362,7 @@ public class DevIFrame extends JInternalFrame {
 						uRemarkField.setText("");
 					}else
 						JOptionPane.showMessageDialog(
-								DevIFrame.this, "更新设备失败", 
+								DevIFrame.this, "更新设备失败",
 								"操作失败", JOptionPane.ERROR_MESSAGE);
 				}
 			});
@@ -362,7 +378,7 @@ public class DevIFrame extends JInternalFrame {
 	 * @param y gridy
 	 * @param width gridwidth
 	 */
-	private void addComponent(JPanel pane, JComponent com, 
+	private void addComponent(JPanel pane, JComponent com,
 			int x, int y, int width) {
 		GridBagConstraints gbc = new GridBagConstraints();//	创建网格限制对象
 		gbc.gridx = x;
