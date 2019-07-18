@@ -8,7 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
+import java.sql.Connection;
+
 import java.io.OutputStreamWriter;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -40,12 +41,12 @@ public class SqlOpr {
 	 * 	MySQL 8.0 以上版本数据库驱动
 	 */
 	protected static String DB_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
-	
+
 	/**
 	 * 	数据库名称
 	 */
 	protected static String DB_NAME = "db_devmngsys";
-	
+
 	/**
 	 * 	数据库路径
 	 */
@@ -53,27 +54,27 @@ public class SqlOpr {
 			+ DB_NAME + "?useSSL=false"//	显式关闭SSL连接
 			+ "&serverTimezone=Asia/Shanghai"//	设置时区Asia/Shanghai
 			+ "&allowPublicKeyRetrieval=true";//	允许客户端从服务器取回公钥
-	
+
 	/**
 	 * 	数据库用户名
 	 */
 	protected static String DB_USER_ID = "root";
-	
+
 	/**
 	 * 	数据库密码
 	 */
 	protected static String DB_PWD = "123456";
-	
+
 	/**
 	 * 	执行SQL语句的时间
 	 */
 	protected static String exeTime;
-	
+
 	/**
 	 * 	数据库连接对象
 	 */
 	public static Connection conn;
-	
+
 	/**
 	 * 	静态初始化数据库操作公共类
 	 */
@@ -84,24 +85,24 @@ public class SqlOpr {
 				conn = DriverManager.getConnection(DB_URL, DB_USER_ID, DB_PWD);
 			} catch (ClassNotFoundException e) {
 				//	弹出提示框
-				JOptionPane.showMessageDialog(null, 
-						"请将JDBC驱动包放置在lib文件夹中", 
+				JOptionPane.showMessageDialog(null,
+						"请将JDBC驱动包放置在lib文件夹中",
 						"数据库错误", JOptionPane.ERROR_MESSAGE);
-				System.exit(1);//	非正常退出 
+				System.exit(1);//	非正常退出
 			} catch (SQLException e) {
-				JOptionPane.showMessageDialog(null, "数据库连接对象创建失败", 
+				JOptionPane.showMessageDialog(null, "数据库连接对象创建失败",
 						"数据库错误", JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
 			}
 		}
 	}
-	
+
 	/**
 	 * 	封闭构造方法，禁止创建数据库操作公共类的实例对象
 	 */
 	private SqlOpr() {
 	}
-	
+
 	/**
 	 * 	读取设备信息
 	 * @param item 欲读取的设备
@@ -127,7 +128,7 @@ public class SqlOpr {
 		}
 		return info;
 	}
-	
+
 	/**
 	 * 	读取用户信息
 	 * @param item 欲读取的用户
@@ -156,7 +157,7 @@ public class SqlOpr {
 		}
 		return info;
 	}
-	
+
 	/**
 	 * 	读取借用单
 	 * @param item 欲读取的借用单
@@ -179,7 +180,7 @@ public class SqlOpr {
 		}
 		return brw;
 	}
-	
+
 	/**
 	 * 	读取归还单
 	 * @param item 欲读取的归还单
@@ -216,7 +217,7 @@ public class SqlOpr {
 		try {
 			/*
 			 * 	创建指定结果集类型和并发性的连接声明对象
-			 * 
+			 *
 			 * 	ResultSet.TYPE_SCROLL_INSENSITIVE：
 			 * 	支持结果集backforward ，random ，last ，first 等操作，
 			 * 		对其它会话 对数据库中数据做出的更改是不敏感的。
@@ -224,12 +225,12 @@ public class SqlOpr {
 			 * 		对结果集的后续操作，是操作的cache 中的数据，
 			 * 		数据库中记录发生变化后，不影响cache 中的数据，
 			 * 		所以ResultSet 对结果集中的数据是不敏感的。
-			 * 
+			 *
 			 * 	ResultSet.CONCUR_READ_ONLY：
 			 * 	在ResultSet中的数据记录是只读的，不可以更改
 			 */
 			Statement sta = conn.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE, 
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
 			res = sta.executeQuery(sql);
 			//	计算执行SQL语句所用时间
@@ -239,7 +240,7 @@ public class SqlOpr {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * 	读取所有设备信息
 	 * @return 包含所有设备信息的List集合
@@ -249,7 +250,7 @@ public class SqlOpr {
 				"select id, name from tb_devinfo");
 		return list;
 	}
-	
+
 	/**
 	 * 	读取所有用户信息
 	 * @return 包含所有用户信息的List集合
@@ -259,7 +260,7 @@ public class SqlOpr {
 				"select id, name, userid from tb_userinfo");
 		return list;
 	}
-	
+
 	/**
 	 * 	读取所有借用单
 	 * @return 包含所有借用单的List集合
@@ -269,7 +270,7 @@ public class SqlOpr {
 				"select id from tb_brw order by id desc");//	倒序
 		return list;
 	}
-	
+
 	/**
 	 * 	读取所有归还单
 	 * @return 包含所有归还单的List集合
@@ -291,7 +292,7 @@ public class SqlOpr {
 		try {
 			/*
 			 * 	创建结果集的元数据
-			 * 
+			 *
 			 * 	ResultSetMetaData：用于获取相应结果集中列的类型和属性信息的类
 			 */
 			ResultSetMetaData metaData = res.getMetaData();
@@ -311,7 +312,7 @@ public class SqlOpr {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * 	验证用户登录
 	 * @param userid 用户名
@@ -319,10 +320,10 @@ public class SqlOpr {
 	 * @return 登录成功与否
 	 * @throws SQLException
 	 */
-	public static boolean checkLogin(String userid, String pwd) 
+	public static boolean checkLogin(String userid, String pwd)
 			throws SQLException {
 		if(conn == null)
-			JOptionPane.showMessageDialog(null, "尚未创建数据库连接对象", 
+			JOptionPane.showMessageDialog(null, "尚未创建数据库连接对象",
 					"数据库错误", JOptionPane.ERROR_MESSAGE);
 		PreparedStatement preSta = conn.prepareStatement(//	通过预处理防范SQL注入
 				"select * from tb_userinfo where userid=? and pwd=?");
@@ -331,7 +332,7 @@ public class SqlOpr {
 		ResultSet res = preSta.executeQuery();
 		return res.next();
 	}
-	
+
 	/**
 	 * 	在事务中增加借用信息（保持数据的完整性）
 	 * <p>
@@ -356,9 +357,9 @@ public class SqlOpr {
 			TbDevInfo devInfo = getDevInfo(item);
 			boolean res = false;
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
-				res = exeUpdate("update tb_devinfo set status='" 
-						+ "工号：" + brw.getBrwerId() 
-						+ "',remark='" + brw.getRemark() 
+				res = exeUpdate("update tb_devinfo set status='"
+						+ "工号：" + brw.getBrwerId()
+						+ "',remark='" + brw.getRemark()
 						+ "' where id='" + devInfo.getId() + "'");
 			if(res)
 				conn.commit();//	提交事务
@@ -372,7 +373,7 @@ public class SqlOpr {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 	在事务中增加归还信息
 	 * @param rtn 欲插入数据库的归还公共类对象
@@ -392,8 +393,8 @@ public class SqlOpr {
 			TbDevInfo devInfo = getDevInfo(item);
 			boolean res = false;
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
-				res = exeUpdate("update tb_devinfo set status='" 
-						+ "库存中" + "',remark='" + rtn.getRemark() 
+				res = exeUpdate("update tb_devinfo set status='"
+						+ "库存中" + "',remark='" + rtn.getRemark()
 						+ "' where id='" + devInfo.getId() + "'");
 			if(res)
 				conn.commit();//	提交事务
@@ -425,7 +426,7 @@ public class SqlOpr {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * 	数据库备份
 	 * @return 备份文件路径
@@ -436,7 +437,7 @@ public class SqlOpr {
 		//	需备份的数据表名称
 		String tables[] = {"tb_brw", "tb_devinfo", "tb_rtn", "tb_userinfo"};
 		ArrayList<Tables> tableList = new ArrayList<>();//	数据表对象的集合
-		
+
 		//	获取各数据表对象
 		for(int i = 0; i < tables.length; i++) {//	遍历数据表名称数组
 			Statement sta = conn.createStatement();
@@ -463,7 +464,7 @@ public class SqlOpr {
 			res.close();//	关闭结果集
 			sta.close();//	关闭连接声明
 		}
-		
+
 		//	增加删除、创建数据表和插入数据的SQL语句
 		for(int i = 0; i < tableList.size(); i++) {//	遍历数据表对象的集合
 			Tables table = tableList.get(i);//	获取数据表对象
@@ -473,7 +474,7 @@ public class SqlOpr {
 			 * 	删除数据表全部数据和表结构，立刻释放磁盘空间，不管是 Innodb 和 MyISAM
 			 */
 			sqls.add("drop table if exists " + table.getName() + ";");
-			
+
 			//	创建数据表的SQL语句
 			StringBuilder createSql = new StringBuilder();
 			createSql.append("create table `" + table.getName() + "`(");
@@ -488,14 +489,14 @@ public class SqlOpr {
 					if(column.isIncrement())//	获取列是否自增
 						createSql.append(" auto_increment");
 				}
-				
+
 				if(j < columns.size() - 1)//	判断是否为最后一列
 					createSql.append(",");
 				else
 					createSql.append(") engine=innodb default charset=utf8;");
 			}
 			sqls.add(createSql.toString());
-			
+
 			//	插入数据的SQL语句
 			Statement sta = conn.createStatement();
 			ResultSet res = sta.executeQuery("select * from " + table.getName());
@@ -513,7 +514,7 @@ public class SqlOpr {
 							+ res.getString(column.getName()) + "'");
 					else
 						insertSql.append(res.getString(column.getName()));
-					
+
 					if(j < columns.size() - 1)//	判断是否为最后一列
 						insertSql.append(",");
 					else
@@ -524,12 +525,12 @@ public class SqlOpr {
 			res.close();
 			sta.close();
 		}
-		
+
 		//	输出备份文件
 		Date date = new Date();//	获取当前毫秒值
 		/*
 		 * 	设置当前时间的输出格式
-		 * 
+		 *
 		 * 	SimpleDateFormat：
 		 * 		是一个以国别敏感的方式格式化和分析数据的具体类。
 		 * 		它允许格式化 (date -> text)、语法分析 (text -> date)和标准化。
@@ -580,7 +581,7 @@ public class SqlOpr {
 		}
 		return sqlFile.getAbsolutePath();//	返回备份文件的绝对路径
 	}
-	
+
 	/**
 	 * 	数据库恢复
 	 * @param backupFilePath 欲恢复的备份文件路径
@@ -634,14 +635,14 @@ public class SqlOpr {
 			}
 		}
 	}
-	
+
 	/**
 	 * 	由用户名获取用户姓名
 	 * @param userId 用户名
 	 * @return 用户姓名
 	 * @throws SQLException
 	 */
-	public static String getUserNameFromUserId(String userId) 
+	public static String getUserNameFromUserId(String userId)
 			throws SQLException {
 		PreparedStatement preSta = conn.prepareStatement(
 				"select name from tb_userinfo where userid=?");
@@ -652,7 +653,7 @@ public class SqlOpr {
 			userName = res.getString("name");
 		return userName;
 	}
-	
+
 	/**
 	 * 	在事务中增加设备信息
 	 * @param devInfo 欲插入数据库的设备信息公共类对象
@@ -680,7 +681,7 @@ public class SqlOpr {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 	在事务中删除设备信息
 	 * @param id 欲删除设备的编号
@@ -723,7 +724,7 @@ public class SqlOpr {
 						+ userInfo.getPwd() + "','" + userInfo.getPos()
 						+ "','" + userInfo.getDep() + "','"
 						+ userInfo.getEmail() + "','" + userInfo.getTel()
-						+ "','" + userInfo.getRemark() + "'," 
+						+ "','" + userInfo.getRemark() + "',"
 						+ userInfo.isAdmin() + ")");
 			if(res)
 				conn.commit();
@@ -763,7 +764,7 @@ public class SqlOpr {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * 	由用户名获取用户是否拥有管理权限
 	 * @param userId 用户名
@@ -780,14 +781,14 @@ public class SqlOpr {
 			isAdmin = res.getBoolean("isadmin");
 		return isAdmin;
 	}
-	
+
 	/**
 	 * 	由设备编号获取设备状态
 	 * @param devId 设备编号
 	 * @return 设备状态
 	 * @throws SQLException
 	 */
-	public static String getStatusFromDevId(String devId) 
+	public static String getStatusFromDevId(String devId)
 			throws SQLException {
 		PreparedStatement preSta = conn.prepareStatement(
 				"select status from tb_devinfo where id=?");
@@ -798,7 +799,7 @@ public class SqlOpr {
 			status = res.getString("status");
 		return status;
 	}
-	
+
 	/**
 	 * 	修改密码
 	 * @param userId 用户名
@@ -806,10 +807,10 @@ public class SqlOpr {
 	 * @param newPwd 新密码
 	 * @return 密码修改成功与否
 	 */
-	public static boolean changePwd(String userId, 
+	public static boolean changePwd(String userId,
 			String oriPwd, String newPwd) {
 		boolean res = false;
-		res = exeUpdate("update tb_userinfo set pwd='" + newPwd 
+		res = exeUpdate("update tb_userinfo set pwd='" + newPwd
 				+ "' where userid='" + userId + "' and pwd='"
 				+ oriPwd + "'");
 		return res;
@@ -824,26 +825,16 @@ public class SqlOpr {
 	 * @param iRemark 欲搜索的备注
 	 * @return 包含返回的设备信息的List集合
 	 */
-	public static List<List<String>> searchDevInfo(String iId, 
+	public static List<List<String>> searchDevInfo(String iId,
 			String iName, String iStatus, String iDes, String iRemark) {
-		if(iId == null || iId.isEmpty())
-			iId = "%";
-		if(iName == null || iName.isEmpty())
-			iName = "%";
-		if(iStatus == null || iStatus.isEmpty())
-			iStatus = "%";
-		if(iDes == null || iDes.isEmpty())
-			iDes = "%";
-		if(iRemark == null || iRemark.isEmpty())
-			iRemark = "%";
 		String sql = "select id, name from tb_devinfo where "
-				+ "id like '" + iId + "' and name like '" + iName
-				+ "' and status like '" + iStatus + "' and des like '"
-				+ iDes + "' and remark like '" + iRemark + "'";
+				+ "id like '%" + iId + "%' and name like '%" + iName
+				+ "%' and status like '%" + iStatus + "%' and des like '%"
+				+ iDes + "%' and remark like '%" + iRemark + "%'";
 		List<List<String>> list = findForList(sql);
 		return list;
 	}
-	
+
 	/**
 	 * 	在事务中更新设备信息
 	 * @param devInfo 欲更新的设备信息公共类对象
@@ -855,7 +846,7 @@ public class SqlOpr {
 			conn.setAutoCommit(false);
 			boolean res = false;
 			if(devInfo.getId() != null && !devInfo.getId().isEmpty())
-				res = exeUpdate("update tb_devinfo set name='" 
+				res = exeUpdate("update tb_devinfo set name='"
 						+ devInfo.getName() + "', des='" + devInfo.getDes()
 						+ "', remark='" + devInfo.getRemark()
 						+ "' where id='" + devInfo.getId() + "'");
@@ -884,31 +875,17 @@ public class SqlOpr {
 	 * @param iRemark 欲搜索的备注
 	 * @return 包含返回的人员信息的List集合
 	 */
-	public static List<List<String>> searchUserInfo(String iId, 
-			String iName, String iUserId, String iPos, String iDep, 
+	public static List<List<String>> searchUserInfo(String iId,
+			String iName, String iUserId, String iPos, String iDep,
 			String iEmail, String iTel, String iRemark, boolean iIsAdmin) {
 		if(iId == null || iId.isEmpty())
 			iId = "'%'";
-		if(iName == null || iName.isEmpty())
-			iName = "%";
-		if(iUserId == null || iUserId.isEmpty())
-			iUserId = "%";
-		if(iPos == null || iPos.isEmpty())
-			iPos = "%";
-		if(iDep == null || iDep.isEmpty())
-			iDep = "%";
-		if(iEmail == null || iEmail.isEmpty())
-			iEmail = "%";
-		if(iTel == null || iTel.isEmpty())
-			iTel = "%";
-		if(iRemark == null || iRemark.isEmpty())
-			iRemark = "%";
 		String sql = "select id, name, userid from tb_userinfo where "
-				+ "id like " + iId + " and name like '" + iName
-				+ "' and userId like '" + iUserId + "' and pos like '"
-				+ iPos + "' and dep like '" + iDep + "' and email like '"
-				+ iEmail + "' and tel like '" + iTel + "' and remark like '" 
-				+ iRemark + "' and isadmin like " + iIsAdmin;
+				+ "id like " + iId + " and name like '%" + iName
+				+ "%' and userId like '%" + iUserId + "%' and pos like '%"
+				+ iPos + "%' and dep like '%" + iDep + "%' and email like '%"
+				+ iEmail + "%' and tel like '%" + iTel + "%' and remark like '%"
+				+ iRemark + "%' and isadmin like " + iIsAdmin;
 		List<List<String>> list = findForList(sql);
 		return list;
 	}
@@ -925,12 +902,12 @@ public class SqlOpr {
 			boolean res = false;
 			if(userInfo.getId() != null)
 				res = exeUpdate("update tb_userinfo set name='"
-						+ userInfo.getName() + "', userid='" 
-						+ userInfo.getUserId() + "', pos='" 
+						+ userInfo.getName() + "', userid='"
+						+ userInfo.getUserId() + "', pos='"
 						+ userInfo.getPos() + "', dep='" + userInfo.getDep()
 						+ "', email='" + userInfo.getEmail() + "', tel='"
-						+ userInfo.getTel() + "', remark='" 
-						+ userInfo.getRemark() + "', isadmin=" 
+						+ userInfo.getTel() + "', remark='"
+						+ userInfo.getRemark() + "', isadmin="
 						+ userInfo.isAdmin() + " where id=" + userInfo.getId());
 			if(res)
 				conn.commit();
@@ -943,5 +920,47 @@ public class SqlOpr {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * 	搜索借用单信息
+	 * @param iId 欲搜索的借用单编号
+	 * @param iDevId 欲搜索的借用设备编号
+	 * @param iBrwerId 欲搜索的借用人工号
+	 * @param iDate 欲搜索的借用日期
+	 * @param iRemark 欲搜索的备注
+	 * @return 包含返回的借用单信息的List集合
+	 */
+	public static List<List<String>> searchBrwInfo(String iId,
+			String iDevId, String iBrwerId, String iDate, String iRemark) {
+		if(iBrwerId == null || iBrwerId.isEmpty())
+			iBrwerId = "'%'";
+		String sql = "select id from tb_brw where "
+				+ "id like '%" + iId + "%' and devid like '%" + iDevId
+				+ "%' and brwerid like " + iBrwerId + " and date like '%"
+				+ iDate + "%' and remark like '%" + iRemark + "%'";
+		List<List<String>> list = findForList(sql);
+		return list;
+	}
+
+	/**
+	 * 	搜索归还单信息
+	 * @param iId 欲搜索的归还单编号
+	 * @param iDevId 欲搜索的归还设备编号
+	 * @param iRtnerId 欲搜索的归还人工号
+	 * @param iDate 欲搜索的归还日期
+	 * @param iRemark 欲搜索的备注
+	 * @return 包含返回的归还单信息的List集合
+	 */
+	public static List<List<String>> searchRtnInfo(String iId,
+			String iDevId, String iRtnerId, String iDate, String iRemark) {
+		if(iRtnerId == null || iRtnerId.isEmpty())
+			iRtnerId = "'%'";
+		String sql = "select id from tb_rtn where "
+				+ "id like '%" + iId + "%' and devid like '%" + iDevId
+				+ "%' and rtnerid like " + iRtnerId + " and date like '%"
+				+ iDate + "%' and remark like '%" + iRemark + "%'";
+		List<List<String>> list = findForList(sql);
+		return list;
 	}
 }

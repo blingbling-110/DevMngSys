@@ -41,6 +41,66 @@ public class RtnIFrame extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 	输入面板
+	 */
+	private JPanel inputPane = null;
+
+	/**
+	 * 	输入归还单编号标签
+	 */
+	private JLabel iIdLabel = new JLabel("归还单编号：");
+
+	/**
+	 * 	输入归还单文本框
+	 */
+	private JTextField iIdField = new JTextField(80);
+
+	/**
+	 * 	输入归还设备编号标签
+	 */
+	private JLabel iDevIdLabel = new JLabel("归还设备编号：");
+
+	/**
+	 * 	输入归还设备编号文本框
+	 */
+	private JTextField iDevIdField = new JTextField(30);
+
+	/**
+	 * 	输入归还人工号标签
+	 */
+	private JLabel iRtnerIdLabel = new JLabel("归还人工号：");
+
+	/**
+	 * 	输入归还人工号文本框
+	 */
+	private JTextField iRtnerIdField = new JTextField(30);
+
+	/**
+	 * 	输入归还日期标签
+	 */
+	private JLabel iDateLabel = new JLabel("归还日期：");
+
+	/**
+	 * 	输入归还日期文本框
+	 */
+	private JTextField iDateField = new JTextField(80);
+
+	/**
+	 * 	输入备注标签
+	 */
+	private JLabel iRemarkLabel = new JLabel("备注：");
+
+	/**
+	 * 	输入备注文本框
+	 */
+	private JTextField iRemarkField = new JTextField(80);
+
+	/**
+	 * 	搜索按钮
+	 */
+	private JButton searchButton = null;
 	
 	/**
 	 * 	表格滚动面板
@@ -104,11 +164,54 @@ public class RtnIFrame extends JInternalFrame {
 		setResizable(true);//	窗体可拉伸
 		setIconifiable(true);//	窗体可图标化
 		setClosable(true);//	窗体可关闭
+		getContentPane().add(getInputPane(), BorderLayout.NORTH);
 		getTablePane();
 		tablePane.setViewportView(getTable());
 		getContentPane().add(tablePane, BorderLayout.CENTER);
 		getAddPane();
 		getContentPane().add(addPane, BorderLayout.SOUTH);
+	}
+
+	/**
+	 * @return inputPane
+	 */
+	public JPanel getInputPane() {
+		if(inputPane == null) {
+			inputPane = new JPanel();
+			inputPane.setLayout(new GridBagLayout());
+			addComponent(inputPane, iIdLabel, 0, 0, 1);
+			addComponent(inputPane, iIdField, 1, 0, 3);
+			addComponent(inputPane, iDevIdLabel, 0, 1, 1);
+			addComponent(inputPane, iDevIdField, 1, 1, 1);
+			addComponent(inputPane, iRtnerIdLabel, 2, 1, 1);
+			addComponent(inputPane, iRtnerIdField, 3, 1, 1);
+			addComponent(inputPane, iDateLabel, 0, 2, 1);
+			addComponent(inputPane, iDateField, 1, 2, 3);
+			addComponent(inputPane, iRemarkLabel, 0, 3, 1);
+			addComponent(inputPane, iRemarkField, 1, 3, 3);
+			addComponent(inputPane, getSearchButton(), 0, 4, 4);
+		}
+		return inputPane;
+	}
+
+	/**
+	 * @return searchButton
+	 */
+	public JButton getSearchButton() {
+		if (searchButton == null) {
+			searchButton = new JButton("搜索(S)", new ImageIcon(
+					getClass().getResource("/res/icon/search.png")));
+			searchButton.setMnemonic(KeyEvent.VK_S);
+			searchButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					tablePane.setViewportView(getTable());
+					validate();
+				}
+			});
+		}
+		return searchButton;
 	}
 	
 	/**
@@ -142,8 +245,14 @@ public class RtnIFrame extends JInternalFrame {
 			else
 				columnattr.setPreferredWidth(150);//	调整表格列宽
 		}
+		String iId = iIdField.getText().trim();
+		String iDevId = iDevIdField.getText().trim();
+		String iRtnerId = iRtnerIdField.getText().trim();
+		String iDate = iDateField.getText().trim();
+		String iRemark = iRemarkField.getText().trim();
 		//		初始化表格内容
-		List<List<String>> allRtn = SqlOpr.getAllRtn();//	获取所有归还单信息
+		List<List<String>> allRtn = SqlOpr.searchRtnInfo(iId, iDevId,
+				iRtnerId, iDate, iRemark);//	搜索归还单信息
 		for(int i = 0; i < allRtn.size(); i++) {
 			List<String> rtnList = allRtn.get(i);//	每个设备信息的List集合
 			Item item = new Item(rtnList.get(0), null, null);
