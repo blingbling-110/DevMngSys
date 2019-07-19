@@ -343,8 +343,18 @@ public class UserIFrame extends JInternalFrame {
 		String iTel = iTelField.getText().trim();
 		String iRemark = iRemarkField.getText().trim();
 		boolean iIsAdmin = iIsAdminBox.isSelected();
+		if (iId != null && !iId.isEmpty()) {
+			try {
+				Integer.parseInt(iId);
+			}catch(NumberFormatException exc) {
+				JOptionPane.showMessageDialog(UserIFrame.this,
+						"工号只能为整数，且不能超过" + Integer.MAX_VALUE,
+						"输入错误", JOptionPane.ERROR_MESSAGE);
+				return table;
+			}
+		}
 		//	搜索人员信息
-		List<List<String>> selUserInfo = SqlOpr.searchUserInfo(iId, iName, 
+		List<List<String>> selUserInfo = SqlOpr.searchUserInfo(iId, iName,
 				iUserId, iPos, iDep, iEmail, iTel, iRemark, iIsAdmin);
 		for(int i = 0; i < selUserInfo.size(); i++) {
 			List<String> infoList = selUserInfo.get(i);//	每个人员信息的List集合

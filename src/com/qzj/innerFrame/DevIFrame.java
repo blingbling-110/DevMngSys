@@ -255,12 +255,21 @@ public class DevIFrame extends JInternalFrame {
 		String iStatus = iStatusField.getText().trim();
 		String iDes = iDesField.getText().trim();
 		String iRemark = iRemarkField.getText().trim();
-		//	若输入借用人姓名则先搜索借用人工号
-		List<List<String>> selBrwerId = SqlOpr.searchId(iStatus);
-		if (selBrwerId.size() == 0) {
-			ArrayList<String> someone=  new ArrayList<>();
-			someone.add(iStatus);
-			selBrwerId.add(someone);
+		List<List<String>> selBrwerId = new ArrayList<>();
+		//	若输入为空，则显示所有设备
+		if (iStatus == null || iStatus.isEmpty()) {
+			ArrayList<String> none=  new ArrayList<>();
+			none.add(iStatus);
+			selBrwerId.add(none);
+		}else {
+			//	若输入借用人姓名则先搜索借用人工号
+			selBrwerId = SqlOpr.searchId(iStatus);
+			//	若未搜索到借用人工号，则说明输入的是设备状态或者借用人工号
+			if (selBrwerId.size() == 0) {
+				ArrayList<String> someone=  new ArrayList<>();
+				someone.add(iStatus);
+				selBrwerId.add(someone);
+			}
 		}
 		for(List<String> a: selBrwerId) {
 			//	搜索设备信息
