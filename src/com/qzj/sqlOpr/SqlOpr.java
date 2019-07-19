@@ -968,4 +968,16 @@ public class SqlOpr {
 		List<List<String>> list = findForList(sql);
 		return list;
 	}
+
+	/**
+	 * 	根据用户姓名搜索工号
+	 * @param userName 用户姓名
+	 * @return 包含返回工号的List集合
+	 */
+	public static List<List<String>> searchId(String userName) {
+		String sql = "select id from tb_userinfo where name like '%"
+				+ userName + "%'";
+		List<List<String>> idList = findForList(sql);
+		return idList;
+	}
 }

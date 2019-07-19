@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultCellEditor;
@@ -72,7 +73,7 @@ public class DevIFrame extends JInternalFrame {
 	/**
 	 * 	输入设备状态标签
 	 */
-	private JLabel iStatusLabel = new JLabel("设备状态：");
+	private JLabel iStatusLabel = new JLabel("设备状态/借用人工号或姓名：");
 
 	/**
 	 * 	输入设备状态文本框
@@ -87,7 +88,7 @@ public class DevIFrame extends JInternalFrame {
 	/**
 	 * 	输入设备描述文本框
 	 */
-	private JTextField iDesField = new JTextField(110);
+	private JTextField iDesField = new JTextField(126);
 
 	/**
 	 * 	输入备注标签
@@ -97,7 +98,7 @@ public class DevIFrame extends JInternalFrame {
 	/**
 	 * 	输入备注文本框
 	 */
-	private JTextField iRemarkField = new JTextField(110);
+	private JTextField iRemarkField = new JTextField(126);
 
 	/**
 	 * 	搜索按钮
@@ -231,7 +232,7 @@ public class DevIFrame extends JInternalFrame {
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//	关闭列的自动调节
 		String[] columnLabel = {"设备编号", "设备名称", "设备状态",
-				"设备描述", "备注", "借用人姓名", "电子邮箱", "电话"};
+				"借用人姓名", "电话", "电子邮箱", "设备描述", "备注"};
 		//	DefaultTableModel是用于保存表格单元数值的表格模型类
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		tableModel.setColumnIdentifiers(columnLabel);//	设置表格模型的列名称
@@ -242,10 +243,10 @@ public class DevIFrame extends JInternalFrame {
 			TableColumn columnattr = table.getColumnModel().getColumn(i);
 			//	将表格各列的单元编辑器均设为只读编辑器
 			columnattr.setCellEditor(new DefaultCellEditor(readOnlyField));
-			if(i > 2 && i < 5)
-				columnattr.setPreferredWidth(300);//	调整表格列宽
+			if(i > 3 && i < 6)
+				columnattr.setPreferredWidth(200);//	调整表格列宽
 			else if (i > 5)
-				columnattr.setPreferredWidth(200);
+				columnattr.setPreferredWidth(300);
             else
 				columnattr.setPreferredWidth(130);
 		}
@@ -254,34 +255,43 @@ public class DevIFrame extends JInternalFrame {
 		String iStatus = iStatusField.getText().trim();
 		String iDes = iDesField.getText().trim();
 		String iRemark = iRemarkField.getText().trim();
-		//	搜索设备信息
-		List<List<String>> selDevInfo = SqlOpr.searchDevInfo(
-				iId, iName, iStatus, iDes, iRemark);
-		for(int i = 0; i < selDevInfo.size(); i++) {
-			List<String> infoList = selDevInfo.get(i);//	每个设备信息的List集合
-			Item devItem = new Item(infoList.get(0), infoList.get(1), null);
-			TbDevInfo devInfo = SqlOpr.getDevInfo(devItem);//	获取指定设备信息
-			TbUserInfo userInfo = new TbUserInfo();
-			//	判断是否借出
-			if (!devInfo.getStatus().equals("库存中")) {
-				Item userItem = new Item(null,null,
-						Integer.parseInt(devInfo.getStatus().substring(3)));
-				userInfo = SqlOpr.getUserInfo(userItem);//	获取指定人员信息
-			}
-			String[] row = new String[columnLabel.length];//	表格模型的一行
-			//	判断设备信息对象是否为空
-			if(devInfo.getId() != null && !devInfo.getId().isEmpty()) {
-				row[0] = devInfo.getId();
-				row[1] = devInfo.getName();
-				row[2] = devInfo.getStatus();
-				row[3] = devInfo.getDes();
-				row[4] = devInfo.getRemark();
-				if (!row[2].equals("库存中")) {
-					row[5] = userInfo.getName();
-					row[6] = userInfo.getEmail();
-					row[7] = userInfo.getTel();
+		//	若输入借用人姓名则先搜索借用人工号
+		List<List<String>> selBrwerId = SqlOpr.searchId(iStatus);
+		if (selBrwerId.size() == 0) {
+			ArrayList<String> someone=  new ArrayList<>();
+			someone.add(iStatus);
+			selBrwerId.add(someone);
+		}
+		for(List<String> a: selBrwerId) {
+			//	搜索设备信息
+			List<List<String>> selDevInfo = SqlOpr.searchDevInfo(
+					iId, iName, a.get(0), iDes, iRemark);
+			for(int i = 0; i < selDevInfo.size(); i++) {
+				List<String> infoList = selDevInfo.get(i);//	每个设备信息的List集合
+				Item devItem = new Item(infoList.get(0), infoList.get(1), null);
+				TbDevInfo devInfo = SqlOpr.getDevInfo(devItem);//	获取指定设备信息
+				TbUserInfo userInfo = new TbUserInfo();
+				//	判断是否借出
+				if (!devInfo.getStatus().equals("库存中")) {
+					Item userItem = new Item(null,null,
+							Integer.parseInt(devInfo.getStatus().substring(3)));
+					userInfo = SqlOpr.getUserInfo(userItem);//	获取指定人员信息
 				}
-				tableModel.addRow(row);//	在表格模型末尾增加一行
+				String[] row = new String[columnLabel.length];//	表格模型的一行
+				//	判断设备信息对象是否为空
+				if(devInfo.getId() != null && !devInfo.getId().isEmpty()) {
+					row[0] = devInfo.getId();
+					row[1] = devInfo.getName();
+					row[2] = devInfo.getStatus();
+					row[6] = devInfo.getDes();
+					row[7] = devInfo.getRemark();
+					if (!row[2].equals("库存中")) {
+						row[3] = userInfo.getName();
+						row[4] = userInfo.getTel();
+						row[5] = userInfo.getEmail();
+					}
+					tableModel.addRow(row);//	在表格模型末尾增加一行
+				}
 			}
 		}
 		//	给表格添加鼠标监听器
@@ -295,8 +305,8 @@ public class DevIFrame extends JInternalFrame {
 				super.mouseClicked(e);
 				int row = table.rowAtPoint(e.getPoint());
 				uNameField.setText(table.getValueAt(row, 1).toString());
-				uDesField.setText(table.getValueAt(row, 3).toString());
-				uRemarkField.setText(table.getValueAt(row, 4).toString());
+				uDesField.setText(table.getValueAt(row, 6).toString());
+				uRemarkField.setText(table.getValueAt(row, 7).toString());
 			}
 
 		});
