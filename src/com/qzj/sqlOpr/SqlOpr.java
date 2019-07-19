@@ -90,6 +90,7 @@ public class SqlOpr {
 						"数据库错误", JOptionPane.ERROR_MESSAGE);
 				System.exit(1);//	非正常退出
 			} catch (SQLException e) {
+				e.printStackTrace();
 				JOptionPane.showMessageDialog(null, "数据库连接对象创建失败",
 						"数据库错误", JOptionPane.ERROR_MESSAGE);
 				System.exit(1);
@@ -538,6 +539,10 @@ public class SqlOpr {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 		//	备份文件路径
 		String backupFilePath = "backup\\" + sdf.format(date) + ".sql";
+		File dir = new File(".\\backup");
+		//	检查备份文件夹是否存在
+		if(!dir.exists() && !dir.isDirectory())
+		dir.mkdir();
 		File sqlFile = new File(backupFilePath);//	创建SQL文件对象
 		FileOutputStream fos = null;//	创建文件字节输出流
 		OutputStreamWriter osw = null;//	创建字符输出流
