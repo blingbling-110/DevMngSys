@@ -30,6 +30,11 @@ public class TbDevInfo {
 	 * 	备注
 	 */
 	private String remark;
+
+	/**
+	 * 	请求人的工号
+	 */
+	private String req;
 	
 	public TbDevInfo() {
 	}
@@ -120,6 +125,20 @@ public class TbDevInfo {
 	}
 
 	/**
+	 * @return req
+	 */
+	public String getReq() {
+		return req;
+	}
+
+	/**
+	 * @param req 要设置的 req
+	 */
+	public void setReq(String req) {
+		this.req = req;
+	}
+
+	/**
 	 * 	重写toString()方法，只输出设备名称
 	 */
 	public String toString() {
@@ -137,6 +156,7 @@ public class TbDevInfo {
 		result = PRIME * result + ((status == null)? 0 : status.hashCode());
 		result = PRIME * result + ((des == null)? 0 : des.hashCode());
 		result = PRIME * result + ((remark == null)? 0 : remark.hashCode());
+		result = PRIME * result + ((req == null)? 0 : req.hashCode());
 		return result;
 	}
 	
@@ -175,6 +195,11 @@ public class TbDevInfo {
 			if(other.remark != null)
 				return false;
 		}else if(!remark.equals(other.remark))
+			return false;
+		if(req == null) {
+			if(other.req != null)
+				return false;
+		}else if(!req.equals(other.req))
 			return false;
 		return true;
 	}

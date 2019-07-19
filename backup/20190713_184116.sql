@@ -1,10 +1,10 @@
 drop table if exists tb_brw;
 create table `tb_brw`(`id` varchar(30) not null primary key,`devid` varchar(20),`brwerid` int(11),`date` varchar(50),`remark` varchar(50)) engine=innodb default charset=utf8;
 drop table if exists tb_devinfo;
-create table `tb_devinfo`(`id` varchar(20) not null primary key,`name` varchar(20),`status` varchar(10),`des` varchar(50),`remark` varchar(50)) engine=innodb default charset=utf8;
-insert into tb_devinfo values('Dev001','设备001','库存中','','');
-insert into tb_devinfo values('Dev002','设备002','库存中','','');
-insert into tb_devinfo values('Dev003','设备003','库存中','','');
+create table `tb_devinfo`(`id` varchar(20) not null primary key,`name` varchar(20),`status` varchar(10),`des` varchar(50),`remark` varchar(50),`req` varchar(20)) engine=innodb default charset=utf8;
+insert into tb_devinfo values('Dev001','设备001','库存中','','','');
+insert into tb_devinfo values('Dev002','设备002','库存中','','','');
+insert into tb_devinfo values('Dev003','设备003','库存中','','','');
 drop table if exists tb_rtn;
 create table `tb_rtn`(`id` varchar(30) not null primary key,`devid` varchar(20),`rtnerid` int(11),`date` varchar(50),`remark` varchar(50)) engine=innodb default charset=utf8;
 drop table if exists tb_userinfo;

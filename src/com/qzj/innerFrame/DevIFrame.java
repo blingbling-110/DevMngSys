@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +107,11 @@ public class DevIFrame extends JInternalFrame {
 	private JButton searchButton = null;
 
 	/**
+	 * 	借用请求按钮
+	 */
+	private JButton reqButton = null;
+
+	/**
 	 * 	表格面板
 	 */
 	private JScrollPane tablePane = null;
@@ -189,7 +195,8 @@ public class DevIFrame extends JInternalFrame {
 			addComponent(inputPane, iDesField, 1, 1, 5);
 			addComponent(inputPane, iRemarkLabel, 0, 2, 1);
 			addComponent(inputPane, iRemarkField, 1, 2, 5);
-			addComponent(inputPane, getSearchButton(), 0, 3, 6);
+			addComponent(inputPane, getSearchButton(), 1, 3, 2);
+			addComponent(inputPane, getReqButton(), 3, 3, 3);
 		}
 		return inputPane;
 	}
@@ -212,6 +219,76 @@ public class DevIFrame extends JInternalFrame {
 			});
 		}
 		return searchButton;
+	}
+
+	/**
+	 * @return reqButton
+	 */
+	public JButton getReqButton() {
+		reqButton = new JButton("借用请求(R)", new ImageIcon(
+				getClass().getResource("/res/icon/finger.png")));
+		reqButton.setMnemonic(KeyEvent.VK_R);
+		reqButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+				if(row == -1) {
+					JOptionPane.showMessageDialog(
+							DevIFrame.this, "未选择设备",
+							"操作失败", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				String devStatus = table.getValueAt(row, 2).toString();
+				if (devStatus.equals("库存中")) {
+					JOptionPane.showMessageDialog(
+							DevIFrame.this,
+							"所选设备位于库存中，请联系设备管理员",
+							"操作失败", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				String devId = table.getValueAt(row, 0).toString();
+				Item devItem = new Item(devId, null, null);
+				TbDevInfo devInfo = SqlOpr.getDevInfo(devItem);
+				String req = devInfo.getReq();
+				if (req != null && !req.isEmpty()) {
+					JOptionPane.showMessageDialog(
+							DevIFrame.this,
+							"所选设备已被请求",
+							"操作失败", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				String brwerId = devStatus.substring(3);
+				String reqerId = null;
+				try {
+					reqerId = SqlOpr.getIdFromUserId(MainFrame.userId);
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(
+							DevIFrame.this, "查询工号失败",
+							"操作失败", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if (reqerId.equals(brwerId)) {
+					JOptionPane.showMessageDialog(
+							DevIFrame.this,
+							"您已借用此设备，无需发送请求。",
+							"操作失败", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				boolean res = SqlOpr.sendReq(devId, reqerId);
+				if (res)
+					JOptionPane.showMessageDialog(
+							DevIFrame.this,
+							"借用请求发送成功，请联系已借用人进行确认。",
+							"请求成功", JOptionPane.INFORMATION_MESSAGE);
+				else
+					JOptionPane.showMessageDialog(
+							DevIFrame.this, "请求发送失败",
+							"操作失败", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		return reqButton;
 	}
 
 	/**

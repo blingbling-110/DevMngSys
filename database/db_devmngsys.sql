@@ -54,6 +54,7 @@ CREATE TABLE `tb_devinfo` (
   `status` varchar(10) DEFAULT NULL,
   `des` varchar(50) DEFAULT NULL,
   `remark` varchar(50) DEFAULT NULL,
+  `req` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -64,7 +65,7 @@ CREATE TABLE `tb_devinfo` (
 
 LOCK TABLES `tb_devinfo` WRITE;
 /*!40000 ALTER TABLE `tb_devinfo` DISABLE KEYS */;
-INSERT INTO `tb_devinfo` VALUES ('Dev001','设备001','库存中','',''),('Dev002','设备002','库存中','',''),('Dev003','设备003','库存中','','');
+INSERT INTO `tb_devinfo` VALUES ('Dev001','设备001','库存中','','',''),('Dev002','设备002','库存中','','',''),('Dev003','设备003','库存中','','','');
 /*!40000 ALTER TABLE `tb_devinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
