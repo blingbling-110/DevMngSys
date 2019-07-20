@@ -393,7 +393,8 @@ public class RtnIFrame extends JInternalFrame {
 					rtn.setDate(dateStr);
 					rtn.setRemark(remarkField.getText().trim());
 					boolean res = SqlOpr.insertTbRtn(rtn);
-					if(res) {
+					boolean isClear = SqlOpr.sendReq(devId, "");
+					if(res && isClear) {
 						refreshButton.doClick();
 						devIdField.setText("");
 						rtnerIdField.setText("");
