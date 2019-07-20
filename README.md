@@ -10,7 +10,7 @@
 
 单击工具栏中的“搜索设备”图标开启搜索窗口：
 
-![genDev](C:\Users\blingbling_inwin\Desktop\genDev.png)
+![genDev](assets/genDev.png)
 
 输入设备编号或其他信息（支持模糊搜索），单击搜索即可查看符合搜索条件设备的当前状态。
 
@@ -20,7 +20,7 @@
 
 #### 发送借用请求
 
-若显示“工号：*”，则表明此设备已被工号为\*的同事借用，并且可以查看该同事的姓名、电话、邮箱信息。单击“借用请求”按钮（![sendReq](C:\Users\blingbling_inwin\Desktop\sendReq.png)）向该同事发送借用请求，发送成功之后即可联系该同事借用设备。
+若显示“工号：*”，则表明此设备已被工号为\*的同事借用，并且可以查看该同事的姓名、电话、邮箱信息。单击“借用请求”按钮（![sendReq](assets/sendReq.png)）向该同事发送借用请求，发送成功之后即可联系该同事借用设备。
 
 ### 同意/拒绝借用请求
 
@@ -28,7 +28,7 @@
 
 在其他同事联系您之后，登录本系统并会在主界面收到设备转移提示：
 
-![pollingForReq](C:\Users\blingbling_inwin\Desktop\pollingForReq.png)
+![pollingForReq](assets/pollingForReq.png)
 
 若您确定已将此设备借给这位同事，请单击“确定”按钮，这就完成了设备转移。
 
@@ -42,7 +42,7 @@
 
 单击“帮助”菜单下的“修改密码”菜单项进入修改密码窗口：
 
-![changePwd](C:\Users\blingbling_inwin\Desktop\changePwd.png)
+![changePwd](assets/changePwd.png)
 
 输入原密码、新密码并确认密码即可。
 
@@ -54,7 +54,7 @@
 
 为了数据安全，管理员应适时在本地备份数据库。单击“文件”菜单下的“数据库备份”菜单项进入数据库备份窗口：
 
-![backup](C:\Users\blingbling_inwin\Desktop\backup.png)
+![backup](assets/backup.png)
 
 单击右侧“备份”按钮即可在程序文件夹中的backup文件夹下备份数据库，并且备份文件以当前时间命名以便日后恢复数据库时识别。
 
@@ -62,7 +62,7 @@
 
 单击“文件”菜单下的“数据库恢复”菜单项进入数据库恢复窗口：
 
-![restore](C:\Users\blingbling_inwin\Desktop\restore.png)
+![restore](assets/restore.png)
 
 单击“选择数据库恢复文件”按钮，并在文件选择器中选择欲恢复的数据库文件，然后单击“恢复”按钮即可恢复。
 
@@ -70,7 +70,7 @@
 
 单击工具栏中的“设备总览”图标：
 
-![addDev](C:\Users\blingbling_inwin\Desktop\addDev.png)
+![addDev](assets/addDev.png)
 
 在各设备信息输入文本框中输入设备信息，单击“增加设备”按钮即可。
 
@@ -80,7 +80,7 @@
 
 单击工具栏中的“人员总览”图标：
 
-![addUser](C:\Users\blingbling_inwin\Desktop\addUser.png)
+![addUser](assets/addUser.png)
 
 在各人员信息输入文本框中输入人员信息，单击“增加人员”按钮即可。
 
@@ -94,7 +94,7 @@
 
 单击工具栏中的“借用管理”图标：
 
-![brw](C:\Users\blingbling_inwin\Desktop\brw.png)
+![brw](assets/brw.png)
 
 默认将倒序显示所有借用单信息，在各搜索文本框中输入搜索信息（支持模糊搜索），并单击“搜索”按钮即可进行借用单搜索。
 
@@ -114,7 +114,7 @@
 
 搜索设备可参考<a href="#查询设备状态">查询设备状态</a>。
 
-![updateDev](C:\Users\blingbling_inwin\Desktop\updateDev.png)
+![updateDev](assets/updateDev.png)
 
 若要更新设备信息，则在表格中选中欲更新的设备，在窗口底部各设备信息文本框中输入更新后的信息，单击“更新”按钮即可。
 
@@ -122,7 +122,7 @@
 
 单击工具栏中的“搜索人员”图标：
 
-![searchUser](C:\Users\blingbling_inwin\Desktop\searchUser.png)
+![searchUser](assets/searchUser.png)
 
 输入人员信息（支持模糊搜索），单击搜索即可查看符合搜索条件的人员。
 
@@ -131,3 +131,4 @@
 ## 快捷键技巧（可选）
 
 本系统中的大部分操作均支持快捷键操作，并在选项/按钮中以括号加快捷键显示在后面。要使用快捷键，按下ALT+相应快捷键即可，例如“退出”相应的快捷键为先按ALT+F，再按ALT+X，当然更快捷的方式为ALT+F4（笑）。另外，在系统中打开内部窗体时若要通过快捷键来打开菜单，而菜单的快捷键和该窗体中某快捷键相同时，需要分开按，即按一次ALT再按一次快捷键，因为此时快捷键默认是优先操作内部窗体。
+
