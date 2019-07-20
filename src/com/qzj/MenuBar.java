@@ -1,9 +1,11 @@
 package com.qzj;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,11 +110,21 @@ public class MenuBar extends JMenuBar {
 	 * 	帮助菜单
 	 */
 	private JMenu helpMenu = null;
-	
+
+	/**
+	 * 	在线文档菜单项
+	 */
+	private JMenuItem docItem = null;
+
 	/**
 	 * 	修改密码菜单项
 	 */
 	private JMenuItem pwdItem = null;
+
+	/**
+	 * 	联系支持菜单项
+	 */
+	private JMenuItem emailItem = null;
 	
 	/**
 	 * 	关于菜单项
@@ -407,10 +419,41 @@ public class MenuBar extends JMenuBar {
 		if(helpMenu == null) {
 			helpMenu = new JMenu("帮助(H)");
 			helpMenu.setMnemonic(KeyEvent.VK_H);
+			helpMenu.add(getDocItem());
 			helpMenu.add(getPwdItem());
+			helpMenu.add(getEmailItem());
 			helpMenu.add(getAboutItem());
 		}
 		return helpMenu;
+	}
+
+	/**
+	 * 	获取在线文档菜单项
+	 * @return docItem
+	 */
+	public JMenuItem getDocItem() {
+		if (docItem == null) {
+			docItem = new JMenuItem("在线文档(O)", new ImageIcon(
+					getClass().getResource("/res/icon/help.png")));
+			docItem.setMnemonic(KeyEvent.VK_O);
+			docItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//	Desktop类允许各种桌面功能进行交互
+					if (Desktop.isDesktopSupported()) {
+						Desktop desktop = Desktop.getDesktop();
+						try {
+							desktop.browse(new URI("https://github.com/"
+									+ "blingbling-110/DevMngSys"));
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
+			});
+		}
+		return docItem;
 	}
 
 	/**
@@ -434,6 +477,35 @@ public class MenuBar extends JMenuBar {
 	}
 
 	/**
+	 * 	获取联系支持菜单项
+	 * @return emailItem
+	 */
+	public JMenuItem getEmailItem() {
+		if (emailItem == null) {
+			emailItem = new JMenuItem("联系支持(S)", new ImageIcon(
+					getClass().getResource("/res/icon/email.png")));
+			emailItem.setMnemonic(KeyEvent.VK_S);
+			emailItem.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//	Desktop类允许各种桌面功能进行交互
+					if (Desktop.isDesktopSupported()) {
+						Desktop desktop = Desktop.getDesktop();
+						try {
+							desktop.mail(new URI("mailto:"
+									+ "523497359@qq.com"));
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				}
+			});
+		}
+		return emailItem;
+	}
+
+	/**
 	 * 	获取关于菜单项
 	 * @return aboutItem
 	 */
@@ -451,8 +523,8 @@ public class MenuBar extends JMenuBar {
 							+ "本系统出于学习Java编程以及MySQL数据库操作"
 							+ "而编写，水平有限，多多指教。\n\n"
 							+ "作者：覃子俊\n"
-							+ "版本：Alpha\n"
-							+ "日期：2019年7月14日\n"
+							+ "版本：Beta\n"
+							+ "日期：2019年7月19日\n"
 							+ "源码地址："
 							+ "https://github.com/blingbling-110/DevMngSys\n"
 							+ "联系方式：523497359@qq.com", 
