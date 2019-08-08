@@ -1,24 +1,18 @@
 package com.qzj;
 
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-
-import com.qzj.innerFrame.BrwIFrame;
 import com.qzj.login.LoginDialog;
 import com.qzj.sqlOpr.SqlOpr;
 import com.qzj.sqlOpr.model.TbBrw;
 import com.qzj.sqlOpr.model.TbDevInfo;
 import com.qzj.sqlOpr.model.TbUserInfo;
+
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import java.awt.*;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 企业设备管理系统主窗体
