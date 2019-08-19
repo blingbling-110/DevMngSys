@@ -692,7 +692,7 @@ public class SqlOpr {
                 res = exeUpdate("insert into tb_devinfo values('"
                         + devInfo.getId() + "','" + devInfo.getName()
                         + "','" + devInfo.getStatus() + "','" + devInfo.getDes()
-                        + "','" + devInfo.getRemark() + "')");
+                        + "','" + devInfo.getRemark() + "','')");
             if (res)
                 conn.commit();
             else {
